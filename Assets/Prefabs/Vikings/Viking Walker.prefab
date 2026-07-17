@@ -449,9 +449,12 @@ MonoBehaviour:
   applyInWorldSpace: 1
   returnAfterRecoil: 0
   recoilDirection: {x: 1, y: 0}
-  recoilDistance: 0.2
+  recoilDistance: 0.15
   recoilOutSeconds: 0.2
   recoilReturnSeconds: 0.2
+  triggerHitAnimation: 1
+  animator: {fileID: 6799631004367217897}
+  hitTriggerName: Hit
 --- !u!1 &2124939556821316633
 GameObject:
   m_ObjectHideFlags: 0
@@ -802,8 +805,8 @@ MonoBehaviour:
     - {fileID: 8572417756408406493}
     - {fileID: 7262769003926784550}
     m_DefaultLocalRotations:
-    - {x: 0, y: 0, z: 0.67703015, w: 0.73595536}
-    - {x: 0, y: 0, z: -0.96954376, w: 0.24491835}
+    - {x: 0, y: -0, z: 0.73523957, w: 0.67780733}
+    - {x: -0, y: -0, z: -0.856139, w: 0.51674575}
     - {x: -0, y: -0, z: -0.061901562, w: 0.9980823}
     m_StoredLocalRotations:
     - {x: 0, y: 0, z: 0, w: 0}
@@ -1273,8 +1276,8 @@ MonoBehaviour:
     - {fileID: 2415057236966393493}
     - {fileID: 3234662695492048866}
     m_DefaultLocalRotations:
-    - {x: 0, y: 0, z: 0.67703015, w: 0.73595536}
-    - {x: 0, y: 0, z: 0.945635, w: 0.32522988}
+    - {x: 0, y: -0, z: 0.73523957, w: 0.67780733}
+    - {x: -0, y: -0, z: 0.8739401, w: 0.48603353}
     - {x: -0, y: -0, z: -0.00000020861626, w: 1}
     m_StoredLocalRotations:
     - {x: 0, y: 0, z: 0, w: 0}

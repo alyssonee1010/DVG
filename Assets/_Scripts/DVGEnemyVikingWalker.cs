@@ -33,6 +33,7 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
     bool hasAttackTarget;
     bool isAfterKillLocked;
     float afterKillTimer;
+    int lastHealth;
     float walkDirection = -1f;
 
     public int LaneIndex { get; private set; }
@@ -48,6 +49,28 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
     {
         health = GetComponent<DVGHealth>();
         animator = GetComponent<Animator>();
+    }
+
+    void OnEnable()
+    {
+        if (health == null)
+        {
+            health = GetComponent<DVGHealth>();
+        }
+
+        if (health != null)
+        {
+            lastHealth = health.CurrentHealth;
+            health.HealthChanged += OnHealthChanged;
+        }
+    }
+
+    void OnDisable()
+    {
+        if (health != null)
+        {
+            health.HealthChanged -= OnHealthChanged;
+        }
     }
 
     void Update()
@@ -118,7 +141,31 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
         }
 
         health.SetMaxHealth(maxHealth);
+        lastHealth = health.CurrentHealth;
         ApplyRowSorting(laneIndex);
+    }
+
+    void OnHealthChanged(DVGHealth changedHealth, int currentHealth)
+    {
+        bool tookDamage = currentHealth < lastHealth;
+        lastHealth = currentHealth;
+
+        if (!tookDamage || currentHealth <= 0 || !hasAttackTarget)
+        {
+            return;
+        }
+
+        if (attackTarget == null || attackTarget.Health == null || !attackTarget.Health.IsAlive)
+        {
+            return;
+        }
+
+        hasAttackTarget = false;
+        attackTarget = null;
+        if (animator != null)
+        {
+            animator.ResetTrigger(AttackTriggerName);
+        }
     }
 
     bool TryFindAttackTarget()

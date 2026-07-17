@@ -772,3 +772,6 @@ MonoBehaviour:
   recoilDistance: 0.08
   recoilOutSeconds: 0.04
   recoilReturnSeconds: 0.1
+  triggerHitAnimation: 0
+  animator: {fileID: 0}
+  hitTriggerName: Hit

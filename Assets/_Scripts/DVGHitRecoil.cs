@@ -11,6 +11,11 @@ public class DVGHitRecoil : MonoBehaviour
     [SerializeField] float recoilOutSeconds = 0.05f;
     [SerializeField] float recoilReturnSeconds = 0.12f;
 
+    [Header("Animation")]
+    [SerializeField] bool triggerHitAnimation = true;
+    [SerializeField] Animator animator;
+    [SerializeField] string hitTriggerName = "Hit";
+
     DVGHealth health;
     int lastHealth;
     float recoilTimer;
@@ -24,6 +29,11 @@ public class DVGHitRecoil : MonoBehaviour
         if (recoilTarget == null)
         {
             recoilTarget = transform;
+        }
+
+        if (animator == null)
+        {
+            animator = GetComponent<Animator>();
         }
     }
 
@@ -102,10 +112,22 @@ public class DVGHitRecoil : MonoBehaviour
                 appliedOffset = Vector3.zero;
             }
 
+            PlayHitAnimation(currentHealth);
             recoilTimer = TotalSeconds;
         }
 
         lastHealth = currentHealth;
+    }
+
+    void PlayHitAnimation(int currentHealth)
+    {
+        if (!triggerHitAnimation || currentHealth <= 0 || animator == null || string.IsNullOrWhiteSpace(hitTriggerName))
+        {
+            return;
+        }
+
+        animator.ResetTrigger(hitTriggerName);
+        animator.SetTrigger(hitTriggerName);
     }
 
     Vector3 GetCurrentPushOffset()
