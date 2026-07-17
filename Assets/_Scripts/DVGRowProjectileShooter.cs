@@ -32,7 +32,7 @@ public class DVGRowProjectileShooter : MonoBehaviour
 
     [Header("Animation")]
     [SerializeField] bool waitForShootAnimationEvent;
-    [SerializeField] string shootTriggerName = "Shoot";
+    [SerializeField] string shootTriggerName = "Attack";
 
     [Header("Projectile Sorting")]
     [SerializeField] int projectileSortingOrderBase = 1000;
@@ -88,6 +88,7 @@ public class DVGRowProjectileShooter : MonoBehaviour
         {
             return;
         }
+        animator.SetTrigger("Attack");
 
         int laneIndex = GetLaneIndex();
         Vector3 spawnPosition = firePoint != null
@@ -106,6 +107,7 @@ public class DVGRowProjectileShooter : MonoBehaviour
 
         projectileObject.SetActive(true);
         projectile.Launch(projectileDirection, laneIndex);
+        animator.SetTrigger("Attack");
     }
 
     public void ShootProjectileAnimationEvent()
