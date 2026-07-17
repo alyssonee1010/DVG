@@ -31,6 +31,7 @@ public class DVGRowProjectileShooter : MonoBehaviour
     [SerializeField] float laneTolerance = 0.45f;
 
     [Header("Animation")]
+    [SerializeField] bool playShootAnimation = true;
     [SerializeField] bool waitForShootAnimationEvent;
     [SerializeField] string shootTriggerName = "Attack";
 
@@ -61,6 +62,7 @@ public class DVGRowProjectileShooter : MonoBehaviour
         {
             currentTarget = null;
             waitingForShootAnimationEvent = false;
+            ResetShootAnimationTrigger();
             return;
         }
 
@@ -71,10 +73,10 @@ public class DVGRowProjectileShooter : MonoBehaviour
         }
 
         fireTimer = Mathf.Max(0.01f, fireInterval);
-        if (waitForShootAnimationEvent && animator != null && !string.IsNullOrWhiteSpace(shootTriggerName))
+        bool triggeredAnimation = PlayShootAnimation();
+        if (waitForShootAnimationEvent && triggeredAnimation)
         {
             waitingForShootAnimationEvent = true;
-            animator.SetTrigger(shootTriggerName);
             return;
         }
 
@@ -88,7 +90,6 @@ public class DVGRowProjectileShooter : MonoBehaviour
         {
             return;
         }
-        animator.SetTrigger("Attack");
 
         int laneIndex = GetLaneIndex();
         Vector3 spawnPosition = firePoint != null
@@ -107,7 +108,6 @@ public class DVGRowProjectileShooter : MonoBehaviour
 
         projectileObject.SetActive(true);
         projectile.Launch(projectileDirection, laneIndex);
-        animator.SetTrigger("Attack");
     }
 
     public void ShootProjectileAnimationEvent()
@@ -254,6 +254,26 @@ public class DVGRowProjectileShooter : MonoBehaviour
         foreach (SpriteRenderer spriteRenderer in spriteRenderers)
         {
             spriteRenderer.sortingOrder = sortingOrder;
+        }
+    }
+
+    bool PlayShootAnimation()
+    {
+        if (!playShootAnimation || animator == null || string.IsNullOrWhiteSpace(shootTriggerName))
+        {
+            return false;
+        }
+
+        animator.ResetTrigger(shootTriggerName);
+        animator.SetTrigger(shootTriggerName);
+        return true;
+    }
+
+    void ResetShootAnimationTrigger()
+    {
+        if (animator != null && !string.IsNullOrWhiteSpace(shootTriggerName))
+        {
+            animator.ResetTrigger(shootTriggerName);
         }
     }
 

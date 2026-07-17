@@ -181,7 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DVGDamageProjectile
   damage: 20
-  speed: 5.5
+  speed: 6
   lifetime: 5
   destroyOnHit: 1
   useLaneBasedHit: 1
