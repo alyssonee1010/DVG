@@ -283,6 +283,7 @@ GameObject:
   - component: {fileID: 910039974434272966}
   - component: {fileID: 5244383168775246441}
   - component: {fileID: 4946029505301886133}
+  - component: {fileID: 5175382397795251117}
   m_Layer: 0
   m_Name: Viking Walker
   m_TagString: Untagged
@@ -381,7 +382,7 @@ MonoBehaviour:
   attackStartDistance: 0.8
   laneTolerance: 0.45
   overlapTolerance: 0.1
-  attackDamage: 15
+  attackDamage: 10
   afterKillLockSeconds: 0.8
   sortingOrderBase: 1000
   sortingOrderPerRow: 120
@@ -432,6 +433,25 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.7, y: 0.85}
   m_EdgeRadius: 0
+--- !u!114 &5175382397795251117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030003902470211666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bee1f306e5027f43a8657f366182449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DVGHitRecoil
+  recoilTarget: {fileID: 928898346640183345}
+  applyInWorldSpace: 1
+  returnAfterRecoil: 0
+  recoilDirection: {x: 1, y: 0}
+  recoilDistance: 0.2
+  recoilOutSeconds: 0.2
+  recoilReturnSeconds: 0.2
 --- !u!1 &2124939556821316633
 GameObject:
   m_ObjectHideFlags: 0
