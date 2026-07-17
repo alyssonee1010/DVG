@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 
 [RequireComponent(typeof(DVGHealth))]
 public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
@@ -10,9 +11,14 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
     [SerializeField] float reachDistance = 0.05f;
 
     [Header("Targeting")]
-    [SerializeField] float detectionRange = 0.65f;
+    [SerializeField] float attackStartDistance = 0.8f;
     [SerializeField] float laneTolerance = 0.45f;
-    [SerializeField] float overlapTolerance = 0.15f;
+    [SerializeField] float overlapTolerance = 0.05f;
+
+    [Header("Sorting")]
+    [SerializeField] int sortingOrderBase = 1000;
+    [SerializeField] int sortingOrderPerRow = 120;
+    [SerializeField] int sortingOrderOffset;
 
     DVGHealth health;
     Animator animator;
@@ -81,6 +87,7 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
         }
 
         health.SetMaxHealth(maxHealth);
+        ApplyRowSorting(laneIndex);
     }
 
     bool TryFindAttackTarget()
@@ -105,8 +112,8 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
                 continue;
             }
 
-            float forwardDistance = (character.transform.position.x - transform.position.x) * walkDirection;
-            if (forwardDistance < -overlapTolerance || forwardDistance > detectionRange)
+            float forwardDistance = GetForwardDistanceTo(character);
+            if (forwardDistance < -overlapTolerance || forwardDistance > attackStartDistance)
             {
                 continue;
             }
@@ -115,5 +122,36 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
         }
 
         return false;
+    }
+
+    float GetForwardDistanceTo(DVGBoardCharacter character)
+    {
+        Bounds selfBounds = GetBounds(GetComponent<Collider2D>(), transform.position);
+        Bounds targetBounds = GetBounds(character.GetComponent<Collider2D>(), character.transform.position);
+
+        float selfFrontX = walkDirection < 0f ? selfBounds.min.x : selfBounds.max.x;
+        float targetFrontX = walkDirection < 0f ? targetBounds.max.x : targetBounds.min.x;
+        return (targetFrontX - selfFrontX) * walkDirection;
+    }
+
+    Bounds GetBounds(Collider2D collider, Vector3 fallbackPosition)
+    {
+        if (collider != null)
+        {
+            return collider.bounds;
+        }
+
+        return new Bounds(fallbackPosition, Vector3.one * 0.5f);
+    }
+
+    void ApplyRowSorting(int row)
+    {
+        SortingGroup sortingGroup = GetComponent<SortingGroup>();
+        if (sortingGroup == null)
+        {
+            sortingGroup = gameObject.AddComponent<SortingGroup>();
+        }
+
+        sortingGroup.sortingOrder = sortingOrderBase - row * sortingOrderPerRow + sortingOrderOffset;
     }
 }
