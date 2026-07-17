@@ -5,6 +5,7 @@ using UnityEngine.Rendering;
 public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
 {
     const string AttackTriggerName = "Attack";
+    const string AfterKillTriggerName = "AfterKill";
 
     [Header("Movement")]
     [SerializeField] float moveSpeed = 0.75f;
@@ -17,6 +18,7 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
 
     [Header("Attack")]
     [SerializeField] int attackDamage = 25;
+    [SerializeField] float afterKillLockSeconds = 0.8f;
 
     [Header("Sorting")]
     [SerializeField] int sortingOrderBase = 1000;
@@ -29,6 +31,8 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
     DVGBoardCharacter attackTarget;
     bool hasTarget;
     bool hasAttackTarget;
+    bool isAfterKillLocked;
+    float afterKillTimer;
     float walkDirection = -1f;
 
     public int LaneIndex { get; private set; }
@@ -53,11 +57,22 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
             return;
         }
 
+        if (isAfterKillLocked)
+        {
+            afterKillTimer -= Time.deltaTime;
+            if (afterKillTimer <= 0f)
+            {
+                isAfterKillLocked = false;
+            }
+
+            return;
+        }
+
         if (hasAttackTarget)
         {
             if (attackTarget == null || attackTarget.Health == null || !attackTarget.Health.IsAlive)
             {
-                ResumeWalking();
+                PlayAfterKill();
             }
 
             return;
@@ -89,6 +104,7 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
         moveSpeed = Mathf.Max(0f, speed);
         hasTarget = true;
         hasAttackTarget = false;
+        isAfterKillLocked = false;
         attackTarget = null;
         walkDirection = Mathf.Sign(endPosition.x - startPosition.x);
         if (Mathf.Approximately(walkDirection, 0f))
@@ -156,7 +172,7 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
         attackTarget.Health.TakeDamage(attackDamage);
         if (!attackTarget.Health.IsAlive)
         {
-            ResumeWalking();
+            PlayAfterKill();
         }
     }
 
@@ -173,6 +189,20 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
         {
             animator.ResetTrigger(AttackTriggerName);
             animator.Play("walking");
+        }
+    }
+
+    void PlayAfterKill()
+    {
+        attackTarget = null;
+        hasAttackTarget = false;
+        isAfterKillLocked = true;
+        afterKillTimer = Mathf.Max(0f, afterKillLockSeconds);
+
+        if (animator != null)
+        {
+            animator.ResetTrigger(AttackTriggerName);
+            animator.SetTrigger(AfterKillTriggerName);
         }
     }
 
