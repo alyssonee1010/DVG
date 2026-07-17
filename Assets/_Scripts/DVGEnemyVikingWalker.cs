@@ -15,14 +15,18 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
     [SerializeField] float laneTolerance = 0.45f;
     [SerializeField] float overlapTolerance = 0.05f;
 
+    [Header("Attack")]
+    [SerializeField] int attackDamage = 25;
+
     [Header("Sorting")]
     [SerializeField] int sortingOrderBase = 1000;
     [SerializeField] int sortingOrderPerRow = 120;
-    [SerializeField] int sortingOrderOffset;
+    [SerializeField] int sortingOrderOffset = 30;
 
     DVGHealth health;
     Animator animator;
     Vector3 targetPosition;
+    DVGBoardCharacter attackTarget;
     bool hasTarget;
     bool hasAttackTarget;
     float walkDirection = -1f;
@@ -44,8 +48,18 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
 
     void Update()
     {
-        if (!hasTarget || hasAttackTarget || health == null || !health.IsAlive)
+        if (!hasTarget || health == null || !health.IsAlive)
         {
+            return;
+        }
+
+        if (hasAttackTarget)
+        {
+            if (attackTarget == null || attackTarget.Health == null || !attackTarget.Health.IsAlive)
+            {
+                ResumeWalking();
+            }
+
             return;
         }
 
@@ -75,6 +89,7 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
         moveSpeed = Mathf.Max(0f, speed);
         hasTarget = true;
         hasAttackTarget = false;
+        attackTarget = null;
         walkDirection = Mathf.Sign(endPosition.x - startPosition.x);
         if (Mathf.Approximately(walkDirection, 0f))
         {
@@ -100,6 +115,11 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
                 continue;
             }
 
+            if (character.Health == null || !character.Health.IsAlive)
+            {
+                continue;
+            }
+
             if (character.HasCell)
             {
                 if (character.Cell.y != LaneIndex)
@@ -118,10 +138,42 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
                 continue;
             }
 
+            attackTarget = character;
             return true;
         }
 
         return false;
+    }
+
+    public void DealAttackDamage()
+    {
+        if (attackTarget == null || attackTarget.Health == null || !attackTarget.Health.IsAlive)
+        {
+            ResumeWalking();
+            return;
+        }
+
+        attackTarget.Health.TakeDamage(attackDamage);
+        if (!attackTarget.Health.IsAlive)
+        {
+            ResumeWalking();
+        }
+    }
+
+    public void DealAttackDamageAnimationEvent()
+    {
+        DealAttackDamage();
+    }
+
+    void ResumeWalking()
+    {
+        attackTarget = null;
+        hasAttackTarget = false;
+        if (animator != null)
+        {
+            animator.ResetTrigger(AttackTriggerName);
+            animator.Play("walking");
+        }
     }
 
     float GetForwardDistanceTo(DVGBoardCharacter character)

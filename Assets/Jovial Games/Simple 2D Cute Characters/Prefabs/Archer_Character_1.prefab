@@ -604,6 +604,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2872673eaef36cd45842ab6b3292e6ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DVGBoardCharacter
+  maxHealth: 100
   sortingOrderBase: 1000
   sortingOrderPerRow: 120
   sortingOrderOffset: 0

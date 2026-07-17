@@ -8,7 +8,7 @@ public class PlantPlacementManager : MonoBehaviour
     [SerializeField] private GameObject plantPrefab;
     [SerializeField] private Vector2 placementOffset = new Vector2(-0.2f, 0.2f);
 
-    private HashSet<Vector3Int> occupiedCells = new HashSet<Vector3Int>();
+    private Dictionary<Vector3Int, DVGBoardCharacter> occupiedCells = new Dictionary<Vector3Int, DVGBoardCharacter>();
 
     private void Update()
     {
@@ -20,6 +20,8 @@ public class PlantPlacementManager : MonoBehaviour
 
     private void TryPlacePlant()
     {
+        CleanupOccupiedCells();
+
         Vector3 mouseScreenPosition = Input.mousePosition;
         mouseScreenPosition.z = Mathf.Abs(Camera.main.transform.position.z);
 
@@ -37,7 +39,7 @@ public class PlantPlacementManager : MonoBehaviour
             return;
         }
 
-        if (occupiedCells.Contains(cellPosition))
+        if (occupiedCells.ContainsKey(cellPosition))
         {
             Debug.Log("Cannot place here. This tile is already occupied.");
             return;
@@ -54,8 +56,26 @@ public class PlantPlacementManager : MonoBehaviour
 
         boardCharacter.SetCell(cellPosition);
 
-        occupiedCells.Add(cellPosition);
+        occupiedCells[cellPosition] = boardCharacter;
 
         Debug.Log("Placed " + spawnedPlant.name + " at cell " + cellPosition);
+    }
+
+    private void CleanupOccupiedCells()
+    {
+        List<Vector3Int> clearedCells = new List<Vector3Int>();
+        foreach (KeyValuePair<Vector3Int, DVGBoardCharacter> occupiedCell in occupiedCells)
+        {
+            DVGBoardCharacter character = occupiedCell.Value;
+            if (character == null || character.Health == null || !character.Health.IsAlive)
+            {
+                clearedCells.Add(occupiedCell.Key);
+            }
+        }
+
+        foreach (Vector3Int cell in clearedCells)
+        {
+            occupiedCells.Remove(cell);
+        }
     }
 }

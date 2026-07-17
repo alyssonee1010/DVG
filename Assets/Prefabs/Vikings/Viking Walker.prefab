@@ -715,12 +715,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DVGEnemyVikingWalker
   moveSpeed: 0.75
   reachDistance: 0.05
-  attackStartDistance: 0.6
+  attackStartDistance: 0.8
   laneTolerance: 0.45
-  overlapTolerance: 0.05
+  overlapTolerance: 0.1
+  attackDamage: 15
   sortingOrderBase: 1000
   sortingOrderPerRow: 120
-  sortingOrderOffset: 0
+  sortingOrderOffset: 30
 --- !u!61 &4946029505301886133
 BoxCollider2D:
   m_ObjectHideFlags: 0
