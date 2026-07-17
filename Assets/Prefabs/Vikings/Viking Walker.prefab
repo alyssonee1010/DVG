@@ -532,7 +532,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 125
+  m_SortingOrder: 126
   m_MaskInteraction: 0
   m_Sprite: {fileID: -5467550531120538433, guid: 828c08089f1d30e40907da1e02aaa093, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -802,8 +802,8 @@ MonoBehaviour:
     - {fileID: 8572417756408406493}
     - {fileID: 7262769003926784550}
     m_DefaultLocalRotations:
-    - {x: 0, y: 0, z: 0.760676, w: 0.6491317}
-    - {x: 0, y: 0, z: -0.061571185, w: 0.9981027}
+    - {x: 0, y: 0, z: 0.8017289, w: 0.5976879}
+    - {x: -0, y: 0, z: -0.25384715, w: -0.9672444}
     - {x: -0, y: -0, z: -0.061901562, w: 0.9980823}
     m_StoredLocalRotations:
     - {x: 0, y: 0, z: 0, w: 0}
@@ -1273,8 +1273,8 @@ MonoBehaviour:
     - {fileID: 2415057236966393493}
     - {fileID: 3234662695492048866}
     m_DefaultLocalRotations:
-    - {x: 0, y: 0, z: 0.760676, w: 0.6491317}
-    - {x: 0, y: 0, z: 0.98995316, w: 0.14139569}
+    - {x: 0, y: 0, z: 0.8017289, w: 0.5976879}
+    - {x: 0, y: -0, z: 0.9982162, w: -0.059703954}
     - {x: -0, y: -0, z: -0.00000020861626, w: 1}
     m_StoredLocalRotations:
     - {x: 0, y: 0, z: 0, w: 0}
