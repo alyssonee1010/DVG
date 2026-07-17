@@ -16,6 +16,7 @@ public class DVGPlacementCharacterSlot : MonoBehaviour
 
     void Awake()
     {
+        FreezeSelectorAnimator();
         CaptureBaseScale();
         SetSelected(false);
     }
@@ -52,5 +53,14 @@ public class DVGPlacementCharacterSlot : MonoBehaviour
 
         baseScale = transform.localScale;
         hasBaseScale = true;
+    }
+
+    void FreezeSelectorAnimator()
+    {
+        Animator animator = GetComponent<Animator>();
+        if (animator != null)
+        {
+            animator.enabled = false;
+        }
     }
 }
