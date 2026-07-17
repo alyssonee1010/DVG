@@ -12,6 +12,7 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
     [Header("Targeting")]
     [SerializeField] float detectionRange = 0.65f;
     [SerializeField] float laneTolerance = 0.45f;
+    [SerializeField] float overlapTolerance = 0.15f;
 
     DVGHealth health;
     Animator animator;
@@ -92,14 +93,20 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
                 continue;
             }
 
-            Vector3 offset = character.transform.position - transform.position;
-            if (Mathf.Abs(offset.y) > laneTolerance)
+            if (character.HasCell)
+            {
+                if (character.Cell.y != LaneIndex)
+                {
+                    continue;
+                }
+            }
+            else if (Mathf.Abs(character.transform.position.y - transform.position.y) > laneTolerance)
             {
                 continue;
             }
 
-            float forwardDistance = offset.x * walkDirection;
-            if (forwardDistance < 0f || forwardDistance > detectionRange)
+            float forwardDistance = (character.transform.position.x - transform.position.x) * walkDirection;
+            if (forwardDistance < -overlapTolerance || forwardDistance > detectionRange)
             {
                 continue;
             }

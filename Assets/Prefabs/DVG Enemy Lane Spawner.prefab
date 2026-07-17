@@ -52,13 +52,9 @@ MonoBehaviour:
   spawnOutsideBoardTiles: 2
   exitPastBoardTiles: 0
   enemies:
-  - prefab: {fileID: 114002, guid: 7d4c3d3a5c7f4fd7a5e3a7c6d7b2a901, type: 3}
-    maxHealth: 90
-    moveSpeed: 0.65
-    weight: 1
-  - prefab: {fileID: 114002, guid: 9a6f0b8c3cdb4bbaa8d0a6c64ef2d118, type: 3}
-    maxHealth: 140
-    moveSpeed: 0.8
+  - prefab: {fileID: 5244383168775246441, guid: 773db57a899a75d4da40c47d671cde51, type: 3}
+    maxHealth: 100
+    moveSpeed: 0.75
     weight: 1
   spawnOnStart: 1
   initialDelay: 0.5

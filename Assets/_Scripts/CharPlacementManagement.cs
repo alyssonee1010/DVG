@@ -6,6 +6,7 @@ public class PlantPlacementManager : MonoBehaviour
 {
     [SerializeField] private Tilemap placementTilemap;
     [SerializeField] private GameObject plantPrefab;
+    [SerializeField] private Vector2 placementOffset = new Vector2(-0.2f, 0.2f);
 
     private HashSet<Vector3Int> occupiedCells = new HashSet<Vector3Int>();
 
@@ -43,7 +44,7 @@ public class PlantPlacementManager : MonoBehaviour
         }
 
         Vector3 spawnPosition = placementTilemap.GetCellCenterWorld(cellPosition);
-
+        spawnPosition += (Vector3)placementOffset;
         GameObject spawnedPlant = Instantiate(plantPrefab, spawnPosition, Quaternion.identity);
         DVGBoardCharacter boardCharacter = spawnedPlant.GetComponent<DVGBoardCharacter>();
         if (boardCharacter == null)

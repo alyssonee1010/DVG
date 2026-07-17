@@ -1959,7 +1959,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlantPlacementManager
   placementTilemap: {fileID: 386360410}
-  plantPrefab: {fileID: 100000, guid: 52ea518217ab43d992fa028e22b49174, type: 3}
+  plantPrefab: {fileID: 0}
 --- !u!4 &2096327531
 Transform:
   m_ObjectHideFlags: 0

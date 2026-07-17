@@ -6509,6 +6509,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlantPlacementManager
   placementTilemap: {fileID: 386360410}
   plantPrefab: {fileID: 7992456318929058983, guid: 1b49ac1e5afbcc24ea1e19b84b6e8f91, type: 3}
+  placementOffset: {x: -0.2, y: 0.2}
 --- !u!4 &2096327531
 Transform:
   m_ObjectHideFlags: 0
@@ -6756,7 +6757,7 @@ MonoBehaviour:
   tilemapBoard: {fileID: 405667221}
   walkDirection: 0
   edgePadding: 0
-  laneYOffset: 0
+  laneYOffset: -0.7
   spawnOutsideBoardTiles: 2
   exitPastBoardTiles: 0
   enemies:
@@ -6766,7 +6767,7 @@ MonoBehaviour:
     weight: 1
   spawnOnStart: 1
   initialDelay: 0.5
-  spawnInterval: 3
+  spawnInterval: 6
   maxAliveEnemies: 12
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

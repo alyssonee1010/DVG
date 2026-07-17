@@ -155,7 +155,6 @@ public class DVGEnemyLaneSpawner : MonoBehaviour
         }
 
         BoundsInt bounds = tilemap.cellBounds;
-        int laneIndex = 0;
         for (int y = bounds.yMin; y < bounds.yMax; y++)
         {
             bool foundTile = false;
@@ -182,8 +181,7 @@ public class DVGEnemyLaneSpawner : MonoBehaviour
 
             Vector3 first = tilemap.GetCellCenterWorld(new Vector3Int(minX, y, 0));
             Vector3 last = tilemap.GetCellCenterWorld(new Vector3Int(maxX, y, 0));
-            AddLane(laneIndex, first, last);
-            laneIndex++;
+            AddLane(y, first, last);
         }
     }
 
