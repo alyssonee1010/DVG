@@ -5,6 +5,7 @@ using UnityEngine.Tilemaps;
 public class PlantPlacementManager : MonoBehaviour
 {
     [SerializeField] private Tilemap placementTilemap;
+    [SerializeField] private DVGUsableWallet usableWallet;
     [SerializeField] private Vector2 placementOffset = new Vector2(-0.2f, 0.2f);
     [SerializeField, Range(0.1f, 1f)] private float previewAlpha = 0.45f;
     [SerializeField] private Color validPreviewTint = Color.white;
@@ -17,6 +18,14 @@ public class PlantPlacementManager : MonoBehaviour
     private SpriteRenderer[] previewRenderers;
 
     public GameObject SelectedPlantPrefab => selectedPlantPrefab;
+
+    private void Awake()
+    {
+        if (usableWallet == null)
+        {
+            usableWallet = DVGUsableWallet.Instance != null ? DVGUsableWallet.Instance : FindAnyObjectByType<DVGUsableWallet>();
+        }
+    }
 
     private void Update()
     {
@@ -119,8 +128,21 @@ public class PlantPlacementManager : MonoBehaviour
             return;
         }
 
+        int selectedCost = selectedSlot != null ? selectedSlot.Cost : 0;
+        if (usableWallet != null && !usableWallet.CanAfford(selectedCost))
+        {
+            Debug.Log("Not enough diamonds to place " + selectedPlantPrefab.name + ". Cost: " + selectedCost);
+            return;
+        }
+
         Vector3 spawnPosition = placementTilemap.GetCellCenterWorld(cellPosition);
         spawnPosition += (Vector3)placementOffset;
+        if (usableWallet != null && !usableWallet.TrySpendDiamonds(selectedCost))
+        {
+            Debug.Log("Not enough diamonds to place " + selectedPlantPrefab.name + ". Cost: " + selectedCost);
+            return;
+        }
+
         GameObject spawnedPlant = Instantiate(selectedPlantPrefab, spawnPosition, Quaternion.identity);
         DVGBoardCharacter boardCharacter = spawnedPlant.GetComponent<DVGBoardCharacter>();
         if (boardCharacter == null)

@@ -1,10 +1,13 @@
 using UnityEngine;
+using TMPro;
 
 public class DVGPlacementCharacterSlot : MonoBehaviour
 {
     [SerializeField] PlantPlacementManager placementManager;
     [SerializeField] GameObject characterPrefab;
     [SerializeField] int cost;
+    [SerializeField] TMP_Text costText;
+    [SerializeField] string costPrefix = "";
     [SerializeField] GameObject selectionIndicator;
     [SerializeField] float selectedScaleMultiplier = 1.2f;
 
@@ -18,7 +21,13 @@ public class DVGPlacementCharacterSlot : MonoBehaviour
     {
         FreezeSelectorAnimator();
         CaptureBaseScale();
+        UpdateCostText();
         SetSelected(false);
+    }
+
+    void OnValidate()
+    {
+        UpdateCostText();
     }
 
     void OnMouseDown()
@@ -61,6 +70,14 @@ public class DVGPlacementCharacterSlot : MonoBehaviour
         if (animator != null)
         {
             animator.enabled = false;
+        }
+    }
+
+    void UpdateCostText()
+    {
+        if (costText != null)
+        {
+            costText.text = costPrefix + Mathf.Max(0, cost);
         }
     }
 }
