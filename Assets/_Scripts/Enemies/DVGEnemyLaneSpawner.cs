@@ -37,8 +37,8 @@ public class DVGEnemyLaneSpawner : MonoBehaviour
 
     [Header("Spawning")]
     [SerializeField] EnemySpawnOption[] enemies;
-    [SerializeField] bool spawnOnStart = true;
-    [SerializeField] float initialDelay = 0.5f;
+    [SerializeField] bool spawnOnStart;
+    [SerializeField] float initialDelay = 3f;
     [SerializeField] float spawnInterval = 3f;
     [SerializeField] int maxAliveEnemies = 12;
 
@@ -67,6 +67,7 @@ public class DVGEnemyLaneSpawner : MonoBehaviour
         if (spawnOnStart)
         {
             SpawnEnemy();
+            spawnTimer = Mathf.Max(0.01f, spawnInterval);
         }
     }
 

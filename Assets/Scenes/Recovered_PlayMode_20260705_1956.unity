@@ -1255,7 +1255,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DVGPlacementCharacterSlot
   placementManager: {fileID: 2096327530}
   characterPrefab: {fileID: 7717818581488313511, guid: b2a5f8995a977be44b74ccb6a24e0368, type: 3}
-  cost: 25
+  cost: 8
   costText: {fileID: 0}
   costPrefix: 
   selectionIndicator: {fileID: 0}
@@ -3407,7 +3407,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DVGPlacementCharacterSlot
   placementManager: {fileID: 2096327530}
   characterPrefab: {fileID: 7992456318929058983, guid: 1b49ac1e5afbcc24ea1e19b84b6e8f91, type: 3}
-  cost: 15
+  cost: 5
   costText: {fileID: 0}
   costPrefix: 
   selectionIndicator: {fileID: 0}
@@ -4934,7 +4934,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DVGPlacementCharacterSlot
   placementManager: {fileID: 2096327530}
   characterPrefab: {fileID: 6013597141670104860, guid: 50eadb4a5a894e64eabc7ab18c47e03e, type: 3}
-  cost: 10
+  cost: 3
   costText: {fileID: 0}
   costPrefix: 
   selectionIndicator: {fileID: 0}
@@ -8907,8 +8907,8 @@ MonoBehaviour:
     maxHealth: 140
     moveSpeed: 0.8
     weight: 1
-  spawnOnStart: 1
-  initialDelay: 0.5
+  spawnOnStart: 0
+  initialDelay: 3
   spawnInterval: 6
   maxAliveEnemies: 12
 --- !u!1001 &2731077514544270452
@@ -9215,7 +9215,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DVGPlacementCharacterSlot
   placementManager: {fileID: 2096327530}
   characterPrefab: {fileID: 4238644571018987754, guid: 85eeeea72e837e04ea2dc19465949b3b, type: 3}
-  cost: 5
+  cost: 2
   costText: {fileID: 0}
   costPrefix: 
   selectionIndicator: {fileID: 0}
