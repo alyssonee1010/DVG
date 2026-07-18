@@ -22,6 +22,11 @@ public class PlantPlacementManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            if (TryCollectBoardPickup())
+            {
+                return;
+            }
+
             if (TrySelectCharacterSlot())
             {
                 return;
@@ -31,6 +36,30 @@ public class PlantPlacementManager : MonoBehaviour
         }
 
         UpdatePlacementPreview();
+    }
+
+    private bool TryCollectBoardPickup()
+    {
+        Vector3 mouseWorldPosition = GetMouseWorldPosition();
+        Collider2D[] hits = Physics2D.OverlapPointAll(mouseWorldPosition);
+        foreach (Collider2D hit in hits)
+        {
+            DVGBoardPickup pickup = hit.GetComponentInParent<DVGBoardPickup>();
+            if (pickup == null)
+            {
+                pickup = hit.GetComponentInChildren<DVGBoardPickup>();
+            }
+
+            if (pickup == null)
+            {
+                continue;
+            }
+
+            pickup.Collect();
+            return true;
+        }
+
+        return false;
     }
 
     private bool TrySelectCharacterSlot()
@@ -178,6 +207,12 @@ public class PlantPlacementManager : MonoBehaviour
 
     private void DisablePreviewGameplay(GameObject preview)
     {
+        Animator[] animators = preview.GetComponentsInChildren<Animator>(true);
+        foreach (Animator animator in animators)
+        {
+            animator.enabled = false;
+        }
+
         Collider2D[] colliders = preview.GetComponentsInChildren<Collider2D>(true);
         foreach (Collider2D collider in colliders)
         {

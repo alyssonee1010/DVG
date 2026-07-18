@@ -302,7 +302,7 @@ Transform:
   m_GameObject: {fileID: 2812838567564922026}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.124, y: 0.116, z: 0}
+  m_LocalPosition: {x: -0.127, y: -0.075, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -378,6 +378,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2317973912582186211}
   - component: {fileID: 3798624022284907766}
+  - component: {fileID: 1751054852626499912}
+  - component: {fileID: 6469073532463207256}
+  - component: {fileID: 3406160727016397128}
+  - component: {fileID: 1890146184494774012}
   m_Layer: 0
   m_Name: Miner_Character
   m_TagString: Untagged
@@ -429,6 +433,86 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1751054852626499912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4238644571018987754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06d2124ce7be16045a802f096dd8eb27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DVGMinerMiningReward
+  eventCallsPerGem: 5
+  flareSprite: {fileID: 21300000, guid: 887478d88ef86114d8b01cd9f4cb3a58, type: 3}
+  blueGemSprite: {fileID: 21300002, guid: 0c9b1d0b2a4552241a19ab70af3b4ee3, type: 3}
+  spawnPoint: {fileID: 0}
+  flareOffset: {x: 0.45, y: -0.4}
+  blueGemStartOffset: {x: 0.35, y: 0.25}
+  blueGemLandingOffset: {x: 0.25, y: -0.32}
+  blueGemLandingRandomRange: {x: 0.2, y: 0.08}
+  flareScale: {x: 0.6, y: 0.6, z: 1}
+  blueGemScale: {x: 0.5, y: 0.5, z: 1}
+  flareLifetime: 0.05
+  sortingOrderOffset: 25
+  blueGemThrowDuration: 0.32
+  blueGemThrowArcHeight: 0.45
+  blueGemValue: 1
+  blueGemColliderRadius: 0.28
+--- !u!114 &6469073532463207256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4238644571018987754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b922709e23510848a5a69cbc2548944, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DVGHealth
+  maxHealth: 100
+  destroyWhenDead: 1
+--- !u!114 &3406160727016397128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4238644571018987754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2872673eaef36cd45842ab6b3292e6ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DVGBoardCharacter
+  maxHealth: 100
+  sortingOrderBase: 1000
+  sortingOrderPerRow: 120
+  sortingOrderOffset: 0
+--- !u!114 &1890146184494774012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4238644571018987754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bee1f306e5027f43a8657f366182449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DVGHitRecoil
+  recoilTarget: {fileID: 0}
+  applyInWorldSpace: 1
+  returnAfterRecoil: 1
+  recoilDirection: {x: 1, y: 0}
+  recoilDistance: 0.08
+  recoilOutSeconds: 0.04
+  recoilReturnSeconds: 0.08
+  triggerHitAnimation: 1
+  animator: {fileID: 3798624022284907766}
+  hitTriggerName: Hit
 --- !u!1 &6055198775274499732
 GameObject:
   m_ObjectHideFlags: 0
@@ -639,7 +723,7 @@ Transform:
   m_GameObject: {fileID: 8974428624203578275}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.489, y: -0.245, z: 0}
+  m_LocalPosition: {x: 0.554, y: -0.232, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

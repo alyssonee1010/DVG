@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1172470444885373943}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.196, y: 0.065, z: 0}
+  m_LocalPosition: {x: 0, y: 0.065, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -118,7 +118,7 @@ Transform:
   m_GameObject: {fileID: 1309137832890234447}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.226, y: -0.444, z: 0}
+  m_LocalPosition: {x: -0.038, y: -0.41, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -210,7 +210,7 @@ Transform:
   m_GameObject: {fileID: 2250055942963277056}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.258, y: 0.31, z: 0}
+  m_LocalPosition: {x: -0.559, y: 0.394, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -302,7 +302,7 @@ Transform:
   m_GameObject: {fileID: 2323793102995311479}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.203, y: 0.735, z: 0}
+  m_LocalPosition: {x: 0, y: 0.735, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -394,7 +394,7 @@ Transform:
   m_GameObject: {fileID: 4603610522507322274}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.438, y: -0.297, z: 0}
+  m_LocalPosition: {x: 0.209, y: -0.293, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -447,7 +447,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 202
+  m_SortingOrder: 203
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 052d2a4f9a0c85f4bae7c024f9a316ab, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -470,6 +470,10 @@ GameObject:
   m_Component:
   - component: {fileID: 8450975528663998641}
   - component: {fileID: 611986551926976646}
+  - component: {fileID: 3220152733693393349}
+  - component: {fileID: 3014573128971601006}
+  - component: {fileID: 6587178015064576824}
+  - component: {fileID: 1922743843835358041}
   m_Layer: 0
   m_Name: Cave_Man_Character_2
   m_TagString: Untagged
@@ -486,7 +490,7 @@ Transform:
   m_GameObject: {fileID: 6013597141670104860}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.08323, y: -0.0857, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -520,6 +524,76 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3220152733693393349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6013597141670104860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b922709e23510848a5a69cbc2548944, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DVGHealth
+  maxHealth: 100
+  destroyWhenDead: 1
+--- !u!114 &3014573128971601006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6013597141670104860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2872673eaef36cd45842ab6b3292e6ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DVGBoardCharacter
+  maxHealth: 100
+  sortingOrderBase: 1000
+  sortingOrderPerRow: 120
+  sortingOrderOffset: 0
+--- !u!114 &6587178015064576824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6013597141670104860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bee1f306e5027f43a8657f366182449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DVGHitRecoil
+  recoilTarget: {fileID: 0}
+  applyInWorldSpace: 0
+  returnAfterRecoil: 1
+  recoilDirection: {x: 1, y: 0}
+  recoilDistance: 0.04
+  recoilOutSeconds: 0.04
+  recoilReturnSeconds: 0.06
+  triggerHitAnimation: 1
+  animator: {fileID: 611986551926976646}
+  hitTriggerName: Hit
+--- !u!114 &1922743843835358041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6013597141670104860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f5dc0025ef57f84dacee891b570c41d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DVGBoardMeleeAttacker
+  attackRange: 1.5
+  attackCooldown: 1.1
+  attackDamage: 20
+  attackDirection: {x: 1, y: 0}
+  laneTolerance: 0.45
+  attackTriggerName: Attack
 --- !u!1 &9187876815937939843
 GameObject:
   m_ObjectHideFlags: 0
@@ -546,7 +620,7 @@ Transform:
   m_GameObject: {fileID: 9187876815937939843}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.006, y: -0.302, z: 0}
+  m_LocalPosition: {x: -0.195, y: -0.28, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

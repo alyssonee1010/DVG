@@ -378,6 +378,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5672600813467971779}
   - component: {fileID: 2048044025905773866}
+  - component: {fileID: 1647710122490408694}
+  - component: {fileID: 2584130504248286778}
+  - component: {fileID: 7953633550317306934}
   m_Layer: 0
   m_Name: Wizard_Character_9
   m_TagString: Untagged
@@ -428,6 +431,58 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1647710122490408694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7717818581488313511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b922709e23510848a5a69cbc2548944, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DVGHealth
+  maxHealth: 100
+  destroyWhenDead: 1
+--- !u!114 &2584130504248286778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7717818581488313511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2872673eaef36cd45842ab6b3292e6ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DVGBoardCharacter
+  maxHealth: 100
+  sortingOrderBase: 1000
+  sortingOrderPerRow: 120
+  sortingOrderOffset: 0
+--- !u!114 &7953633550317306934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7717818581488313511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bee1f306e5027f43a8657f366182449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DVGHitRecoil
+  recoilTarget: {fileID: 0}
+  applyInWorldSpace: 1
+  returnAfterRecoil: 1
+  recoilDirection: {x: 1, y: 0}
+  recoilDistance: 0.08
+  recoilOutSeconds: 0.04
+  recoilReturnSeconds: 0.08
+  triggerHitAnimation: 1
+  animator: {fileID: 2048044025905773866}
+  hitTriggerName: Hit
 --- !u!1 &7747397593903955992
 GameObject:
   m_ObjectHideFlags: 0
