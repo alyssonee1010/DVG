@@ -567,11 +567,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DVGAnimationSoundPlayer
   audioSource: {fileID: 0}
-  attackSound: {fileID: 0}
-  hitSound: {fileID: 0}
-  mineSound: {fileID: 0}
+  attackSounds:
+  - {fileID: 8300000, guid: 1a1e91e368bac3c46a75e4ccff78ec65, type: 3}
+  - {fileID: 8300000, guid: 47ed3f58554f36b4d9edfeb786f59576, type: 3}
+  - {fileID: 8300000, guid: 9e91dbe3af4ae0a47b8f084fbf22f13f, type: 3}
+  - {fileID: 8300000, guid: 01b4132ca0de7d447bc57d2d34853d60, type: 3}
+  hitSounds: []
+  mineSounds: []
   collectSound: {fileID: 0}
   afterKillSound: {fileID: 8300000, guid: 0c9a1c12556800f4da579b376ceadc13, type: 3}
+  pitchRange: {x: 0.95, y: 1.05}
 --- !u!1 &2124939556821316633
 GameObject:
   m_ObjectHideFlags: 0

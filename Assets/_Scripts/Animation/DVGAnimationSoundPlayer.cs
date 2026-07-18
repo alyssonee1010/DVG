@@ -3,11 +3,12 @@ using UnityEngine;
 public class DVGAnimationSoundPlayer : MonoBehaviour
 {
     [SerializeField] AudioSource audioSource;
-    [SerializeField] AudioClip attackSound;
-    [SerializeField] AudioClip hitSound;
-    [SerializeField] AudioClip mineSound;
+    [SerializeField] AudioClip[] attackSounds;
+    [SerializeField] AudioClip[] hitSounds;
+    [SerializeField] AudioClip[] mineSounds;
     [SerializeField] AudioClip collectSound;
     [SerializeField] AudioClip afterKillSound;
+    [SerializeField] Vector2 pitchRange = new Vector2(0.95f, 1.05f);
 
     void Awake()
     {
@@ -17,24 +18,31 @@ public class DVGAnimationSoundPlayer : MonoBehaviour
         }
     }
 
-    public void PlayAttackSound()
+    public void PlayAttackSounds()
     {
-        Play(attackSound);
+        AudioClip clip = attackSounds[Random.Range(0, attackSounds.Length)];
+        audioSource.pitch = Random.Range(pitchRange.x, pitchRange.y);
+        audioSource.PlayOneShot(clip);
     }
 
-    public void PlayHitSound()
+    public void PlayHitSounds()
     {
-        Play(hitSound);
+        AudioClip clip = hitSounds[Random.Range(0, hitSounds.Length)];
+        audioSource.pitch = Random.Range(pitchRange.x, pitchRange.y);
+        audioSource.PlayOneShot(clip);
     }
 
     public void PlayAfterKillSound()
     {
-        Play(afterKillSound);
+        audioSource.pitch = Random.Range(pitchRange.x-0.5f, pitchRange.y+1f);
+        audioSource.PlayOneShot(afterKillSound);
     }
 
-    public void PlayMineSound()
+    public void PlayMineSounds()
     {
-        Play(mineSound);
+        AudioClip clip = mineSounds[Random.Range(0, mineSounds.Length)];
+        audioSource.pitch = Random.Range(pitchRange.x, pitchRange.y);
+        audioSource.PlayOneShot(clip);
     }
 
     public void PlayCollectSound()
