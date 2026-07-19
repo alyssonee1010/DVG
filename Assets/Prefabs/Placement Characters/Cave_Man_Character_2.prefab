@@ -474,6 +474,8 @@ GameObject:
   - component: {fileID: 3014573128971601006}
   - component: {fileID: 6587178015064576824}
   - component: {fileID: 1922743843835358041}
+  - component: {fileID: 1915457825855981097}
+  - component: {fileID: 4019866799620505263}
   m_Layer: 0
   m_Name: Cave_Man_Character_2
   m_TagString: Untagged
@@ -594,6 +596,133 @@ MonoBehaviour:
   attackDirection: {x: 1, y: 0}
   laneTolerance: 0.45
   attackTriggerName: Attack
+--- !u!82 &1915457825855981097
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6013597141670104860}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 0.557
+  m_Pitch: 3
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 116
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0.56
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.269
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &4019866799620505263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6013597141670104860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a49d5cab163bbd41adf29b392364bcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DVGAnimationSoundPlayer
+  audioSource: {fileID: 0}
+  attackSounds:
+  - {fileID: 8300000, guid: 0642b72afd5a93d41bac96b338092d52, type: 3}
+  - {fileID: 8300000, guid: 0642b72afd5a93d41bac96b338092d52, type: 3}
+  - {fileID: 8300000, guid: 59c80497dd920b442bf9670f85a4b520, type: 3}
+  effortSounds:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hitSounds:
+  - {fileID: 8300000, guid: a98aaec587163584b80873d84740a53d, type: 3}
+  - {fileID: 8300000, guid: 0ea8892c53c4c2a46b628eb86408d01a, type: 3}
+  - {fileID: 8300000, guid: efee78bfb79ad1142862c91ca4aff824, type: 3}
+  mineSounds: []
+  collectSounds: []
+  afterKillSounds: []
+  pitchRange: {x: 0.95, y: 1.05}
 --- !u!1 &9187876815937939843
 GameObject:
   m_ObjectHideFlags: 0

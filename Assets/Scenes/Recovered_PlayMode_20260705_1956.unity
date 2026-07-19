@@ -7744,7 +7744,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30e50ae879b92e6439e895a5dfd0338c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DVGUsableWallet
-  startingDiamonds: 5
+  startingDiamonds: 500
 --- !u!1 &1823812702
 GameObject:
   m_ObjectHideFlags: 0

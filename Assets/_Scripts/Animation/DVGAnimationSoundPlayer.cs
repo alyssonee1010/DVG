@@ -4,10 +4,11 @@ public class DVGAnimationSoundPlayer : MonoBehaviour
 {
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip[] attackSounds;
+    [SerializeField] AudioClip[] effortSounds;
     [SerializeField] AudioClip[] hitSounds;
     [SerializeField] AudioClip[] mineSounds;
-    [SerializeField] AudioClip collectSound;
-    [SerializeField] AudioClip afterKillSound;
+    [SerializeField] AudioClip[] collectSounds;
+    [SerializeField] AudioClip[] afterKillSounds;
     [SerializeField] Vector2 pitchRange = new Vector2(0.95f, 1.05f);
 
     void Awake()
@@ -25,6 +26,13 @@ public class DVGAnimationSoundPlayer : MonoBehaviour
         audioSource.PlayOneShot(clip);
     }
 
+    public void PlayEffortSounds()
+    {
+        AudioClip clip = effortSounds[Random.Range(0, effortSounds.Length)];
+        audioSource.pitch = Random.Range(pitchRange.x, pitchRange.y);
+        audioSource.PlayOneShot(clip);
+    }
+
     public void PlayHitSounds()
     {
         AudioClip clip = hitSounds[Random.Range(0, hitSounds.Length)];
@@ -32,10 +40,11 @@ public class DVGAnimationSoundPlayer : MonoBehaviour
         audioSource.PlayOneShot(clip);
     }
 
-    public void PlayAfterKillSound()
+    public void PlayAfterKillSounds()
     {
-        audioSource.pitch = Random.Range(pitchRange.x-0.5f, pitchRange.y+1f);
-        audioSource.PlayOneShot(afterKillSound);
+        AudioClip clip = afterKillSounds[Random.Range(0, afterKillSounds.Length)];
+        audioSource.pitch = Random.Range(pitchRange.x, pitchRange.y);
+        audioSource.PlayOneShot(clip);
     }
 
     public void PlayMineSounds()
@@ -45,9 +54,11 @@ public class DVGAnimationSoundPlayer : MonoBehaviour
         audioSource.PlayOneShot(clip);
     }
 
-    public void PlayCollectSound()
+    public void PlayCollectSounds()
     {
-        Play(collectSound);
+        AudioClip clip = collectSounds[Random.Range(0, collectSounds.Length)];
+        audioSource.pitch = Random.Range(pitchRange.x, pitchRange.y);
+        audioSource.PlayOneShot(clip);
     }
 
     void Play(AudioClip clip)
