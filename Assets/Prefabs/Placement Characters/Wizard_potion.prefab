@@ -472,7 +472,7 @@ MonoBehaviour:
   soundPlayer: {fileID: 0}
   showPotionPreview: 1
   potionVisualPreviewColor: {r: 1, g: 0.25, b: 0.35, a: 0.9}
-  potionColliderPreviewColor: {r: 0.1, g: 1, b: 0.25, a: 0.9}
+  potionColliderPreviewColor: {r: 1, g: 0.16470723, b: 0.10196078, a: 0.23529412}
 --- !u!114 &6624339901220010002
 MonoBehaviour:
   m_ObjectHideFlags: 0

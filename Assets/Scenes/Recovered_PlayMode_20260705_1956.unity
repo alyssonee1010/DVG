@@ -3223,6 +3223,18 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6624339901220010001, guid: 31605c3f50d21834685a49adc791bce8, type: 3}
+      propertyPath: potionColliderPreviewColor.b
+      value: 0.10196078
+      objectReference: {fileID: 0}
+    - target: {fileID: 6624339901220010001, guid: 31605c3f50d21834685a49adc791bce8, type: 3}
+      propertyPath: potionColliderPreviewColor.g
+      value: 0.20697927
+      objectReference: {fileID: 0}
+    - target: {fileID: 6624339901220010001, guid: 31605c3f50d21834685a49adc791bce8, type: 3}
+      propertyPath: potionColliderPreviewColor.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6624339901220010002, guid: 31605c3f50d21834685a49adc791bce8, type: 3}
       propertyPath: m_Enabled
       value: 0

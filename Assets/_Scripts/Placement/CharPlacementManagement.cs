@@ -56,12 +56,12 @@ public class PlantPlacementManager : MonoBehaviour
             return;
         }
 
-        if (TryUseHealingPotion())
+        if (TrySelectCharacterSlot())
         {
             return;
         }
 
-        if (TrySelectCharacterSlot())
+        if (TryUseHealingPotion())
         {
             return;
         }
@@ -200,6 +200,18 @@ public class PlantPlacementManager : MonoBehaviour
         if (selectedSlot != null)
         {
             selectedSlot.SetSelected(false);
+        }
+
+        if (healingPotionUseController == null)
+        {
+            healingPotionUseController = DVGHealingPotionUseController.Instance != null
+                ? DVGHealingPotionUseController.Instance
+                : FindAnyObjectByType<DVGHealingPotionUseController>();
+        }
+
+        if (healingPotionUseController != null)
+        {
+            healingPotionUseController.CancelAiming();
         }
 
         selectedSlot = slot;

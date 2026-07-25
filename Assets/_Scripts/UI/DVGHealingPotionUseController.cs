@@ -22,11 +22,13 @@ public class DVGHealingPotionUseController : MonoBehaviour
 
     readonly Dictionary<SpriteRenderer, Color> originalColors = new Dictionary<SpriteRenderer, Color>();
     readonly Dictionary<SpriteRenderer, Color> potionOriginalColors = new Dictionary<SpriteRenderer, Color>();
+    readonly Dictionary<SpriteRenderer, SpriteRenderer> targetGhostRenderers = new Dictionary<SpriteRenderer, SpriteRenderer>();
 
     TextMeshPro fallbackCounterText;
     Transform scenePotionTransform;
     SpriteRenderer potionGhostRenderer;
     SpriteRenderer potionCursorGhostRenderer;
+    DVGBoardCharacter hoveredTargetCharacter;
     bool isAiming;
 
     public static DVGHealingPotionUseController Instance { get; private set; }
@@ -153,6 +155,14 @@ public class DVGHealingPotionUseController : MonoBehaviour
         ClearPotionCursorGhost();
     }
 
+    public void CancelAiming()
+    {
+        if (isAiming)
+        {
+            EndAiming();
+        }
+    }
+
     bool IsPotionCounterClick(Vector3 worldPosition)
     {
         Collider2D[] hits = Physics2D.OverlapPointAll(worldPosition);
@@ -259,36 +269,32 @@ public class DVGHealingPotionUseController : MonoBehaviour
 
     void UpdateTargetTint()
     {
-        List<SpriteRenderer> stillTinted = new List<SpriteRenderer>();
         DVGBoardCharacter hoveredCharacter = FindDamagedCharacterAt(GetMouseWorldPosition());
-        if (hoveredCharacter != null)
+        if (hoveredCharacter != hoveredTargetCharacter)
         {
-            SpriteRenderer[] renderers = hoveredCharacter.GetComponentsInChildren<SpriteRenderer>(true);
-            foreach (SpriteRenderer renderer in renderers)
-            {
-                if (renderer == null || IsHealthBarRenderer(renderer))
-                {
-                    continue;
-                }
-
-                if (!originalColors.ContainsKey(renderer))
-                {
-                    originalColors.Add(renderer, renderer.color);
-                }
-
-                Color originalColor = originalColors[renderer];
-                Color tinted = new Color(
-                    originalColor.r * validTargetTint.r,
-                    originalColor.g * validTargetTint.g,
-                    originalColor.b * validTargetTint.b,
-                    originalColor.a);
-                tinted.a = Mathf.Min(originalColors[renderer].a, validTargetTint.a);
-                renderer.color = tinted;
-                stillTinted.Add(renderer);
-            }
+            ClearTargetTint();
+            hoveredTargetCharacter = hoveredCharacter;
         }
 
-        RestoreMissingTintedRenderers(stillTinted);
+        if (hoveredCharacter == null)
+        {
+            return;
+        }
+
+        List<SpriteRenderer> stillPreviewed = new List<SpriteRenderer>();
+        SpriteRenderer[] renderers = hoveredCharacter.GetComponentsInChildren<SpriteRenderer>(true);
+        foreach (SpriteRenderer renderer in renderers)
+        {
+            if (renderer == null || IsHealthBarRenderer(renderer) || IsTargetGhostRenderer(renderer))
+            {
+                continue;
+            }
+
+            EnsureTargetGhostRenderer(renderer);
+            stillPreviewed.Add(renderer);
+        }
+
+        RemoveMissingTargetGhosts(stillPreviewed);
     }
 
     Vector3 GetMouseWorldPosition()
@@ -325,11 +331,77 @@ public class DVGHealingPotionUseController : MonoBehaviour
 
     void ClearTargetTint()
     {
+        ClearTargetGhosts();
+
         List<SpriteRenderer> renderers = new List<SpriteRenderer>(originalColors.Keys);
         foreach (SpriteRenderer renderer in renderers)
         {
             RestoreRenderer(renderer);
         }
+
+        hoveredTargetCharacter = null;
+    }
+
+    void EnsureTargetGhostRenderer(SpriteRenderer sourceRenderer)
+    {
+        if (sourceRenderer == null)
+        {
+            return;
+        }
+
+        if (!targetGhostRenderers.TryGetValue(sourceRenderer, out SpriteRenderer ghostRenderer) || ghostRenderer == null)
+        {
+            GameObject ghostObject = new GameObject("Healing Target Ghost Effect");
+            ghostObject.transform.SetParent(sourceRenderer.transform, false);
+            ghostObject.transform.localPosition = new Vector3(0f, 0f, -0.02f);
+            ghostObject.transform.localRotation = Quaternion.identity;
+            ghostObject.transform.localScale = new Vector3(1.08f, 1.08f, 1f);
+            ghostRenderer = ghostObject.AddComponent<SpriteRenderer>();
+            targetGhostRenderers[sourceRenderer] = ghostRenderer;
+        }
+
+        ghostRenderer.sprite = sourceRenderer.sprite;
+        ghostRenderer.flipX = sourceRenderer.flipX;
+        ghostRenderer.flipY = sourceRenderer.flipY;
+        ghostRenderer.sortingLayerID = sourceRenderer.sortingLayerID;
+        ghostRenderer.sortingOrder = sourceRenderer.sortingOrder + 2;
+        ghostRenderer.color = validTargetTint;
+    }
+
+    void RemoveMissingTargetGhosts(List<SpriteRenderer> stillPreviewed)
+    {
+        List<SpriteRenderer> remove = new List<SpriteRenderer>();
+        foreach (KeyValuePair<SpriteRenderer, SpriteRenderer> entry in targetGhostRenderers)
+        {
+            if (entry.Key == null || entry.Value == null || !stillPreviewed.Contains(entry.Key))
+            {
+                remove.Add(entry.Key);
+            }
+        }
+
+        foreach (SpriteRenderer sourceRenderer in remove)
+        {
+            DestroyTargetGhost(sourceRenderer);
+        }
+    }
+
+    void ClearTargetGhosts()
+    {
+        List<SpriteRenderer> sourceRenderers = new List<SpriteRenderer>(targetGhostRenderers.Keys);
+        foreach (SpriteRenderer sourceRenderer in sourceRenderers)
+        {
+            DestroyTargetGhost(sourceRenderer);
+        }
+    }
+
+    void DestroyTargetGhost(SpriteRenderer sourceRenderer)
+    {
+        if (sourceRenderer != null && targetGhostRenderers.TryGetValue(sourceRenderer, out SpriteRenderer ghostRenderer) && ghostRenderer != null)
+        {
+            Destroy(ghostRenderer.gameObject);
+        }
+
+        targetGhostRenderers.Remove(sourceRenderer);
     }
 
     void RestoreRenderer(SpriteRenderer renderer)
@@ -352,7 +424,7 @@ public class DVGHealingPotionUseController : MonoBehaviour
         SpriteRenderer[] renderers = character.GetComponentsInChildren<SpriteRenderer>(true);
         foreach (SpriteRenderer renderer in renderers)
         {
-            if (IsHealthBarRenderer(renderer))
+            if (IsHealthBarRenderer(renderer) || IsTargetGhostRenderer(renderer))
             {
                 continue;
             }
@@ -505,7 +577,7 @@ public class DVGHealingPotionUseController : MonoBehaviour
         Dictionary<SpriteRenderer, Color> flashOriginals = new Dictionary<SpriteRenderer, Color>();
         foreach (SpriteRenderer renderer in renderers)
         {
-            if (renderer == null)
+            if (renderer == null || IsTargetGhostRenderer(renderer))
             {
                 continue;
             }
@@ -532,7 +604,28 @@ public class DVGHealingPotionUseController : MonoBehaviour
 
     bool IsHealthBarRenderer(SpriteRenderer renderer)
     {
-        return renderer != null && renderer.GetComponentInParent<DVGWorldHealthBar>() != null;
+        if (renderer == null)
+        {
+            return false;
+        }
+
+        Transform candidate = renderer.transform;
+        while (candidate != null)
+        {
+            if (candidate.name == "Health Bar")
+            {
+                return true;
+            }
+
+            candidate = candidate.parent;
+        }
+
+        return false;
+    }
+
+    bool IsTargetGhostRenderer(SpriteRenderer renderer)
+    {
+        return renderer != null && renderer.gameObject.name == "Healing Target Ghost Effect";
     }
 
     void RefreshHealthBar(DVGBoardCharacter character)
