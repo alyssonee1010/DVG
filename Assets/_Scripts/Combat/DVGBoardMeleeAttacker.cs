@@ -6,6 +6,7 @@ public class DVGBoardMeleeAttacker : MonoBehaviour
     [SerializeField] float attackRange = 1.1f;
     [SerializeField] float attackCooldown = 1.1f;
     [SerializeField] int attackDamage = 20;
+    [SerializeField] float recoilMultiplier = 1f;
     [SerializeField] Vector2 attackDirection = Vector2.right;
     [SerializeField] float laneTolerance = 0.45f;
     [SerializeField] string attackTriggerName = "Attack";
@@ -52,7 +53,7 @@ public class DVGBoardMeleeAttacker : MonoBehaviour
             }
         }
 
-        attackTarget.Health.TakeDamage(attackDamage);
+        attackTarget.Health.TakeDamage(attackDamage, recoilMultiplier);
     }
 
     public void DealAttackDamageAnimationEvent()

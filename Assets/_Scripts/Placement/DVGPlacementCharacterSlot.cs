@@ -30,19 +30,6 @@ public class DVGPlacementCharacterSlot : MonoBehaviour
         UpdateCostText();
     }
 
-    void OnMouseDown()
-    {
-        if (placementManager == null)
-        {
-            placementManager = FindAnyObjectByType<PlantPlacementManager>();
-        }
-
-        if (placementManager != null)
-        {
-            placementManager.SelectCharacter(this);
-        }
-    }
-
     public void SetSelected(bool selected)
     {
         CaptureBaseScale();

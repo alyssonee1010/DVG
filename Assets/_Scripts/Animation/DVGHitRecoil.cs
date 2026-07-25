@@ -20,6 +20,7 @@ public class DVGHitRecoil : MonoBehaviour
     int lastHealth;
     float recoilTimer;
     Vector3 appliedOffset;
+    float currentRecoilMultiplier = 1f;
 
     float TotalSeconds => Mathf.Max(0.001f, recoilOutSeconds + recoilReturnSeconds);
 
@@ -113,6 +114,7 @@ public class DVGHitRecoil : MonoBehaviour
             }
 
             PlayHitAnimation(currentHealth);
+            currentRecoilMultiplier = changedHealth != null ? changedHealth.LastDamageRecoilMultiplier : 1f;
             recoilTimer = TotalSeconds;
         }
 
@@ -135,7 +137,7 @@ public class DVGHitRecoil : MonoBehaviour
         Vector2 direction = recoilDirection.sqrMagnitude > 0f ? recoilDirection.normalized : Vector2.right;
         float elapsed = TotalSeconds - recoilTimer;
         float t = recoilOutSeconds <= 0f ? 1f : elapsed / recoilOutSeconds;
-        float amount = Mathf.Lerp(0f, recoilDistance, Smooth(t));
+        float amount = Mathf.Lerp(0f, recoilDistance * currentRecoilMultiplier, Smooth(t));
         return new Vector3(direction.x, direction.y, 0f) * amount;
     }
 
@@ -148,12 +150,12 @@ public class DVGHitRecoil : MonoBehaviour
         if (elapsed <= recoilOutSeconds)
         {
             float t = recoilOutSeconds <= 0f ? 1f : elapsed / recoilOutSeconds;
-            amount = Mathf.Lerp(0f, recoilDistance, Smooth(t));
+            amount = Mathf.Lerp(0f, recoilDistance * currentRecoilMultiplier, Smooth(t));
         }
         else
         {
             float t = recoilReturnSeconds <= 0f ? 1f : (elapsed - recoilOutSeconds) / recoilReturnSeconds;
-            amount = Mathf.Lerp(recoilDistance, 0f, Smooth(t));
+            amount = Mathf.Lerp(recoilDistance * currentRecoilMultiplier, 0f, Smooth(t));
         }
 
         return new Vector3(direction.x, direction.y, 0f) * amount;

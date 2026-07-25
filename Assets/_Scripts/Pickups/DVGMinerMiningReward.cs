@@ -32,10 +32,19 @@ public class DVGMinerMiningReward : MonoBehaviour
     [SerializeField] int blueGemValue = 1;
     [SerializeField] float blueGemColliderRadius = 0.28f;
 
+    [Header("Audio")]
+    [SerializeField] DVGAnimationSoundPlayer soundPlayer;
+
+    [Header("Editor Preview")]
+    [SerializeField] bool showBlueGemPreview = true;
+    [SerializeField] Color blueGemVisualPreviewColor = new Color(0.1f, 0.55f, 1f, 0.9f);
+    [SerializeField] Color blueGemColliderPreviewColor = new Color(0.1f, 1f, 0.25f, 0.9f);
+
     int callsUntilGem;
 
     void Awake()
     {
+        CacheSoundPlayer();
         ResetCounter();
     }
 
@@ -138,7 +147,7 @@ public class DVGMinerMiningReward : MonoBehaviour
             collider.radius = blueGemColliderRadius;
 
             DVGBoardPickup pickup = spawned.AddComponent<DVGBoardPickup>();
-            pickup.Initialize(blueGemValue);
+            pickup.Initialize(blueGemValue, CacheSoundPlayer());
         }
 
         if (lifetime > 0f)
@@ -175,5 +184,38 @@ public class DVGMinerMiningReward : MonoBehaviour
         float randomX = Random.Range(-blueGemLandingRandomRange.x, blueGemLandingRandomRange.x);
         float randomY = Random.Range(-blueGemLandingRandomRange.y, blueGemLandingRandomRange.y);
         return blueGemLandingOffset + new Vector2(randomX, randomY);
+    }
+
+    DVGAnimationSoundPlayer CacheSoundPlayer()
+    {
+        if (soundPlayer == null)
+        {
+            soundPlayer = GetComponent<DVGAnimationSoundPlayer>();
+        }
+
+        return soundPlayer;
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        if (!showBlueGemPreview || blueGemSprite == null)
+        {
+            return;
+        }
+
+        Transform origin = spawnPoint != null ? spawnPoint : transform;
+        Vector3 startPosition = origin.TransformPoint(blueGemStartOffset);
+        Vector3 landingPosition = origin.TransformPoint(blueGemLandingOffset);
+        Vector3 visualSize = Vector3.Scale(blueGemSprite.bounds.size, blueGemScale);
+        float colliderPreviewRadius = blueGemColliderRadius * Mathf.Max(Mathf.Abs(blueGemScale.x), Mathf.Abs(blueGemScale.y));
+
+        Gizmos.color = blueGemVisualPreviewColor;
+        Gizmos.DrawWireCube(startPosition, visualSize);
+        Gizmos.DrawWireCube(landingPosition, visualSize);
+        Gizmos.DrawLine(startPosition, landingPosition);
+
+        Gizmos.color = blueGemColliderPreviewColor;
+        Gizmos.DrawWireSphere(startPosition, colliderPreviewRadius);
+        Gizmos.DrawWireSphere(landingPosition, colliderPreviewRadius);
     }
 }

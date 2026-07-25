@@ -18,6 +18,7 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
 
     [Header("Attack")]
     [SerializeField] int attackDamage = 25;
+    [SerializeField] float attackRecoilMultiplier = 1f;
     [SerializeField] float afterKillLockSeconds = 0.8f;
 
     [Header("Sorting")]
@@ -216,7 +217,7 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
             return;
         }
 
-        attackTarget.Health.TakeDamage(attackDamage);
+        attackTarget.Health.TakeDamage(attackDamage, attackRecoilMultiplier);
         if (!attackTarget.Health.IsAlive)
         {
             PlayAfterKill();

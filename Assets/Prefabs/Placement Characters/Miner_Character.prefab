@@ -456,13 +456,17 @@ MonoBehaviour:
   blueGemLandingOffset: {x: 0.25, y: -0.32}
   blueGemLandingRandomRange: {x: 0.2, y: 0.08}
   flareScale: {x: 0.6, y: 0.6, z: 1}
-  blueGemScale: {x: 0.5, y: 0.5, z: 1}
+  blueGemScale: {x: 0.55, y: 0.55, z: 1}
   flareLifetime: 0.05
   sortingOrderOffset: 25
   blueGemThrowDuration: 0.32
   blueGemThrowArcHeight: 0.45
   blueGemValue: 1
-  blueGemColliderRadius: 0.28
+  blueGemColliderRadius: 0.6
+  soundPlayer: {fileID: 0}
+  showBlueGemPreview: 1
+  blueGemVisualPreviewColor: {r: 0.1, g: 0.55, b: 1, a: 0.9}
+  blueGemColliderPreviewColor: {r: 0.1, g: 1, b: 0.25, a: 0.9}
 --- !u!114 &6469073532463207256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -528,7 +532,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.432
+  m_Volume: 0.248
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -636,7 +640,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 5a9ed41496c80c1499e62d304e29c398, type: 3}
   - {fileID: 8300000, guid: ea523767a0007bd478db13b7166c67ec, type: 3}
   - {fileID: 8300000, guid: e33b172a779bb134f8f8e6382464912e, type: 3}
-  collectSounds: []
+  collectSounds:
+  - {fileID: 8300000, guid: 5f89c3f707a1f5647b58f1dea9ddde90, type: 3}
   afterKillSounds: []
   pitchRange: {x: 0.95, y: 1.05}
 --- !u!1 &6055198775274499732

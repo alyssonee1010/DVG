@@ -3,7 +3,10 @@ using UnityEngine;
 
 public class DVGUsableCounterUI : MonoBehaviour
 {
+    enum CounterResource { Diamonds, HealingPotions }
+
     [SerializeField] DVGUsableWallet wallet;
+    [SerializeField] CounterResource resource = CounterResource.Diamonds;
     [SerializeField] TMP_Text diamondText;
     [SerializeField] string prefix = "";
 
@@ -29,8 +32,16 @@ public class DVGUsableCounterUI : MonoBehaviour
 
         if (wallet != null)
         {
-            wallet.DiamondsChanged += UpdateCounter;
-            UpdateCounter(wallet.Diamonds);
+            if (resource == CounterResource.HealingPotions)
+            {
+                wallet.HealingPotionsChanged += UpdateCounter;
+                UpdateCounter(wallet.HealingPotions);
+            }
+            else
+            {
+                wallet.DiamondsChanged += UpdateCounter;
+                UpdateCounter(wallet.Diamonds);
+            }
         }
     }
 
@@ -39,6 +50,7 @@ public class DVGUsableCounterUI : MonoBehaviour
         if (wallet != null)
         {
             wallet.DiamondsChanged -= UpdateCounter;
+            wallet.HealingPotionsChanged -= UpdateCounter;
         }
     }
 

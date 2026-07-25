@@ -1,0 +1,806 @@
+fileFormatVersion: 2
+guid: bfa8cf9205544da46a233957507440d2
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4612011028774033060
+    second: PotEffects_0
+  - first:
+      213: -463766475736892988
+    second: PotEffects_1
+  - first:
+      213: 7457192157435134154
+    second: PotEffects_2
+  - first:
+      213: -3235566015464879477
+    second: PotEffects_3
+  - first:
+      213: 5236894762914135220
+    second: PotEffects_4
+  - first:
+      213: -1153955276529855733
+    second: PotEffects_5
+  - first:
+      213: -259825113043422736
+    second: PotEffects_6
+  - first:
+      213: 5298807762166569412
+    second: PotEffects_7
+  - first:
+      213: -8980987167997240279
+    second: PotEffects_8
+  - first:
+      213: -2656749806278365382
+    second: PotEffects_9
+  - first:
+      213: 7158943346935038033
+    second: PotEffects_10
+  - first:
+      213: -5500133980272411116
+    second: PotEffects_11
+  - first:
+      213: -1657475070921925283
+    second: PotEffects_12
+  - first:
+      213: 2928571103044695646
+    second: PotEffects_13
+  - first:
+      213: 386228398445898021
+    second: PotEffects_14
+  - first:
+      213: -4705674159571780237
+    second: PotEffects_15
+  - first:
+      213: -7788048206768612735
+    second: PotEffects_16
+  - first:
+      213: 7790158728353542738
+    second: PotEffects_17
+  - first:
+      213: 8817499481486121926
+    second: PotEffects_18
+  - first:
+      213: -3817055377035521673
+    second: PotEffects_19
+  - first:
+      213: 6829535925239796941
+    second: PotEffects_20
+  - first:
+      213: -7789875619665170650
+    second: PotEffects_21
+  - first:
+      213: 8755215167593155856
+    second: PotEffects_22
+  - first:
+      213: -2063200104368210518
+    second: PotEffects_23
+  - first:
+      213: -5228575241638059013
+    second: PotEffects_24
+  - first:
+      213: 2983949112103075605
+    second: PotEffects_25
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: PotEffects_0
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 14
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c596db1a768deffb0800000000000000
+      internalID: -4612011028774033060
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PotEffects_1
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 15
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c9b7f2f8de5099f0800000000000000
+      internalID: -463766475736892988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PotEffects_2
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 11
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac000cdd1c44d7760800000000000000
+      internalID: 7457192157435134154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PotEffects_3
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 15
+        width: 9
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8ac3e80ad5f813d0800000000000000
+      internalID: -3235566015464879477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PotEffects_4
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 16
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4bcb9956a003da840800000000000000
+      internalID: 5236894762914135220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PotEffects_5
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 18
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b0310c73ac35cffe0800000000000000
+      internalID: -1153955276529855733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PotEffects_6
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 19
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f13251bf6ae46cf0800000000000000
+      internalID: -259825113043422736
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PotEffects_7
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 18
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c9550dd595298940800000000000000
+      internalID: 5298807762166569412
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PotEffects_8
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 15
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 92cde2701cf1d5380800000000000000
+      internalID: -8980987167997240279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PotEffects_9
+      rect:
+        serializedVersion: 2
+        x: 148
+        y: 17
+        width: 10
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3fa0b39024512bd0800000000000000
+      internalID: -2656749806278365382
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PotEffects_10
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 17
+        width: 11
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15085395b0da95360800000000000000
+      internalID: 7158943346935038033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PotEffects_11
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 19
+        width: 14
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41ebec039499ba3b0800000000000000
+      internalID: -5500133980272411116
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PotEffects_12
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 13
+        width: 7
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5d12a564377ff8e0800000000000000
+      internalID: -1657475070921925283
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PotEffects_13
+      rect:
+        serializedVersion: 2
+        x: 213
+        y: 14
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e56f378e6ef54a820800000000000000
+      internalID: 2928571103044695646
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PotEffects_14
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 16
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 529298b9ea82c5500800000000000000
+      internalID: 386228398445898021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PotEffects_15
+      rect:
+        serializedVersion: 2
+        x: 244
+        y: 7
+        width: 42
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37d3df9984612beb0800000000000000
+      internalID: -4705674159571780237
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PotEffects_16
+      rect:
+        serializedVersion: 2
+        x: 306
+        y: 15
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18a50f53b6b4be390800000000000000
+      internalID: -7788048206768612735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PotEffects_17
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 19
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 252fb63e6143c1c60800000000000000
+      internalID: 7790158728353542738
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PotEffects_18
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 5
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6cbdb21bf0d0e5a70800000000000000
+      internalID: 8817499481486121926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PotEffects_19
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 4
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7719dc3bb58170bc0800000000000000
+      internalID: -3817055377035521673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PotEffects_20
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 4
+        width: 16
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc4dfa45db267ce50800000000000000
+      internalID: 6829535925239796941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PotEffects_21
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 6
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62fa16d756dc4e390800000000000000
+      internalID: -7789875619665170650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PotEffects_22
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 5
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01d808ccec5c08970800000000000000
+      internalID: 8755215167593155856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PotEffects_23
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 6
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aad7596bf6a0e53e0800000000000000
+      internalID: -2063200104368210518
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PotEffects_24
+      rect:
+        serializedVersion: 2
+        x: 213
+        y: 3
+        width: 7
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf3e2c8158e5077b0800000000000000
+      internalID: -5228575241638059013
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PotEffects_25
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 6
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51ffeb668ed196920800000000000000
+      internalID: 2983949112103075605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      PotEffects_0: -4612011028774033060
+      PotEffects_1: -463766475736892988
+      PotEffects_10: 7158943346935038033
+      PotEffects_11: -5500133980272411116
+      PotEffects_12: -1657475070921925283
+      PotEffects_13: 2928571103044695646
+      PotEffects_14: 386228398445898021
+      PotEffects_15: -4705674159571780237
+      PotEffects_16: -7788048206768612735
+      PotEffects_17: 7790158728353542738
+      PotEffects_18: 8817499481486121926
+      PotEffects_19: -3817055377035521673
+      PotEffects_2: 7457192157435134154
+      PotEffects_20: 6829535925239796941
+      PotEffects_21: -7789875619665170650
+      PotEffects_22: 8755215167593155856
+      PotEffects_23: -2063200104368210518
+      PotEffects_24: -5228575241638059013
+      PotEffects_25: 2983949112103075605
+      PotEffects_3: -3235566015464879477
+      PotEffects_4: 5236894762914135220
+      PotEffects_5: -1153955276529855733
+      PotEffects_6: -259825113043422736
+      PotEffects_7: 5298807762166569412
+      PotEffects_8: -8980987167997240279
+      PotEffects_9: -2656749806278365382
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -6,6 +6,7 @@ public class PlantPlacementManager : MonoBehaviour
 {
     [SerializeField] private Tilemap placementTilemap;
     [SerializeField] private DVGUsableWallet usableWallet;
+    [SerializeField] private DVGHealingPotionUseController healingPotionUseController;
     [SerializeField] private Vector2 placementOffset = new Vector2(-0.2f, 0.2f);
     [SerializeField, Range(0.1f, 1f)] private float previewAlpha = 0.45f;
     [SerializeField] private Color validPreviewTint = Color.white;
@@ -25,26 +26,47 @@ public class PlantPlacementManager : MonoBehaviour
         {
             usableWallet = DVGUsableWallet.Instance != null ? DVGUsableWallet.Instance : FindAnyObjectByType<DVGUsableWallet>();
         }
+
+        if (healingPotionUseController == null)
+        {
+            healingPotionUseController = DVGHealingPotionUseController.Instance != null
+                ? DVGHealingPotionUseController.Instance
+                : FindAnyObjectByType<DVGHealingPotionUseController>();
+        }
     }
 
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (TryCollectBoardPickup())
-            {
-                return;
-            }
-
-            if (TrySelectCharacterSlot())
-            {
-                return;
-            }
-
-            TryPlacePlant();
+            HandlePrimaryClick();
+        }
+        else if (Input.GetMouseButtonDown(1))
+        {
+            ClearSelection();
         }
 
         UpdatePlacementPreview();
+    }
+
+    private void HandlePrimaryClick()
+    {
+        if (TryCollectBoardPickup())
+        {
+            return;
+        }
+
+        if (TryUseHealingPotion())
+        {
+            return;
+        }
+
+        if (TrySelectCharacterSlot())
+        {
+            return;
+        }
+
+        TryPlacePlant();
     }
 
     private bool TryCollectBoardPickup()
@@ -64,11 +86,22 @@ public class PlantPlacementManager : MonoBehaviour
                 continue;
             }
 
-            pickup.Collect();
-            return true;
+            return pickup.Collect();
         }
 
         return false;
+    }
+
+    private bool TryUseHealingPotion()
+    {
+        if (healingPotionUseController == null)
+        {
+            healingPotionUseController = DVGHealingPotionUseController.Instance != null
+                ? DVGHealingPotionUseController.Instance
+                : FindAnyObjectByType<DVGHealingPotionUseController>();
+        }
+
+        return healingPotionUseController != null && healingPotionUseController.TryHandlePrimaryClick(GetMouseWorldPosition());
     }
 
     private bool TrySelectCharacterSlot()
@@ -174,6 +207,24 @@ public class PlantPlacementManager : MonoBehaviour
         selectedSlot.SetSelected(true);
         RebuildPlacementPreview();
         Debug.Log("Selected " + selectedPlantPrefab.name);
+    }
+
+    private void ClearSelection()
+    {
+        if (selectedSlot != null)
+        {
+            selectedSlot.SetSelected(false);
+        }
+
+        selectedSlot = null;
+        selectedPlantPrefab = null;
+        previewRenderers = null;
+
+        if (placementPreview != null)
+        {
+            Destroy(placementPreview);
+            placementPreview = null;
+        }
     }
 
     private Vector3 GetMouseWorldPosition()

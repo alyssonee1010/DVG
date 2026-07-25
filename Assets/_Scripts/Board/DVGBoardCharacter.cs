@@ -12,6 +12,7 @@ public class DVGBoardCharacter : MonoBehaviour
     [SerializeField] int sortingOrderOffset;
 
     DVGHealth health;
+    DVGWorldHealthBar healthBar;
 
     public Vector3Int Cell { get; private set; }
     public bool HasCell { get; private set; }
@@ -26,6 +27,11 @@ public class DVGBoardCharacter : MonoBehaviour
         }
 
         health.SetMaxHealth(maxHealth);
+        healthBar = GetComponent<DVGWorldHealthBar>();
+        if (healthBar == null)
+        {
+            healthBar = gameObject.AddComponent<DVGWorldHealthBar>();
+        }
     }
 
     public void SetCell(Vector3Int cell)

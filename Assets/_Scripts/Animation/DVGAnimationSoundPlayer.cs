@@ -13,59 +13,68 @@ public class DVGAnimationSoundPlayer : MonoBehaviour
 
     void Awake()
     {
-        if (audioSource == null)
-        {
-            audioSource = GetComponent<AudioSource>();
-        }
+        EnsureAudioSource();
     }
 
     public void PlayAttackSounds()
     {
-        AudioClip clip = attackSounds[Random.Range(0, attackSounds.Length)];
-        audioSource.pitch = Random.Range(pitchRange.x, pitchRange.y);
-        audioSource.PlayOneShot(clip);
+        PlayRandom(attackSounds);
     }
 
     public void PlayEffortSounds()
     {
-        AudioClip clip = effortSounds[Random.Range(0, effortSounds.Length)];
-        audioSource.pitch = Random.Range(pitchRange.x, pitchRange.y);
-        audioSource.PlayOneShot(clip);
+        PlayRandom(effortSounds);
     }
 
     public void PlayHitSounds()
     {
-        AudioClip clip = hitSounds[Random.Range(0, hitSounds.Length)];
-        audioSource.pitch = Random.Range(pitchRange.x, pitchRange.y);
-        audioSource.PlayOneShot(clip);
+        PlayRandom(hitSounds);
     }
 
     public void PlayAfterKillSounds()
     {
-        AudioClip clip = afterKillSounds[Random.Range(0, afterKillSounds.Length)];
-        audioSource.pitch = Random.Range(pitchRange.x, pitchRange.y);
-        audioSource.PlayOneShot(clip);
+        PlayRandom(afterKillSounds);
     }
 
     public void PlayMineSounds()
     {
-        AudioClip clip = mineSounds[Random.Range(0, mineSounds.Length)];
-        audioSource.pitch = Random.Range(pitchRange.x, pitchRange.y);
-        audioSource.PlayOneShot(clip);
+        PlayRandom(mineSounds);
     }
 
     public void PlayCollectSounds()
     {
-        AudioClip clip = collectSounds[Random.Range(0, collectSounds.Length)];
-        audioSource.pitch = Random.Range(pitchRange.x, pitchRange.y);
-        audioSource.PlayOneShot(clip);
+        PlayRandom(collectSounds);
     }
 
-    void Play(AudioClip clip)
+    bool PlayRandom(AudioClip[] clips)
     {
-        if (audioSource != null && clip != null)
+        if (clips == null || clips.Length == 0)
         {
-            audioSource.PlayOneShot(clip);
+            return false;
+        }
+
+        EnsureAudioSource();
+        if (audioSource == null)
+        {
+            return false;
+        }
+
+        AudioClip clip = clips[Random.Range(0, clips.Length)];
+        if (clip == null)
+        {
+            return false;
+        }
+
+        audioSource.pitch = Random.Range(pitchRange.x, pitchRange.y);
+        audioSource.PlayOneShot(clip);
+        return true;
+    }
+
+    void EnsureAudioSource()
+    {
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
         }
     }
 }

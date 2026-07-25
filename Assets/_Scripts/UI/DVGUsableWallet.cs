@@ -4,12 +4,15 @@ using UnityEngine;
 public class DVGUsableWallet : MonoBehaviour
 {
     [SerializeField] int startingDiamonds = 5;
+    [SerializeField] int startingHealingPotions;
 
     public static DVGUsableWallet Instance { get; private set; }
 
     public int Diamonds { get; private set; }
+    public int HealingPotions { get; private set; }
 
     public event Action<int> DiamondsChanged;
+    public event Action<int> HealingPotionsChanged;
 
     void Awake()
     {
@@ -19,11 +22,18 @@ public class DVGUsableWallet : MonoBehaviour
         }
 
         Diamonds = Mathf.Max(0, startingDiamonds);
+        HealingPotions = Mathf.Max(0, startingHealingPotions);
+
+        if (GetComponent<DVGHealingPotionUseController>() == null)
+        {
+            gameObject.AddComponent<DVGHealingPotionUseController>();
+        }
     }
 
     void OnEnable()
     {
         DiamondsChanged?.Invoke(Diamonds);
+        HealingPotionsChanged?.Invoke(HealingPotions);
     }
 
     void OnDestroy()
@@ -61,5 +71,34 @@ public class DVGUsableWallet : MonoBehaviour
 
         Diamonds += amount;
         DiamondsChanged?.Invoke(Diamonds);
+    }
+
+    public bool CanUseHealingPotion(int cost = 1)
+    {
+        return HealingPotions >= Mathf.Max(1, cost);
+    }
+
+    public bool TrySpendHealingPotion(int cost = 1)
+    {
+        cost = Mathf.Max(1, cost);
+        if (!CanUseHealingPotion(cost))
+        {
+            return false;
+        }
+
+        HealingPotions -= cost;
+        HealingPotionsChanged?.Invoke(HealingPotions);
+        return true;
+    }
+
+    public void AddHealingPotions(int amount)
+    {
+        if (amount <= 0)
+        {
+            return;
+        }
+
+        HealingPotions += amount;
+        HealingPotionsChanged?.Invoke(HealingPotions);
     }
 }

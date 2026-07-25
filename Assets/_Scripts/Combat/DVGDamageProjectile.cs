@@ -3,6 +3,7 @@ using UnityEngine;
 public class DVGDamageProjectile : MonoBehaviour
 {
     [SerializeField] int damage = 25;
+    [SerializeField] float recoilMultiplier = 1f;
     [SerializeField] float speed = 5f;
     [SerializeField] float lifetime = 5f;
     [SerializeField] bool destroyOnHit = true;
@@ -139,7 +140,7 @@ public class DVGDamageProjectile : MonoBehaviour
     void DamageEnemy(IDVGEnemyLaneWalker enemy)
     {
         hasHit = true;
-        enemy.Health.TakeDamage(damage);
+        enemy.Health.TakeDamage(damage, recoilMultiplier);
         if (destroyOnHit)
         {
             Finish();

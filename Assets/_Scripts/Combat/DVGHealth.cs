@@ -9,6 +9,7 @@ public class DVGHealth : MonoBehaviour
     public int MaxHealth => maxHealth;
     public int CurrentHealth { get; private set; }
     public bool IsAlive => CurrentHealth > 0;
+    public float LastDamageRecoilMultiplier { get; private set; } = 1f;
 
     public event Action<DVGHealth> Died;
     public event Action<DVGHealth, int> HealthChanged;
@@ -32,13 +33,14 @@ public class DVGHealth : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int amount)
+    public void TakeDamage(int amount, float recoilMultiplier = 1f)
     {
         if (amount <= 0 || !IsAlive)
         {
             return;
         }
 
+        LastDamageRecoilMultiplier = Mathf.Max(0f, recoilMultiplier);
         CurrentHealth = Mathf.Max(0, CurrentHealth - amount);
         HealthChanged?.Invoke(this, CurrentHealth);
 
