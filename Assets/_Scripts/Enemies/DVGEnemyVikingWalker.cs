@@ -21,6 +21,9 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
     [SerializeField] float attackRecoilMultiplier = 1f;
     [SerializeField] float afterKillLockSeconds = 0.8f;
 
+    [Header("Board Damage")]
+    [SerializeField, Min(1)] int boardDamageOnExit = 1;
+
     [Header("Sorting")]
     [SerializeField] int sortingOrderBase = 1000;
     [SerializeField] int sortingOrderPerRow = 120;
@@ -116,6 +119,7 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
         if ((transform.position - targetPosition).sqrMagnitude <= reachDistance * reachDistance)
         {
+            DVGBoardLife.TryDamageActiveBoardLife(boardDamageOnExit);
             Destroy(gameObject);
         }
     }

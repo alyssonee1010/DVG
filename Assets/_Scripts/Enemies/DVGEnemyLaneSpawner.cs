@@ -42,9 +42,17 @@ public class DVGEnemyLaneSpawner : MonoBehaviour
     [SerializeField] float spawnInterval = 3f;
     [SerializeField] int maxAliveEnemies = 12;
 
+    [Header("Difficulty Ramp")]
+    [SerializeField] bool rampDifficultyOverTime = true;
+    [SerializeField, Min(1f)] float timeToMaxDifficulty = 180f;
+    [SerializeField, Min(0.05f)] float minimumSpawnInterval = 1.5f;
+    [SerializeField, Min(0.1f)] float difficultyCurveExponent = 1.6f;
+    [SerializeField, Min(1)] int maxAliveEnemiesAtFullDifficulty = 24;
+
     readonly List<Lane> lanes = new List<Lane>();
     readonly List<MonoBehaviour> aliveEnemies = new List<MonoBehaviour>();
     float spawnTimer;
+    float elapsedSpawnTime;
 
     void Awake()
     {
@@ -67,15 +75,16 @@ public class DVGEnemyLaneSpawner : MonoBehaviour
         if (spawnOnStart)
         {
             SpawnEnemy();
-            spawnTimer = Mathf.Max(0.01f, spawnInterval);
+            spawnTimer = GetCurrentSpawnInterval();
         }
     }
 
     void Update()
     {
         CleanupAliveList();
+        elapsedSpawnTime += Time.deltaTime;
 
-        if (lanes.Count == 0 || enemies == null || enemies.Length == 0 || spawnInterval <= 0f)
+        if (lanes.Count == 0 || enemies == null || enemies.Length == 0 || GetCurrentSpawnInterval() <= 0f)
         {
             return;
         }
@@ -87,7 +96,7 @@ public class DVGEnemyLaneSpawner : MonoBehaviour
         }
 
         SpawnEnemy();
-        spawnTimer = spawnInterval;
+        spawnTimer = GetCurrentSpawnInterval();
     }
 
     public void RebuildLanes()
@@ -112,7 +121,7 @@ public class DVGEnemyLaneSpawner : MonoBehaviour
     public void SpawnEnemy()
     {
         CleanupAliveList();
-        if (aliveEnemies.Count >= maxAliveEnemies || lanes.Count == 0)
+        if (aliveEnemies.Count >= GetCurrentMaxAliveEnemies() || lanes.Count == 0)
         {
             return;
         }
@@ -280,5 +289,30 @@ public class DVGEnemyLaneSpawner : MonoBehaviour
 
         laneWalker = source.GetComponent<IDVGEnemyLaneWalker>();
         return laneWalker != null;
+    }
+
+    float GetCurrentDifficulty()
+    {
+        if (!rampDifficultyOverTime)
+        {
+            return 0f;
+        }
+
+        float normalizedTime = Mathf.Clamp01(elapsedSpawnTime / Mathf.Max(1f, timeToMaxDifficulty));
+        return Mathf.Pow(normalizedTime, Mathf.Max(0.1f, difficultyCurveExponent));
+    }
+
+    float GetCurrentSpawnInterval()
+    {
+        float startInterval = Mathf.Max(0.05f, spawnInterval);
+        float targetInterval = Mathf.Min(startInterval, Mathf.Max(0.05f, minimumSpawnInterval));
+        return Mathf.Lerp(startInterval, targetInterval, GetCurrentDifficulty());
+    }
+
+    int GetCurrentMaxAliveEnemies()
+    {
+        int startMax = Mathf.Max(1, maxAliveEnemies);
+        int targetMax = Mathf.Max(startMax, maxAliveEnemiesAtFullDifficulty);
+        return Mathf.RoundToInt(Mathf.Lerp(startMax, targetMax, GetCurrentDifficulty()));
     }
 }

@@ -12,13 +12,20 @@ public class PlantPlacementManager : MonoBehaviour
     [SerializeField] private Color validPreviewTint = Color.white;
     [SerializeField] private Color invalidPreviewTint = new Color(1f, 0.35f, 0.35f, 1f);
 
+    [Header("Remove Tool")]
+    [SerializeField] private bool enableRemoveTool = true;
+    [SerializeField] private KeyCode toggleRemoveToolKey = KeyCode.X;
+    [SerializeField] private KeyCode holdRemoveToolKey = KeyCode.LeftShift;
+
     private Dictionary<Vector3Int, DVGBoardCharacter> occupiedCells = new Dictionary<Vector3Int, DVGBoardCharacter>();
     private GameObject selectedPlantPrefab;
     private DVGPlacementCharacterSlot selectedSlot;
     private GameObject placementPreview;
     private SpriteRenderer[] previewRenderers;
+    private bool removeToolSelected;
 
     public GameObject SelectedPlantPrefab => selectedPlantPrefab;
+    public bool IsRemoveToolSelected => removeToolSelected;
 
     private void Awake()
     {
@@ -37,6 +44,11 @@ public class PlantPlacementManager : MonoBehaviour
 
     private void Update()
     {
+        if (enableRemoveTool && toggleRemoveToolKey != KeyCode.None && Input.GetKeyDown(toggleRemoveToolKey))
+        {
+            ToggleRemoveTool();
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             HandlePrimaryClick();
@@ -61,6 +73,12 @@ public class PlantPlacementManager : MonoBehaviour
             return;
         }
 
+        if (IsRemoveToolActive())
+        {
+            TryRemovePlacedCharacter();
+            return;
+        }
+
         if (TryUseHealingPotion())
         {
             ClearSelection();
@@ -68,6 +86,76 @@ public class PlantPlacementManager : MonoBehaviour
         }
 
         TryPlacePlant();
+    }
+
+    private bool IsRemoveToolActive()
+    {
+        return enableRemoveTool
+            && (removeToolSelected || (holdRemoveToolKey != KeyCode.None && Input.GetKey(holdRemoveToolKey)));
+    }
+
+    private bool TryRemovePlacedCharacter()
+    {
+        CleanupOccupiedCells();
+        if (!TryGetPlacedCharacterAt(GetMouseWorldPosition(), out Vector3Int cellPosition, out DVGBoardCharacter character))
+        {
+            Debug.Log("No placed character to remove here.");
+            return false;
+        }
+
+        occupiedCells.Remove(cellPosition);
+        if (character.Health != null && character.Health.IsAlive)
+        {
+            character.Health.TakeDamage(character.Health.CurrentHealth);
+        }
+        else if (character != null)
+        {
+            Destroy(character.gameObject);
+        }
+
+        Debug.Log("Removed character at cell " + cellPosition);
+        return true;
+    }
+
+    private bool TryGetPlacedCharacterAt(Vector3 worldPosition, out Vector3Int cellPosition, out DVGBoardCharacter character)
+    {
+        cellPosition = placementTilemap.WorldToCell(worldPosition);
+        if (occupiedCells.TryGetValue(cellPosition, out character) && character != null)
+        {
+            return true;
+        }
+
+        Collider2D[] hits = Physics2D.OverlapPointAll(worldPosition);
+        foreach (Collider2D hit in hits)
+        {
+            DVGBoardCharacter hitCharacter = hit.GetComponentInParent<DVGBoardCharacter>();
+            if (hitCharacter == null)
+            {
+                continue;
+            }
+
+            if (hitCharacter.HasCell
+                && occupiedCells.TryGetValue(hitCharacter.Cell, out DVGBoardCharacter occupiedCharacter)
+                && occupiedCharacter == hitCharacter)
+            {
+                cellPosition = hitCharacter.Cell;
+                character = hitCharacter;
+                return true;
+            }
+
+            foreach (KeyValuePair<Vector3Int, DVGBoardCharacter> occupiedCell in occupiedCells)
+            {
+                if (occupiedCell.Value == hitCharacter)
+                {
+                    cellPosition = occupiedCell.Key;
+                    character = hitCharacter;
+                    return true;
+                }
+            }
+        }
+
+        character = null;
+        return false;
     }
 
     private bool TryCollectBoardPickup()
@@ -217,9 +305,39 @@ public class PlantPlacementManager : MonoBehaviour
 
         selectedSlot = slot;
         selectedPlantPrefab = slot.CharacterPrefab;
+        removeToolSelected = false;
         selectedSlot.SetSelected(true);
         RebuildPlacementPreview();
         Debug.Log("Selected " + selectedPlantPrefab.name);
+    }
+
+    public void SelectRemoveTool()
+    {
+        if (!enableRemoveTool)
+        {
+            return;
+        }
+
+        ClearSelection();
+        removeToolSelected = true;
+        Debug.Log("Selected remove tool.");
+    }
+
+    public void ToggleRemoveTool()
+    {
+        if (!enableRemoveTool)
+        {
+            return;
+        }
+
+        if (removeToolSelected)
+        {
+            ClearSelection();
+        }
+        else
+        {
+            SelectRemoveTool();
+        }
     }
 
     private void ClearSelection()
@@ -232,6 +350,7 @@ public class PlantPlacementManager : MonoBehaviour
         selectedSlot = null;
         selectedPlantPrefab = null;
         previewRenderers = null;
+        removeToolSelected = false;
 
         if (placementPreview != null)
         {

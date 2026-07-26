@@ -385,6 +385,7 @@ MonoBehaviour:
   laneTolerance: 0.45
   overlapTolerance: 0.1
   attackDamage: 10
+  attackRecoilMultiplier: 1
   afterKillLockSeconds: 0.8
   sortingOrderBase: 1000
   sortingOrderPerRow: 120
@@ -470,13 +471,13 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.48
+  m_Volume: 0.396
   m_Pitch: -1.17
   Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 138
+  Priority: 88
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500

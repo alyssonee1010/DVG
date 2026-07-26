@@ -3251,6 +3251,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6624339901220010001, guid: 31605c3f50d21834685a49adc791bce8, type: 3}
+      propertyPath: potionScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6624339901220010001, guid: 31605c3f50d21834685a49adc791bce8, type: 3}
+      propertyPath: potionScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6624339901220010001, guid: 31605c3f50d21834685a49adc791bce8, type: 3}
+      propertyPath: automaticBrewInterval
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6624339901220010001, guid: 31605c3f50d21834685a49adc791bce8, type: 3}
       propertyPath: potionColliderPreviewColor.b
       value: 0.10196078
       objectReference: {fileID: 0}
@@ -5347,6 +5359,93 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2117807914}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &865357833
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 865357834}
+  - component: {fileID: 865357835}
+  - component: {fileID: 865357836}
+  - component: {fileID: 865357837}
+  m_Layer: 0
+  m_Name: Board Life
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &865357834
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 865357833}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -8.08, y: -2.21, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &865357835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 865357833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b922709e23510848a5a69cbc2548944, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DVGHealth
+  maxHealth: 5
+  destroyWhenDead: 0
+--- !u!114 &865357836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 865357833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a1f995ecf32420499616a9790363d22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DVGWorldHealthBar
+  localOffset: {x: 0, y: 1.4, z: 0}
+  width: 1
+  height: 0.11
+  inset: 0.015
+  backgroundColor: {r: 0.05, g: 0, b: 0, a: 0.85}
+  fillColor: {r: 0.95, g: 0.05, b: 0.03, a: 1}
+  sortingOrder: 10000
+  hideWhenFull: 1
+--- !u!114 &865357837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 865357833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e22e0a58e494489e90072990abc41ecc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DVGBoardLife
+  startingLife: 5
+  defaultDamagePerEnemy: 1
+  pauseOnGameOver: 1
+  gameOverMessage: GAME OVER
+  gameOverWorldOffset: {x: 0, y: 3.5, z: 0}
+  gameOverFontSize: 1.2
+  gameOverColor: {r: 1, g: 0.12, b: 0.08, a: 1}
 --- !u!1 &871447086
 GameObject:
   m_ObjectHideFlags: 0
@@ -9186,6 +9285,9 @@ MonoBehaviour:
   previewAlpha: 0.75
   validPreviewTint: {r: 1, g: 1, b: 1, a: 1}
   invalidPreviewTint: {r: 1, g: 0.35, b: 0.35, a: 1}
+  enableRemoveTool: 1
+  toggleRemoveToolKey: 120
+  holdRemoveToolKey: 304
 --- !u!4 &2096327531
 Transform:
   m_ObjectHideFlags: 0
@@ -9484,6 +9586,11 @@ MonoBehaviour:
   initialDelay: 3
   spawnInterval: 6
   maxAliveEnemies: 12
+  rampDifficultyOverTime: 1
+  timeToMaxDifficulty: 180
+  minimumSpawnInterval: 1.5
+  difficultyCurveExponent: 1.6
+  maxAliveEnemiesAtFullDifficulty: 24
 --- !u!1001 &2731077514544270452
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9818,3 +9925,4 @@ SceneRoots:
   - {fileID: 2117807914}
   - {fileID: 670763415}
   - {fileID: 1822400685}
+  - {fileID: 865357834}

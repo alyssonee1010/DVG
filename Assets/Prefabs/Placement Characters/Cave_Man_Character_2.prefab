@@ -610,13 +610,13 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.557
+  m_Volume: 0.266
   m_Pitch: 3
   Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 116
+  Priority: 80
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
