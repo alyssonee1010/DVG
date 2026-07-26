@@ -7,9 +7,9 @@ public class DVGHealingPotionUseController : MonoBehaviour
 {
     [SerializeField] DVGUsableWallet wallet;
     [SerializeField] Sprite potionIcon;
-    [SerializeField] string scenePotionName = "healing_potion";
+    [SerializeField] string scenePotionName = "Healing Potion";
     [SerializeField] string usableUiName = "Usable_UI";
-    [SerializeField] string potionCounterTextName = "Healing Potion Counter Text";
+    [SerializeField] string potionCounterTextName = "Healing Potion Counter";
     [SerializeField, Min(1)] int healAmount = 100;
     [SerializeField, Min(0.05f)] float clickSearchRadius = 0.55f;
     [SerializeField] Color validTargetTint = new Color(0.55f, 1f, 0.85f, 0.55f);
@@ -120,6 +120,7 @@ public class DVGHealingPotionUseController : MonoBehaviour
         DVGBoardCharacter target = FindDamagedCharacterAt(worldPosition);
         if (target != null && wallet != null && wallet.TrySpendHealingPotion())
         {
+            ClearTargetTint();
             RestoreCharacterTint(target);
             target.Health.Heal(healAmount);
             RefreshHealthBar(target);
@@ -710,6 +711,16 @@ public class DVGHealingPotionUseController : MonoBehaviour
             if (existingText != null)
             {
                 return existingText;
+            }
+        }
+
+        Transform counterRoot = counterParent != null ? counterParent.Find("Healing Potion Counter") : null;
+        if (counterRoot != null)
+        {
+            TextMeshPro counterText = counterRoot.GetComponentInChildren<TextMeshPro>(true);
+            if (counterText != null)
+            {
+                return counterText;
             }
         }
 

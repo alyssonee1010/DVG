@@ -63,6 +63,7 @@ public class PlantPlacementManager : MonoBehaviour
 
         if (TryUseHealingPotion())
         {
+            ClearSelection();
             return;
         }
 

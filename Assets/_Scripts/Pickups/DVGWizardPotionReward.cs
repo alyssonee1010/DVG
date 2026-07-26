@@ -11,7 +11,7 @@ public class DVGWizardPotionReward : MonoBehaviour
 
     [Header("Spawn Assets")]
     [SerializeField] Sprite potionSprite;
-    [SerializeField] string templatePotionName = "healing_potion";
+    [SerializeField] string templatePotionName = "Healing Potion";
 
     [Header("Spawn Positions")]
     [SerializeField] Transform spawnPoint;

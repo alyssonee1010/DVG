@@ -23,11 +23,6 @@ public class DVGUsableWallet : MonoBehaviour
 
         Diamonds = Mathf.Max(0, startingDiamonds);
         HealingPotions = Mathf.Max(0, startingHealingPotions);
-
-        if (GetComponent<DVGHealingPotionUseController>() == null)
-        {
-            gameObject.AddComponent<DVGHealingPotionUseController>();
-        }
     }
 
     void OnEnable()
