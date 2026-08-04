@@ -575,9 +575,9 @@ MonoBehaviour:
   recoilDistance: 0.04
   recoilOutSeconds: 0.04
   recoilReturnSeconds: 0.06
-  triggerHitAnimation: 1
+  triggerStunAnimation: 0
   animator: {fileID: 611986551926976646}
-  hitTriggerName: Hit
+  stunTriggerName: Stun
 --- !u!114 &1922743843835358041
 MonoBehaviour:
   m_ObjectHideFlags: 0

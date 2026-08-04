@@ -3918,7 +3918,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2499249932209925423, guid: 1b49ac1e5afbcc24ea1e19b84b6e8f91, type: 3}
-      propertyPath: triggerHitAnimation
+      propertyPath: triggerStunAnimation
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3309227053645744696, guid: 1b49ac1e5afbcc24ea1e19b84b6e8f91, type: 3}

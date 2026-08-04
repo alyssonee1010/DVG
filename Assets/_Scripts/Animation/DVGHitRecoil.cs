@@ -11,10 +11,13 @@ public class DVGHitRecoil : MonoBehaviour
     [SerializeField] float recoilOutSeconds = 0.05f;
     [SerializeField] float recoilReturnSeconds = 0.12f;
 
-    [Header("Animation")]
-    [SerializeField] bool triggerHitAnimation = true;
+    [Header("Stun Animation")]
+    [SerializeField] bool triggerStunAnimation = false;
     [SerializeField] Animator animator;
-    [SerializeField] string hitTriggerName = "Hit";
+    [SerializeField] string stunTriggerName = "Stun";
+
+    [Header("Audio")]
+    [SerializeField] DVGAnimationSoundPlayer soundPlayer;
 
     DVGHealth health;
     int lastHealth;
@@ -35,6 +38,11 @@ public class DVGHitRecoil : MonoBehaviour
         if (animator == null)
         {
             animator = GetComponent<Animator>();
+        }
+
+        if (soundPlayer == null)
+        {
+            soundPlayer = GetComponent<DVGAnimationSoundPlayer>();
         }
     }
 
@@ -113,7 +121,7 @@ public class DVGHitRecoil : MonoBehaviour
                 appliedOffset = Vector3.zero;
             }
 
-            PlayHitAnimation(currentHealth);
+            PlayHitSound();
             currentRecoilMultiplier = changedHealth != null ? changedHealth.LastDamageRecoilMultiplier : 1f;
             recoilTimer = TotalSeconds;
         }
@@ -121,15 +129,28 @@ public class DVGHitRecoil : MonoBehaviour
         lastHealth = currentHealth;
     }
 
-    void PlayHitAnimation(int currentHealth)
+    void PlayStunAnimation(int currentHealth)
     {
-        if (!triggerHitAnimation || currentHealth <= 0 || animator == null || string.IsNullOrWhiteSpace(hitTriggerName))
+        if (!triggerStunAnimation || currentHealth <= 0 || animator == null || string.IsNullOrWhiteSpace(stunTriggerName))
         {
             return;
         }
 
-        animator.ResetTrigger(hitTriggerName);
-        animator.SetTrigger(hitTriggerName);
+        animator.ResetTrigger(stunTriggerName);
+        animator.SetTrigger(stunTriggerName);
+    }
+
+    void PlayHitSound()
+    {
+        if (soundPlayer == null)
+        {
+            soundPlayer = GetComponent<DVGAnimationSoundPlayer>();
+        }
+
+        if (soundPlayer != null)
+        {
+            soundPlayer.PlayHitSounds();
+        }
     }
 
     Vector3 GetCurrentPushOffset()

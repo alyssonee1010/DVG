@@ -516,9 +516,9 @@ MonoBehaviour:
   recoilDistance: 0.08
   recoilOutSeconds: 0.04
   recoilReturnSeconds: 0.08
-  triggerHitAnimation: 1
+  triggerStunAnimation: 0
   animator: {fileID: 3798624022284907766}
-  hitTriggerName: Hit
+  stunTriggerName: Stun
 --- !u!82 &-79967342787387059
 AudioSource:
   m_ObjectHideFlags: 0
