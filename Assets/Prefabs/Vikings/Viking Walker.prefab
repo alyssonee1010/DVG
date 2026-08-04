@@ -455,9 +455,11 @@ MonoBehaviour:
   recoilDistance: 0.15
   recoilOutSeconds: 0.2
   recoilReturnSeconds: 0.2
-  triggerStunAnimation: 0
+  triggerStunAnimation: 1
   animator: {fileID: 6799631004367217897}
   stunTriggerName: Stun
+  stunHitChance: 0.4
+  stunResistancePercent: 100
 --- !u!82 &-8736907945092346852
 AudioSource:
   m_ObjectHideFlags: 0

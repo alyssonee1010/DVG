@@ -30,6 +30,7 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
     [SerializeField] int sortingOrderOffset = 30;
 
     DVGHealth health;
+    DVGHitRecoil stunProfile;
     Animator animator;
     Vector3 targetPosition;
     DVGBoardCharacter attackTarget;
@@ -52,6 +53,7 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
     void Awake()
     {
         health = GetComponent<DVGHealth>();
+        stunProfile = GetComponent<DVGHitRecoil>();
         animator = GetComponent<Animator>();
     }
 
@@ -222,6 +224,11 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
         }
 
         attackTarget.Health.TakeDamage(attackDamage, attackRecoilMultiplier);
+        if (attackTarget.Health.IsAlive && stunProfile != null)
+        {
+            stunProfile.TryStunTarget(attackTarget.gameObject);
+        }
+
         if (!attackTarget.Health.IsAlive)
         {
             PlayAfterKill();

@@ -416,6 +416,7 @@ GameObject:
   - component: {fileID: 6624339901220010003}
   - component: {fileID: 6624339901220010004}
   - component: {fileID: 7111357266919167204}
+  - component: {fileID: 6624339901220010005}
   m_Layer: 0
   m_Name: Wizard_potion
   m_TagString: Untagged
@@ -572,6 +573,31 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6624339901220010005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2912663917150313109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bee1f306e5027f43a8657f366182449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DVGHitRecoil
+  recoilTarget: {fileID: 0}
+  applyInWorldSpace: 1
+  returnAfterRecoil: 1
+  recoilDirection: {x: 1, y: 0}
+  recoilDistance: 0.08
+  recoilOutSeconds: 0.04
+  recoilReturnSeconds: 0.08
+  triggerStunAnimation: 1
+  animator: {fileID: 7111357266919167204}
+  stunTriggerName: Stun
+  stunHitChance: 0
+  stunResistancePercent: 25
+  soundPlayer: {fileID: 0}
 --- !u!1 &4107579204230602466
 GameObject:
   m_ObjectHideFlags: 0

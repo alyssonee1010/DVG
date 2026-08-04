@@ -12,9 +12,15 @@ public class DVGHitRecoil : MonoBehaviour
     [SerializeField] float recoilReturnSeconds = 0.12f;
 
     [Header("Stun Animation")]
-    [SerializeField] bool triggerStunAnimation = false;
+    [SerializeField] bool triggerStunAnimation = true;
     [SerializeField] Animator animator;
     [SerializeField] string stunTriggerName = "Stun";
+
+    [Header("Stun Gameplay")]
+    [Range(0f, 1f)]
+    [SerializeField] float stunHitChance;
+    [Min(0f)]
+    [SerializeField] float stunResistancePercent;
 
     [Header("Audio")]
     [SerializeField] DVGAnimationSoundPlayer soundPlayer;
@@ -26,6 +32,9 @@ public class DVGHitRecoil : MonoBehaviour
     float currentRecoilMultiplier = 1f;
 
     float TotalSeconds => Mathf.Max(0.001f, recoilOutSeconds + recoilReturnSeconds);
+
+    public float StunHitChance => Mathf.Clamp01(stunHitChance);
+    public float StunResistancePercent => Mathf.Max(0f, stunResistancePercent);
 
     void Awake()
     {
@@ -129,15 +138,72 @@ public class DVGHitRecoil : MonoBehaviour
         lastHealth = currentHealth;
     }
 
-    void PlayStunAnimation(int currentHealth)
+    bool PlayStunAnimation(int currentHealth)
     {
-        if (!triggerStunAnimation || currentHealth <= 0 || animator == null || string.IsNullOrWhiteSpace(stunTriggerName))
+        if (!triggerStunAnimation
+            || currentHealth <= 0
+            || animator == null
+            || string.IsNullOrWhiteSpace(stunTriggerName)
+            || !HasAnimatorTrigger(stunTriggerName))
         {
-            return;
+            return false;
         }
 
         animator.ResetTrigger(stunTriggerName);
         animator.SetTrigger(stunTriggerName);
+        return true;
+    }
+
+    bool HasAnimatorTrigger(string triggerName)
+    {
+        AnimatorControllerParameter[] parameters = animator.parameters;
+        foreach (AnimatorControllerParameter parameter in parameters)
+        {
+            if (parameter.type == AnimatorControllerParameterType.Trigger && parameter.name == triggerName)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool TryStunTarget(GameObject target)
+    {
+        if (target == null || StunHitChance <= 0f)
+        {
+            return false;
+        }
+
+        DVGHitRecoil targetStun = target.GetComponent<DVGHitRecoil>();
+        if (targetStun == null)
+        {
+            targetStun = target.GetComponentInParent<DVGHitRecoil>();
+        }
+
+        return targetStun != null && targetStun.TryReceiveStun(StunHitChance);
+    }
+
+    public bool TryReceiveStun(float incomingChance)
+    {
+        if (health == null)
+        {
+            health = GetComponent<DVGHealth>();
+        }
+
+        if (health != null && !health.IsAlive)
+        {
+            return false;
+        }
+
+        float resistanceMultiplier = Mathf.Clamp01(1f - StunResistancePercent / 200f);
+        float effectiveChance = Mathf.Clamp01(incomingChance) * resistanceMultiplier;
+        if (effectiveChance <= 0f || Random.value > effectiveChance)
+        {
+            return false;
+        }
+
+        return PlayStunAnimation(health != null ? health.CurrentHealth : 1);
     }
 
     void PlayHitSound()

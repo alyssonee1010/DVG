@@ -16,6 +16,7 @@ public class DVGDamageProjectile : MonoBehaviour
     bool returnToPool;
     bool hasHit;
     float lifetimeTimer;
+    DVGHitRecoil stunSource;
 
     void OnEnable()
     {
@@ -41,6 +42,11 @@ public class DVGDamageProjectile : MonoBehaviour
     public void SetReturnToPool(bool value)
     {
         returnToPool = value;
+    }
+
+    public void SetStunSource(DVGHitRecoil source)
+    {
+        stunSource = source;
     }
 
     public void Launch(Vector2 launchDirection, int targetLaneIndex)
@@ -141,6 +147,11 @@ public class DVGDamageProjectile : MonoBehaviour
     {
         hasHit = true;
         enemy.Health.TakeDamage(damage, recoilMultiplier);
+        if (enemy.Health.IsAlive && stunSource != null)
+        {
+            stunSource.TryStunTarget(enemy.gameObject);
+        }
+
         if (destroyOnHit)
         {
             Finish();

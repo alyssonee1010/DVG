@@ -12,6 +12,7 @@ public class DVGBoardMeleeAttacker : MonoBehaviour
     [SerializeField] string attackTriggerName = "Attack";
 
     DVGBoardCharacter boardCharacter;
+    DVGHitRecoil stunProfile;
     Animator animator;
     IDVGEnemyLaneWalker attackTarget;
     float attackTimer;
@@ -19,6 +20,7 @@ public class DVGBoardMeleeAttacker : MonoBehaviour
     void Awake()
     {
         boardCharacter = GetComponent<DVGBoardCharacter>();
+        stunProfile = GetComponent<DVGHitRecoil>();
         animator = GetComponent<Animator>();
     }
 
@@ -54,6 +56,10 @@ public class DVGBoardMeleeAttacker : MonoBehaviour
         }
 
         attackTarget.Health.TakeDamage(attackDamage, recoilMultiplier);
+        if (attackTarget.Health.IsAlive && stunProfile != null)
+        {
+            stunProfile.TryStunTarget(attackTarget.gameObject);
+        }
     }
 
     public void DealAttackDamageAnimationEvent()

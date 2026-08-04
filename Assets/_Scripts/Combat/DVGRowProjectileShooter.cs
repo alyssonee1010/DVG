@@ -41,6 +41,7 @@ public class DVGRowProjectileShooter : MonoBehaviour
     [SerializeField] int projectileSortingOrderOffset = 50;
 
     DVGBoardCharacter boardCharacter;
+    DVGHitRecoil stunProfile;
     Animator animator;
     IDVGEnemyLaneWalker currentTarget;
     readonly List<DVGDamageProjectile> projectilePool = new List<DVGDamageProjectile>();
@@ -50,6 +51,7 @@ public class DVGRowProjectileShooter : MonoBehaviour
     void Awake()
     {
         boardCharacter = GetComponent<DVGBoardCharacter>();
+        stunProfile = GetComponent<DVGHitRecoil>();
         animator = GetComponent<Animator>();
         PreloadProjectiles();
     }
@@ -103,6 +105,7 @@ public class DVGRowProjectileShooter : MonoBehaviour
         }
 
         GameObject projectileObject = projectile.gameObject;
+        projectile.SetStunSource(stunProfile);
         projectileObject.transform.SetPositionAndRotation(spawnPosition, Quaternion.identity);
         ApplyProjectileSorting(projectileObject, laneIndex);
 
