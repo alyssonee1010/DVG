@@ -3,6 +3,8 @@ using TMPro;
 
 public class DVGPlacementCharacterSlot : MonoBehaviour
 {
+    const string PriceTextObjectName = "Price";
+
     [SerializeField] PlantPlacementManager placementManager;
     [SerializeField] GameObject characterPrefab;
     [SerializeField] int cost;
@@ -19,14 +21,28 @@ public class DVGPlacementCharacterSlot : MonoBehaviour
 
     void Awake()
     {
+        EnsureCostText();
         FreezeSelectorAnimator();
         CaptureBaseScale();
         UpdateCostText();
         SetSelected(false);
     }
 
+    void OnEnable()
+    {
+        EnsureCostText();
+        UpdateCostText();
+    }
+
+    void Reset()
+    {
+        EnsureCostText();
+        UpdateCostText();
+    }
+
     void OnValidate()
     {
+        EnsureCostText();
         UpdateCostText();
     }
 
@@ -65,6 +81,29 @@ public class DVGPlacementCharacterSlot : MonoBehaviour
         if (costText != null)
         {
             costText.text = costPrefix + Mathf.Max(0, cost);
+        }
+    }
+
+    void EnsureCostText()
+    {
+        if (costText != null)
+        {
+            return;
+        }
+
+        TMP_Text[] childTexts = GetComponentsInChildren<TMP_Text>(true);
+        foreach (TMP_Text childText in childTexts)
+        {
+            if (childText.name == PriceTextObjectName)
+            {
+                costText = childText;
+                return;
+            }
+        }
+
+        if (childTexts.Length == 1)
+        {
+            costText = childTexts[0];
         }
     }
 }

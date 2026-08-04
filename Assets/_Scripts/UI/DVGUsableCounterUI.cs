@@ -12,6 +12,12 @@ public class DVGUsableCounterUI : MonoBehaviour
 
     void Awake()
     {
+        if (IsPlacementSlotPrice())
+        {
+            enabled = false;
+            return;
+        }
+
         if (wallet == null)
         {
             wallet = DVGUsableWallet.Instance != null ? DVGUsableWallet.Instance : FindAnyObjectByType<DVGUsableWallet>();
@@ -25,6 +31,12 @@ public class DVGUsableCounterUI : MonoBehaviour
 
     void OnEnable()
     {
+        if (IsPlacementSlotPrice())
+        {
+            enabled = false;
+            return;
+        }
+
         if (wallet == null)
         {
             wallet = DVGUsableWallet.Instance != null ? DVGUsableWallet.Instance : FindAnyObjectByType<DVGUsableWallet>();
@@ -60,5 +72,10 @@ public class DVGUsableCounterUI : MonoBehaviour
         {
             diamondText.text = prefix + diamonds;
         }
+    }
+
+    bool IsPlacementSlotPrice()
+    {
+        return name == "Price" && GetComponentInParent<DVGPlacementCharacterSlot>() != null;
     }
 }
