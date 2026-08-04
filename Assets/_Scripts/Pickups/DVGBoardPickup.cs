@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class DVGBoardPickup : MonoBehaviour
@@ -8,6 +9,9 @@ public class DVGBoardPickup : MonoBehaviour
     [SerializeField] PickupResource resource = PickupResource.Diamonds;
     [SerializeField] DVGAnimationSoundPlayer collectSoundPlayer;
 
+    [Header("Lifetime")]
+    [SerializeField, Min(0f)] float lifetimeSeconds = 6f;
+
     [Header("Collect Effect")]
     [SerializeField] bool playCollectEffect = true;
     [SerializeField] float collectEffectDuration = 0.18f;
@@ -17,9 +21,20 @@ public class DVGBoardPickup : MonoBehaviour
 
     static int lastCollectedFrame = -1;
     bool collected;
+    Coroutine lifetimeRoutine;
 
     public int Value => value;
     public PickupResource Resource => resource;
+
+    void OnEnable()
+    {
+        StartLifetimeTimer();
+    }
+
+    void OnDisable()
+    {
+        StopLifetimeTimer();
+    }
 
     public void Initialize(int pickupValue)
     {
@@ -54,6 +69,8 @@ public class DVGBoardPickup : MonoBehaviour
 
         collected = true;
         lastCollectedFrame = Time.frameCount;
+        StopLifetimeTimer();
+
         DVGUsableWallet wallet = DVGUsableWallet.Instance != null ? DVGUsableWallet.Instance : FindAnyObjectByType<DVGUsableWallet>();
         if (wallet != null)
         {
@@ -75,6 +92,38 @@ public class DVGBoardPickup : MonoBehaviour
         PlayCollectEffect();
         Destroy(gameObject);
         return true;
+    }
+
+    void StartLifetimeTimer()
+    {
+        StopLifetimeTimer();
+        if (lifetimeSeconds <= 0f)
+        {
+            return;
+        }
+
+        lifetimeRoutine = StartCoroutine(LifetimeRoutine());
+    }
+
+    void StopLifetimeTimer()
+    {
+        if (lifetimeRoutine == null)
+        {
+            return;
+        }
+
+        StopCoroutine(lifetimeRoutine);
+        lifetimeRoutine = null;
+    }
+
+    IEnumerator LifetimeRoutine()
+    {
+        yield return new WaitForSeconds(lifetimeSeconds);
+
+        if (!collected)
+        {
+            Destroy(gameObject);
+        }
     }
 
     void PlayCollectEffect()
