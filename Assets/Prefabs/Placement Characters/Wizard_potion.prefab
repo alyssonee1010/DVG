@@ -470,7 +470,7 @@ MonoBehaviour:
   potionThrowDuration: 0.32
   potionThrowArcHeight: 0.45
   potionValue: 1
-  potionColliderRadius: 1
+  potionColliderRadius: 0.2
   soundPlayer: {fileID: 0}
   showPotionPreview: 1
   potionVisualPreviewColor: {r: 1, g: 0.25, b: 0.35, a: 0.9}
@@ -597,6 +597,9 @@ MonoBehaviour:
   stunTriggerName: Stun
   stunHitChance: 0
   stunResistancePercent: 25
+  flashOnHit: 1
+  hitFlashTint: {r: 1, g: 0.22, b: 0.16, a: 1}
+  hitFlashSeconds: 0.08
   soundPlayer: {fileID: 0}
 --- !u!1 &4107579204230602466
 GameObject:
