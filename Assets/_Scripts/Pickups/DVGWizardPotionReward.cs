@@ -11,7 +11,7 @@ public class DVGWizardPotionReward : MonoBehaviour
 
     [Header("Spawn Assets")]
     [SerializeField] Sprite potionSprite;
-    [SerializeField] string templatePotionName = "Healing Potion";
+    [SerializeField] string templatePotionName = "";
 
     [Header("Spawn Positions")]
     [SerializeField] Transform spawnPoint;
@@ -201,12 +201,6 @@ public class DVGWizardPotionReward : MonoBehaviour
 
     Vector3 GetPotionScale()
     {
-        SpriteRenderer templateRenderer = GetTemplatePotionRenderer();
-        if (templateRenderer != null)
-        {
-            return templateRenderer.transform.lossyScale;
-        }
-
         return potionScale;
     }
 

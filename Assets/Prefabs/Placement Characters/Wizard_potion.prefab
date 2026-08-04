@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 341941024150718314}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.036, y: 0.061, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -152,7 +152,7 @@ Transform:
   m_GameObject: {fileID: 2017748010259022747}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.17634583, y: -0.33608055, z: 0}
+  m_LocalPosition: {x: -0.17634583, y: -0.3360806, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -415,6 +415,7 @@ GameObject:
   - component: {fileID: 6624339901220010002}
   - component: {fileID: 6624339901220010003}
   - component: {fileID: 6624339901220010004}
+  - component: {fileID: 7111357266919167204}
   m_Layer: 0
   m_Name: Wizard_potion
   m_TagString: Untagged
@@ -436,10 +437,10 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3960963878728237699}
-  - {fileID: 580143163742624295}
   - {fileID: 5723210781258459794}
   - {fileID: 8936591930321151501}
   - {fileID: 963391444336006168}
+  - {fileID: 580143163742624295}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6624339901220010001
@@ -458,12 +459,12 @@ MonoBehaviour:
   useAutomaticBrewing: 1
   automaticBrewInterval: 10
   potionSprite: {fileID: 2183777183610269246, guid: 955844e52d615d9428ef3da5f5b27d51, type: 3}
-  templatePotionName: Healing Potion
+  templatePotionName: 
   spawnPoint: {fileID: 0}
   potionStartOffset: {x: 0.28, y: 0.25}
   potionLandingOffset: {x: 0.22, y: -0.36}
   potionLandingRandomRange: {x: 0.16, y: 0.08}
-  potionScale: {x: 0.6, y: 0.6, z: 0.6}
+  potionScale: {x: 2, y: 2, z: 1}
   sortingOrderOffset: 25
   potionThrowDuration: 0.32
   potionThrowArcHeight: 0.45
@@ -549,6 +550,28 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.95, y: 1.1}
   m_EdgeRadius: 0
+--- !u!95 &7111357266919167204
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2912663917150313109}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 51f5147ef2f3cd04db172067216e7e6a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4107579204230602466
 GameObject:
   m_ObjectHideFlags: 0
@@ -575,7 +598,7 @@ Transform:
   m_GameObject: {fileID: 4107579204230602466}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.38865364, y: 0.15091965, z: 0}
+  m_LocalPosition: {x: 0.38865364, y: 0.1509196, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
