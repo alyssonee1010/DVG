@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(DVGHealth))]
@@ -22,6 +24,12 @@ public class DVGHitRecoil : MonoBehaviour
     [Min(0f)]
     [SerializeField] float stunResistancePercent;
 
+    [Header("Hit Feedback")]
+    [SerializeField] bool flashOnHit = true;
+    [SerializeField] Color hitFlashTint = new Color(1f, 0.22f, 0.16f, 1f);
+    [Min(0f)]
+    [SerializeField] float hitFlashSeconds = 0.08f;
+
     [Header("Audio")]
     [SerializeField] DVGAnimationSoundPlayer soundPlayer;
 
@@ -30,6 +38,8 @@ public class DVGHitRecoil : MonoBehaviour
     float recoilTimer;
     Vector3 appliedOffset;
     float currentRecoilMultiplier = 1f;
+    Coroutine hitFlashRoutine;
+    readonly Dictionary<SpriteRenderer, Color> hitFlashOriginalColors = new Dictionary<SpriteRenderer, Color>();
 
     float TotalSeconds => Mathf.Max(0.001f, recoilOutSeconds + recoilReturnSeconds);
 
@@ -71,6 +81,14 @@ public class DVGHitRecoil : MonoBehaviour
 
     void OnDisable()
     {
+        if (hitFlashRoutine != null)
+        {
+            StopCoroutine(hitFlashRoutine);
+            hitFlashRoutine = null;
+        }
+
+        RestoreHitFlashColors();
+
         if (returnAfterRecoil)
         {
             RemoveAppliedOffset();
@@ -131,6 +149,7 @@ public class DVGHitRecoil : MonoBehaviour
             }
 
             PlayHitSound();
+            PlayHitFlash();
             currentRecoilMultiplier = changedHealth != null ? changedHealth.LastDamageRecoilMultiplier : 1f;
             recoilTimer = TotalSeconds;
         }
@@ -217,6 +236,89 @@ public class DVGHitRecoil : MonoBehaviour
         {
             soundPlayer.PlayHitSounds();
         }
+    }
+
+    void PlayHitFlash()
+    {
+        if (!flashOnHit || hitFlashSeconds <= 0f || !isActiveAndEnabled)
+        {
+            return;
+        }
+
+        if (hitFlashRoutine != null)
+        {
+            StopCoroutine(hitFlashRoutine);
+            RestoreHitFlashColors();
+        }
+
+        hitFlashRoutine = StartCoroutine(HitFlashRoutine());
+    }
+
+    IEnumerator HitFlashRoutine()
+    {
+        CaptureHitFlashRenderers();
+        if (hitFlashOriginalColors.Count == 0)
+        {
+            hitFlashRoutine = null;
+            yield break;
+        }
+
+        foreach (SpriteRenderer renderer in hitFlashOriginalColors.Keys)
+        {
+            if (renderer != null)
+            {
+                renderer.color = hitFlashTint;
+            }
+        }
+
+        yield return new WaitForSeconds(hitFlashSeconds);
+
+        RestoreHitFlashColors();
+        hitFlashRoutine = null;
+    }
+
+    void CaptureHitFlashRenderers()
+    {
+        hitFlashOriginalColors.Clear();
+        SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>(true);
+        foreach (SpriteRenderer renderer in renderers)
+        {
+            if (renderer == null || IsHealthBarRenderer(renderer))
+            {
+                continue;
+            }
+
+            hitFlashOriginalColors[renderer] = renderer.color;
+        }
+    }
+
+    void RestoreHitFlashColors()
+    {
+        foreach (KeyValuePair<SpriteRenderer, Color> entry in hitFlashOriginalColors)
+        {
+            if (entry.Key != null)
+            {
+                entry.Key.color = entry.Value;
+            }
+        }
+
+        hitFlashOriginalColors.Clear();
+    }
+
+    bool IsHealthBarRenderer(SpriteRenderer renderer)
+    {
+        Transform candidate = renderer.transform;
+        while (candidate != null && candidate != transform)
+        {
+            if (candidate.name == "Health Bar")
+            {
+                return true;
+            }
+
+            candidate = candidate.parent;
+        }
+
+        return false;
     }
 
     Vector3 GetCurrentPushOffset()
