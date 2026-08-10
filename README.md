@@ -58,6 +58,7 @@ The repo also still contains some earlier platformer-style scripts and prefabs. 
 - `docs/GAMEPLAY.md` explains the current mechanics, controls, characters, enemy wave tuning, and win/loss state.
 - `docs/ARCHITECTURE.md` maps the major runtime systems and how they talk to each other.
 - `docs/DEVELOPMENT.md` covers common development workflows such as adding a placeable character, adding an enemy, and tuning difficulty.
+- `docs/TODO.md` tracks upcoming gameplay, enemy, UI, art, and audio work.
 
 ## Running Locally
 
