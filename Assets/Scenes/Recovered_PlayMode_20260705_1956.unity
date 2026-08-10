@@ -9148,7 +9148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30e50ae879b92e6439e895a5dfd0338c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DVGUsableWallet
-  startingDiamonds: 10
+  startingDiamonds: 4
   startingHealingPotions: 0
 --- !u!1 &1823812702
 GameObject:
@@ -11229,14 +11229,14 @@ MonoBehaviour:
     moveSpeed: 0.8
     weight: 1
   spawnOnStart: 0
-  initialDelay: 3
-  spawnInterval: 6
-  maxAliveEnemies: 12
+  initialDelay: 22
+  spawnInterval: 11
+  maxAliveEnemies: 4
   rampDifficultyOverTime: 1
-  timeToMaxDifficulty: 180
-  minimumSpawnInterval: 1.5
-  difficultyCurveExponent: 1.6
-  maxAliveEnemiesAtFullDifficulty: 24
+  timeToMaxDifficulty: 330
+  minimumSpawnInterval: 3.5
+  difficultyCurveExponent: 2.1
+  maxAliveEnemiesAtFullDifficulty: 14
 --- !u!1001 &2731077514544270452
 PrefabInstance:
   m_ObjectHideFlags: 0

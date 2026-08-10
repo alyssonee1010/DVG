@@ -486,7 +486,11 @@ MonoBehaviour:
   animator: {fileID: 2048044025905773866}
   stunTriggerName: Stun
   stunHitChance: 0
-  stunResistancePercent: 25
+  stunResistancePercent: 10
+  flashOnHit: 1
+  hitFlashTint: {r: 1, g: 0.22, b: 0.16, a: 1}
+  hitFlashSeconds: 0.08
+  soundPlayer: {fileID: 0}
 --- !u!114 &2049926515550146609
 MonoBehaviour:
   m_ObjectHideFlags: 0

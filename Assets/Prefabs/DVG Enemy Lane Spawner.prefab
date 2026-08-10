@@ -57,6 +57,11 @@ MonoBehaviour:
     moveSpeed: 0.75
     weight: 1
   spawnOnStart: 0
-  initialDelay: 3
-  spawnInterval: 3
-  maxAliveEnemies: 12
+  initialDelay: 22
+  spawnInterval: 11
+  maxAliveEnemies: 4
+  rampDifficultyOverTime: 1
+  timeToMaxDifficulty: 330
+  minimumSpawnInterval: 3.5
+  difficultyCurveExponent: 2.1
+  maxAliveEnemiesAtFullDifficulty: 14

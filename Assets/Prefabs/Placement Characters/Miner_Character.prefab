@@ -447,7 +447,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06d2124ce7be16045a802f096dd8eb27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DVGMinerMiningReward
-  eventCallsPerGem: 5
+  eventCallsPerGem: 4
   flareSprite: {fileID: 21300000, guid: 887478d88ef86114d8b01cd9f4cb3a58, type: 3}
   blueGemSprite: {fileID: 21300002, guid: 0c9b1d0b2a4552241a19ab70af3b4ee3, type: 3}
   spawnPoint: {fileID: 0}
@@ -461,7 +461,7 @@ MonoBehaviour:
   sortingOrderOffset: 25
   blueGemThrowDuration: 0.32
   blueGemThrowArcHeight: 0.45
-  blueGemValue: 1
+  blueGemValue: 3
   blueGemColliderRadius: 0.6
   soundPlayer: {fileID: 0}
   showBlueGemPreview: 1
@@ -521,6 +521,10 @@ MonoBehaviour:
   stunTriggerName: Stun
   stunHitChance: 0
   stunResistancePercent: 25
+  flashOnHit: 1
+  hitFlashTint: {r: 1, g: 0.22, b: 0.16, a: 1}
+  hitFlashSeconds: 0.08
+  soundPlayer: {fileID: 0}
 --- !u!82 &-79967342787387059
 AudioSource:
   m_ObjectHideFlags: 0

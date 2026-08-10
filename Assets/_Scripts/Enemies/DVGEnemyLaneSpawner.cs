@@ -38,16 +38,16 @@ public class DVGEnemyLaneSpawner : MonoBehaviour
     [Header("Spawning")]
     [SerializeField] EnemySpawnOption[] enemies;
     [SerializeField] bool spawnOnStart;
-    [SerializeField] float initialDelay = 3f;
-    [SerializeField] float spawnInterval = 3f;
-    [SerializeField] int maxAliveEnemies = 12;
+    [SerializeField] float initialDelay = 22f;
+    [SerializeField] float spawnInterval = 11f;
+    [SerializeField] int maxAliveEnemies = 4;
 
     [Header("Difficulty Ramp")]
     [SerializeField] bool rampDifficultyOverTime = true;
-    [SerializeField, Min(1f)] float timeToMaxDifficulty = 180f;
-    [SerializeField, Min(0.05f)] float minimumSpawnInterval = 1.5f;
-    [SerializeField, Min(0.1f)] float difficultyCurveExponent = 1.6f;
-    [SerializeField, Min(1)] int maxAliveEnemiesAtFullDifficulty = 24;
+    [SerializeField, Min(1f)] float timeToMaxDifficulty = 330f;
+    [SerializeField, Min(0.05f)] float minimumSpawnInterval = 3.5f;
+    [SerializeField, Min(0.1f)] float difficultyCurveExponent = 2.1f;
+    [SerializeField, Min(1)] int maxAliveEnemiesAtFullDifficulty = 14;
 
     readonly List<Lane> lanes = new List<Lane>();
     readonly List<MonoBehaviour> aliveEnemies = new List<MonoBehaviour>();

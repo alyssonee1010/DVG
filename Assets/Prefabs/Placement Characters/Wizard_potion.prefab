@@ -458,7 +458,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DVGWizardPotionReward
   eventCallsPerPotion: 5
   useAutomaticBrewing: 1
-  automaticBrewInterval: 10
+  automaticBrewInterval: 15
   potionSprite: {fileID: 2183777183610269246, guid: 955844e52d615d9428ef3da5f5b27d51, type: 3}
   templatePotionName: 
   spawnPoint: {fileID: 0}
