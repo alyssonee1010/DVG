@@ -131,7 +131,7 @@ public class DVGRowProjectileShooter : MonoBehaviour
 
         foreach (MonoBehaviour behaviour in behaviours)
         {
-            if (behaviour is not IDVGEnemyLaneWalker enemy || enemy.gameObject == null)
+            if (behaviour is not IDVGEnemyLaneWalker enemy || !TryGetEnemyObject(enemy, out GameObject enemyObject))
             {
                 continue;
             }
@@ -146,7 +146,7 @@ public class DVGRowProjectileShooter : MonoBehaviour
                 continue;
             }
 
-            Vector2 toEnemy = enemy.gameObject.transform.position - transform.position;
+            Vector2 toEnemy = enemyObject.transform.position - transform.position;
             float forwardDistance = Vector2.Dot(toEnemy, forward);
             if (forwardDistance < minimumFireDistance || forwardDistance > sightRange)
             {
@@ -170,7 +170,20 @@ public class DVGRowProjectileShooter : MonoBehaviour
             return enemy.LaneIndex == boardCharacter.Cell.y;
         }
 
-        return Mathf.Abs(enemy.gameObject.transform.position.y - transform.position.y) <= laneTolerance;
+        return TryGetEnemyObject(enemy, out GameObject enemyObject)
+            && Mathf.Abs(enemyObject.transform.position.y - transform.position.y) <= laneTolerance;
+    }
+
+    bool TryGetEnemyObject(IDVGEnemyLaneWalker enemy, out GameObject enemyObject)
+    {
+        enemyObject = null;
+        if (enemy is not MonoBehaviour enemyBehaviour || enemyBehaviour == null)
+        {
+            return false;
+        }
+
+        enemyObject = enemyBehaviour.gameObject;
+        return enemyObject != null;
     }
 
     int GetLaneIndex()

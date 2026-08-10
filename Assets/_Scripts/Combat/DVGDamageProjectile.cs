@@ -94,7 +94,7 @@ public class DVGDamageProjectile : MonoBehaviour
         }
 
         IDVGEnemyLaneWalker enemy = GetEnemyLaneWalker(other);
-        if (enemy == null || enemy.Health == null || !enemy.Health.IsAlive)
+        if (!TryGetEnemyObject(enemy, out _) || enemy.Health == null || !enemy.Health.IsAlive)
         {
             return;
         }
@@ -117,7 +117,7 @@ public class DVGDamageProjectile : MonoBehaviour
         MonoBehaviour[] behaviours = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Exclude);
         foreach (MonoBehaviour behaviour in behaviours)
         {
-            if (behaviour is not IDVGEnemyLaneWalker enemy || enemy.gameObject == null)
+            if (behaviour is not IDVGEnemyLaneWalker enemy || !TryGetEnemyObject(enemy, out GameObject enemyObject))
             {
                 continue;
             }
@@ -132,7 +132,7 @@ public class DVGDamageProjectile : MonoBehaviour
                 continue;
             }
 
-            Bounds enemyBounds = GetEnemyBounds(enemy);
+            Bounds enemyBounds = GetEnemyBounds(enemyObject);
             enemyBounds.Expand(hitPadding * 2f);
             bool hitEnemy = useLaneFilter && useLaneBasedHit
                 ? SegmentOverlapsAxis(startPosition.x, endPosition.x, enemyBounds.min.x, enemyBounds.max.x)
@@ -151,10 +151,11 @@ public class DVGDamageProjectile : MonoBehaviour
     void DamageEnemy(IDVGEnemyLaneWalker enemy)
     {
         hasHit = true;
-        enemy.Health.TakeDamage(damage, recoilMultiplier);
-        if (enemy.Health.IsAlive && stunSource != null)
+        DVGHealth enemyHealth = enemy.Health;
+        enemyHealth.TakeDamage(damage, recoilMultiplier);
+        if (enemyHealth.IsAlive && stunSource != null && TryGetEnemyObject(enemy, out GameObject enemyObject))
         {
-            stunSource.TryStunTarget(enemy.gameObject);
+            stunSource.TryStunTarget(enemyObject);
         }
 
         if (destroyOnHit)
@@ -174,21 +175,21 @@ public class DVGDamageProjectile : MonoBehaviour
         Destroy(gameObject);
     }
 
-    Bounds GetEnemyBounds(IDVGEnemyLaneWalker enemy)
+    Bounds GetEnemyBounds(GameObject enemyObject)
     {
-        Collider2D collider = enemy.gameObject.GetComponent<Collider2D>();
+        Collider2D collider = enemyObject.GetComponent<Collider2D>();
         if (collider != null)
         {
             return collider.bounds;
         }
 
-        collider = enemy.gameObject.GetComponentInChildren<Collider2D>();
+        collider = enemyObject.GetComponentInChildren<Collider2D>();
         if (collider != null)
         {
             return collider.bounds;
         }
 
-        return new Bounds(enemy.gameObject.transform.position, Vector3.one * 0.5f);
+        return new Bounds(enemyObject.transform.position, Vector3.one * 0.5f);
     }
 
     bool SegmentOverlapsAxis(float start, float end, float min, float max)
@@ -249,5 +250,17 @@ public class DVGDamageProjectile : MonoBehaviour
         }
 
         return null;
+    }
+
+    bool TryGetEnemyObject(IDVGEnemyLaneWalker enemy, out GameObject enemyObject)
+    {
+        enemyObject = null;
+        if (enemy is not MonoBehaviour enemyBehaviour || enemyBehaviour == null)
+        {
+            return false;
+        }
+
+        enemyObject = enemyBehaviour.gameObject;
+        return enemyObject != null;
     }
 }

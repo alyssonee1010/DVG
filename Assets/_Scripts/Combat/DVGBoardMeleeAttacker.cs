@@ -55,10 +55,11 @@ public class DVGBoardMeleeAttacker : MonoBehaviour
             }
         }
 
-        attackTarget.Health.TakeDamage(attackDamage, recoilMultiplier);
-        if (attackTarget.Health.IsAlive && stunProfile != null)
+        DVGHealth targetHealth = attackTarget.Health;
+        targetHealth.TakeDamage(attackDamage, recoilMultiplier);
+        if (targetHealth.IsAlive && stunProfile != null && TryGetEnemyObject(attackTarget, out GameObject targetObject))
         {
-            stunProfile.TryStunTarget(attackTarget.gameObject);
+            stunProfile.TryStunTarget(targetObject);
         }
     }
 
@@ -76,7 +77,7 @@ public class DVGBoardMeleeAttacker : MonoBehaviour
 
         foreach (MonoBehaviour behaviour in behaviours)
         {
-            if (behaviour is not IDVGEnemyLaneWalker enemy || enemy.gameObject == null)
+            if (behaviour is not IDVGEnemyLaneWalker enemy || !TryGetEnemyObject(enemy, out GameObject enemyObject))
             {
                 continue;
             }
@@ -91,7 +92,7 @@ public class DVGBoardMeleeAttacker : MonoBehaviour
                 continue;
             }
 
-            Vector2 toEnemy = enemy.gameObject.transform.position - transform.position;
+            Vector2 toEnemy = enemyObject.transform.position - transform.position;
             float forwardDistance = Vector2.Dot(toEnemy, forward);
             if (forwardDistance >= 0f && forwardDistance <= attackRange)
             {
@@ -108,13 +109,18 @@ public class DVGBoardMeleeAttacker : MonoBehaviour
 
     bool IsValidTarget(IDVGEnemyLaneWalker enemy)
     {
-        return enemy != null && enemy.gameObject != null && enemy.Health != null && enemy.Health.IsAlive;
+        return TryGetEnemyObject(enemy, out _) && enemy.Health != null && enemy.Health.IsAlive;
     }
 
     bool IsInRange(IDVGEnemyLaneWalker enemy)
     {
+        if (!TryGetEnemyObject(enemy, out GameObject enemyObject))
+        {
+            return false;
+        }
+
         Vector2 forward = attackDirection.sqrMagnitude > 0f ? attackDirection.normalized : Vector2.right;
-        Vector2 toEnemy = enemy.gameObject.transform.position - transform.position;
+        Vector2 toEnemy = enemyObject.transform.position - transform.position;
         float forwardDistance = Vector2.Dot(toEnemy, forward);
         return forwardDistance >= 0f && forwardDistance <= attackRange;
     }
@@ -126,6 +132,19 @@ public class DVGBoardMeleeAttacker : MonoBehaviour
             return enemy.LaneIndex == boardCharacter.Cell.y;
         }
 
-        return Mathf.Abs(enemy.gameObject.transform.position.y - transform.position.y) <= laneTolerance;
+        return TryGetEnemyObject(enemy, out GameObject enemyObject)
+            && Mathf.Abs(enemyObject.transform.position.y - transform.position.y) <= laneTolerance;
+    }
+
+    bool TryGetEnemyObject(IDVGEnemyLaneWalker enemy, out GameObject enemyObject)
+    {
+        enemyObject = null;
+        if (enemy is not MonoBehaviour enemyBehaviour || enemyBehaviour == null)
+        {
+            return false;
+        }
+
+        enemyObject = enemyBehaviour.gameObject;
+        return enemyObject != null;
     }
 }
