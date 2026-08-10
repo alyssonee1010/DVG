@@ -208,4 +208,4 @@ These are not the core DVG board-defense architecture, but they may still be use
 
 - `PlantPlacementManager` should eventually be renamed to something like `DVGPlacementManager`.
 - `CharPlacementManagement.cs` contains `PlantPlacementManager`, so file/class names do not currently match.
-- `Recovered_PlayMode_20260705_1956.unity` appears to be a recovered scene but currently holds the active prototype.
+- `Assets/Scenes/Level 1.unity` is the active prototype scene; the recovered play-mode scene is kept as a backup.

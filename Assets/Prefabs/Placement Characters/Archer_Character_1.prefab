@@ -744,6 +744,7 @@ MonoBehaviour:
   firePointOffset: {x: 0.75, y: 0.25}
   projectileDirection: {x: 1, y: 0}
   fireInterval: 1.25
+  projectileDamage: 20
   useProjectilePool: 1
   preloadProjectileCount: 6
   maxPooledProjectiles: 24

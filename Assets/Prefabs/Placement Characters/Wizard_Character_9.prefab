@@ -507,7 +507,8 @@ MonoBehaviour:
   firePoint: {fileID: 0}
   firePointOffset: {x: 0.65, y: 0.8}
   projectileDirection: {x: 1, y: 0}
-  fireInterval: 1.25
+  fireInterval: 1.5
+  projectileDamage: 60
   useProjectilePool: 1
   preloadProjectileCount: 6
   maxPooledProjectiles: 24

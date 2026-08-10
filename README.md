@@ -6,8 +6,8 @@ The repo also still contains some earlier platformer-style scripts and prefabs. 
 
 ## Current Playable State
 
-- Main working scene: `Assets/Scenes/Recovered_PlayMode_20260705_1956.unity`
-- Older/simple scene: `Assets/Scenes/Level 1.unity`
+- Main working scene: `Assets/Scenes/Level 1.unity`
+- Backup recovered scene: `Assets/Scenes/Recovered_PlayMode_20260705_1956.unity`
 - Unity version: `6000.5.0f1`
 - Render stack: Unity 2D feature set with URP `17.5.0`
 - Core board: 6 lanes by 20 columns, represented by `DVG Board 20x6.prefab` and a tilemap-backed placement area
@@ -64,12 +64,12 @@ The repo also still contains some earlier platformer-style scripts and prefabs. 
 1. Install Unity `6000.5.0f1` or a compatible Unity 6 editor.
 2. Open this folder as a Unity project.
 3. Let Unity restore packages from `Packages/manifest.json`.
-4. Open `Assets/Scenes/Recovered_PlayMode_20260705_1956.unity`.
+4. Open `Assets/Scenes/Level 1.unity`.
 5. Press Play.
 
 ## Current Notes
 
-- The scene has local tuning that differs from some prefab defaults. For example, the active enemy spawner in the recovered scene uses a Viking walker option with higher health than the prefab baseline.
+- The scene has local tuning that differs from some prefab defaults. For example, the active enemy spawner in `Level 1` uses a Viking walker option with higher health than the prefab baseline.
 - `PlantPlacementManager` is the main placement class, but its file is named `CharPlacementManagement.cs`.
 - There are pre-board-defense platformer scripts such as `PlayerController`, `Enemy`, `Door`, `Collectable`, and `Breakable`. Treat them as legacy/supporting material unless a scene explicitly uses them.
 - Some imported asset folders are large and include unused or backup content. Prefer editing runtime prefabs/scenes in `Assets/Prefabs`, `Assets/Scenes`, and `Assets/_Scripts`.

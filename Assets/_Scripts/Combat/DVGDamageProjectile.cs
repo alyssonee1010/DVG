@@ -49,6 +49,11 @@ public class DVGDamageProjectile : MonoBehaviour
         stunSource = source;
     }
 
+    public void SetDamage(int value)
+    {
+        damage = Mathf.Max(0, value);
+    }
+
     public void Launch(Vector2 launchDirection, int targetLaneIndex)
     {
         hasHit = false;

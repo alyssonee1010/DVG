@@ -10,16 +10,16 @@ Recommended local flow:
 
 1. Open the repo folder in Unity.
 2. Let Unity import packages and assets.
-3. Open `Assets/Scenes/Recovered_PlayMode_20260705_1956.unity`.
+3. Open `Assets/Scenes/Level 1.unity`.
 4. Press Play and test the board-defense flow.
 
 ## Main Scene To Edit
 
 For current gameplay work, edit:
 
-`Assets/Scenes/Recovered_PlayMode_20260705_1956.unity`
+`Assets/Scenes/Level 1.unity`
 
-The project also has `Assets/Scenes/Level 1.unity`, but most current DVG mechanics are wired in the recovered scene.
+The recovered play-mode scene is kept as a backup, but current gameplay work should happen in `Level 1`.
 
 ## Adding A Placeable Character
 
@@ -104,11 +104,21 @@ Important fields:
 | `timeToMaxDifficulty` | Time until the ramp reaches full strength |
 | `minimumSpawnInterval` | Fastest interval after ramping |
 | `maxAliveEnemiesAtFullDifficulty` | Alive enemy cap at full ramp |
+| `difficultyCurveExponent` | Ramp shape; lower values start ramping sooner, higher values keep the early game calmer |
 | enemy option `weight` | Relative spawn chance for that option |
 | enemy option `maxHealth` | Health assigned when spawned |
 | enemy option `moveSpeed` | Lane movement speed assigned when spawned |
 
-The recovered scene currently ramps from an 11 second interval and 4 alive enemies toward a 3.5 second interval and 14 alive enemies over about 330 seconds.
+`Level 1` currently ramps from an 11 second interval and 4 alive enemies toward a 3.5 second interval and 14 alive enemies over about 330 seconds.
+
+To make the game harder faster without changing the opening delay, start with these two fields:
+
+| Goal | Change |
+| --- | --- |
+| Reach full pressure sooner | Lower `timeToMaxDifficulty`, for example `330` to `240` |
+| Make pressure climb earlier | Lower `difficultyCurveExponent`, for example `2.1` to `1.6` |
+
+Use `minimumSpawnInterval` and `maxAliveEnemiesAtFullDifficulty` only when you also want the late game itself to become harder.
 
 ## Tuning Board Life
 
@@ -131,7 +141,7 @@ Economy has three main knobs:
 - `DVGPlacementCharacterSlot.cost`
 - miner/potion reward rates and pickup values
 
-The recovered scene currently starts with 4 diamonds. Current observed slot costs are:
+`Level 1` currently starts with 4 diamonds. Current observed slot costs are:
 
 | Character | Cost |
 | --- | --- |
@@ -160,7 +170,7 @@ Before calling a gameplay change done, quickly test:
 ## Known Cleanup Candidates
 
 - Rename `PlantPlacementManager` to a DVG-specific placement name.
-- Rename `Recovered_PlayMode_20260705_1956.unity` once it is accepted as the main scene.
+- Keep or delete `Recovered_PlayMode_20260705_1956.unity` once `Level 1` is fully accepted as the main scene.
 - Separate legacy platformer content from board-defense content.
 - Move scene-only balance values into ScriptableObjects once tuning stabilizes.
 - Add automated edit-mode tests for wallet, health, lane spawning, and projectile target filtering.

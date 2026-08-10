@@ -10,11 +10,9 @@ The player defends a treasure chest from waves of gamer/Viking attackers by plac
 
 The main working scene is:
 
-`Assets/Scenes/Recovered_PlayMode_20260705_1956.unity`
+`Assets/Scenes/Level 1.unity`
 
-It includes the board, water/boat themed background, character UI, diamond counter, healing potion counter, board life/chest, and active `DVGEnemyLaneSpawner`.
-
-`Assets/Scenes/Level 1.unity` exists, but it is much smaller and appears to belong to the earlier platformer phase.
+It includes the board, water/boat themed background, character UI, diamond counter, healing potion counter, board life/chest, and active `DVGEnemyLaneSpawner`. The old recovered scene is kept only as a backup.
 
 ## Player Resources
 
@@ -23,7 +21,7 @@ It includes the board, water/boat themed background, character UI, diamond count
 Diamonds are the placement currency.
 
 - Stored by `DVGUsableWallet`.
-- The recovered scene currently starts with `4` diamonds.
+- `Level 1` currently starts with `4` diamonds.
 - Character slots spend diamonds through `PlantPlacementManager`.
 - Diamond pickups are collected by left clicking them.
 - Miner characters can generate thrown diamond pickups.
@@ -33,7 +31,7 @@ Diamonds are the placement currency.
 Healing potions are a usable resource.
 
 - Stored by `DVGUsableWallet`.
-- The recovered scene currently starts with `0` potions.
+- `Level 1` currently starts with `0` potions.
 - Potion pickups are collected by left clicking them.
 - The potion-maker character can generate healing potion pickups.
 - Clicking the potion counter enters potion aiming mode.
@@ -66,7 +64,7 @@ The current board-defense flow is built around a 6-lane, 20-column board:
 
 ## Character Slots And Costs
 
-The recovered scene contains five placement slots wired to these prefabs:
+`Level 1` contains five placement slots wired to these prefabs:
 
 | Prefab | Current role | Observed scene cost |
 | --- | --- | --- |
@@ -130,7 +128,7 @@ Costs live on `DVGPlacementCharacterSlot` components in the scene, not on the ch
 - optionally ramps difficulty over time
 - chooses enemy options by weight
 
-The active recovered scene spawner currently uses:
+The active `Level 1` spawner currently uses:
 
 - `initialDelay`: `22`
 - `spawnInterval`: `11`

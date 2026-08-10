@@ -12,6 +12,9 @@ public class DVGRowProjectileShooter : MonoBehaviour
     [SerializeField] Vector2 firePointOffset = new Vector2(0.65f, 0.25f);
     [SerializeField] Vector2 projectileDirection = Vector2.right;
     [SerializeField] float fireInterval = 1.25f;
+    [Tooltip("Damage assigned to each projectile spawned by this character.")]
+    [Min(0)]
+    [SerializeField] int projectileDamage = 25;
 
     [Header("Pooling")]
     [SerializeField] bool useProjectilePool = true;
@@ -105,6 +108,7 @@ public class DVGRowProjectileShooter : MonoBehaviour
         }
 
         GameObject projectileObject = projectile.gameObject;
+        projectile.SetDamage(projectileDamage);
         projectile.SetStunSource(stunProfile);
         projectileObject.transform.SetPositionAndRotation(spawnPosition, Quaternion.identity);
         ApplyProjectileSorting(projectileObject, laneIndex);
