@@ -1,10 +1,10 @@
 # Gameplay
 
-This document describes the current Dev vs Gamers prototype as it exists in the Unity project right now.
+This document describes the current Vikings vs Everyone prototype as it exists in the Unity project right now.
 
 ## Core Fantasy
 
-The player defends a treasure chest from waves of gamer/Viking attackers by placing developer-side characters on a lane board. The game currently plays like a compact lane-defense prototype: build a defense, keep the economy moving, patch up damaged units, and survive the increasing spawn pressure.
+The player defends a treasure chest from waves of Viking attackers by placing a mixed roster of defenders on a lane board. The game currently plays like a compact lane-defense prototype: build a defense, keep the economy moving, patch up damaged units, and survive the increasing spawn pressure.
 
 ## Active Scene
 
@@ -12,7 +12,7 @@ The main working scene is:
 
 `Assets/Scenes/Level 1.unity`
 
-It includes the board, water/boat themed background, character UI, diamond counter, healing potion counter, board life/chest, and active `DVGEnemyLaneSpawner`. The old recovered scene is kept only as a backup.
+It includes the board, water/boat themed background, character UI, diamond counter, healing potion counter, board life/chest, and active `VVEEnemyLaneSpawner`. The recovered play-mode scene is kept as a backup.
 
 ## Player Resources
 
@@ -20,8 +20,8 @@ It includes the board, water/boat themed background, character UI, diamond count
 
 Diamonds are the placement currency.
 
-- Stored by `DVGUsableWallet`.
-- `Level 1` currently starts with `4` diamonds.
+- Stored by `VVEUsableWallet`.
+- `Level 1` currently starts with `14` diamonds.
 - Character slots spend diamonds through `PlantPlacementManager`.
 - Diamond pickups are collected by left clicking them.
 - Miner characters can generate thrown diamond pickups.
@@ -30,7 +30,7 @@ Diamonds are the placement currency.
 
 Healing potions are a usable resource.
 
-- Stored by `DVGUsableWallet`.
+- Stored by `VVEUsableWallet`.
 - `Level 1` currently starts with `0` potions.
 - Potion pickups are collected by left clicking them.
 - The potion-maker character can generate healing potion pickups.
@@ -56,10 +56,10 @@ Healing potions are a usable resource.
 
 The current board-defense flow is built around a 6-lane, 20-column board:
 
-- `DVGBoard` supports a prefab-board representation with row and column tiles.
-- `DVGTilemapBoard` supports a tilemap-backed board and placement offset.
+- `VVEBoard` supports a prefab-board representation with row and column tiles.
+- `VVETilemapBoard` supports a tilemap-backed board and placement offset.
 - `PlantPlacementManager` checks whether the clicked tile exists in the placement tilemap before allowing placement.
-- Placed characters receive a `DVGBoardCharacter`, which stores their board cell and applies row-based sorting.
+- Placed characters receive a `VVEBoardCharacter`, which stores their board cell and applies row-based sorting.
 - Enemies use lane indices to decide movement, targeting, and projectile hits.
 
 ## Character Slots And Costs
@@ -68,19 +68,19 @@ The current board-defense flow is built around a 6-lane, 20-column board:
 
 | Prefab | Current role | Observed scene cost |
 | --- | --- | --- |
-| `Miner_Character` | Generates diamond pickups over time or animation events | `2` |
-| `Wizard_potion` | Generates healing potion pickups | `3` |
-| `Archer_Character_1` | Shoots row projectiles | `5` |
-| `Wizard_Character_9` | Ranged/magic attacker, depending on prefab components | `4` |
-| `Cave_Man_Character_2` | Higher-health melee/blocking character | `8` |
+| `Miner_Character` | Generates diamond pickups over time or animation events | `8` |
+| `Archer_Character_1` | Shoots row projectiles for 20 damage | `12` |
+| `Wizard_Character_9` | Ranged/magic attacker; currently shoots for 60 damage | `12` |
+| `Cave_Man_Character_2` | Higher-health melee/blocking character | `18` |
+| `Wizard_potion` | Generates healing potion pickups | `21` |
 
-Costs live on `DVGPlacementCharacterSlot` components in the scene, not on the character prefabs themselves.
+Costs live on `VVEPlacementCharacterSlot` components in the scene, not on the character prefabs themselves.
 
 ## Combat
 
 ### Health
 
-`DVGHealth` is the shared health component for DVG board entities. It supports:
+`VVEHealth` is the shared health component for VVE board entities. It supports:
 
 - max/current health
 - damage with recoil multiplier metadata
@@ -88,40 +88,42 @@ Costs live on `DVGPlacementCharacterSlot` components in the scene, not on the ch
 - death events
 - optional destruction on death
 
-`DVGWorldHealthBar` displays world-space health over damaged entities.
+`VVEWorldHealthBar` displays world-space health over damaged entities.
 
 ### Ranged Defenders
 
-`DVGRowProjectileShooter`:
+`VVERowProjectileShooter`:
 
-- requires `DVGBoardCharacter`
+- requires `VVEBoardCharacter`
 - scans for enemies in the same lane
 - respects `sightRange` and `minimumFireDistance`
+- assigns each shot from the shooter's `projectileDamage` field
 - uses a projectile pool by default
 - can fire immediately or wait for an animation event
 - applies lane-based sorting to projectiles
 
-`DVGDamageProjectile`:
+`VVEDamageProjectile`:
 
 - moves in a launch direction
-- can check hits by trigger or by lane-based overlap logic
-- damages `DVGHealth`
+- can check hits by trigger or by segment/path overlap so fast projectiles are less likely to skip enemies
+- damages `VVEHealth`
 - can return to a pool instead of being destroyed
 
 ### Melee Defenders
 
-`DVGBoardMeleeAttacker`:
+`VVEBoardMeleeAttacker`:
 
 - looks forward along a lane
 - attacks enemies within range
+- retargets at the animation damage moment if the original target died or moved out of range
 - deals damage from animation event methods or direct method calls
-- can apply recoil/stun through `DVGHitRecoil`
+- can apply recoil/stun through `VVEHitRecoil`
 
 ### Enemies
 
-`DVGEnemyLaneSpawner`:
+`VVEEnemyLaneSpawner`:
 
-- builds lanes from `DVGBoard` or `DVGTilemapBoard`
+- builds lanes from `VVEBoard` or `VVETilemapBoard`
 - waits `initialDelay`
 - spawns enemies at `spawnInterval`
 - caps alive enemies
@@ -131,14 +133,16 @@ Costs live on `DVGPlacementCharacterSlot` components in the scene, not on the ch
 The active `Level 1` spawner currently uses:
 
 - `initialDelay`: `22`
-- `spawnInterval`: `11`
-- `maxAliveEnemies`: `4`
-- `timeToMaxDifficulty`: `330`
-- `minimumSpawnInterval`: `3.5`
-- `maxAliveEnemiesAtFullDifficulty`: `14`
-- Viking walker option: about `140` health and `0.8` speed in the scene
+- `initialDelay`: `10`
+- `spawnInterval`: `8`
+- `maxAliveEnemies`: `8`
+- `timeToMaxDifficulty`: `180`
+- `minimumSpawnInterval`: `2`
+- `difficultyCurveExponent`: `1.3`
+- `maxAliveEnemiesAtFullDifficulty`: `21`
+- Viking walker option: about `140` health and `0.9` speed in the scene
 
-`DVGEnemyVikingWalker`:
+`VVEEnemyVikingWalker`:
 
 - walks from the spawn edge toward the chest edge
 - finds a placed character in the same lane
@@ -148,7 +152,7 @@ The active `Level 1` spawner currently uses:
 
 ## Loss State
 
-`DVGBoardLife` represents the chest/base life.
+`VVEBoardLife` represents the chest/base life.
 
 - Current starting life is `5`.
 - A leaked enemy deals `boardDamageOnExit`, usually `1`.
@@ -159,7 +163,7 @@ There is no explicit victory state yet. Survival duration and tuning are the cur
 
 ## Current Rough Edges
 
-- The scene being used is named like a play-mode recovery scene, but it is currently the richest playable scene.
-- Some older platformer scripts and prefabs still live next to the DVG board-defense systems.
+- Some older platformer scripts and prefabs still live next to the VVE board-defense systems.
 - Some gameplay state is scene-authored rather than prefab-authored, especially slot costs and active spawner tuning.
 - The placement manager class is named `PlantPlacementManager` even though this is no longer a plant game.
+- The public working title is Vikings vs Everyone, and script/prefab names now use the `VVE` prefix.

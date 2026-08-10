@@ -2,13 +2,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class DVGTilemapBoard : MonoBehaviour
+public class VVETilemapBoard : MonoBehaviour
 {
     [SerializeField] Grid grid;
     [SerializeField] Tilemap tilemap;
     [SerializeField] Vector3 placementOffset = new Vector3(0f, 0.18f, 0f);
 
-    readonly Dictionary<Vector3Int, DVGDraggableCharacter> occupants = new Dictionary<Vector3Int, DVGDraggableCharacter>();
+    readonly Dictionary<Vector3Int, VVEDraggableCharacter> occupants = new Dictionary<Vector3Int, VVEDraggableCharacter>();
 
     public Grid Grid => grid;
     public Tilemap Tilemap => tilemap;
@@ -26,7 +26,7 @@ public class DVGTilemapBoard : MonoBehaviour
         }
     }
 
-    public bool TryPlace(DVGDraggableCharacter character, Vector3 worldPosition)
+    public bool TryPlace(VVEDraggableCharacter character, Vector3 worldPosition)
     {
         if (character == null || grid == null || tilemap == null)
         {
@@ -46,7 +46,7 @@ public class DVGTilemapBoard : MonoBehaviour
         return true;
     }
 
-    public void Clear(DVGDraggableCharacter character)
+    public void Clear(VVEDraggableCharacter character)
     {
         if (character == null)
         {
@@ -55,7 +55,7 @@ public class DVGTilemapBoard : MonoBehaviour
 
         Vector3Int foundCell = default;
         bool found = false;
-        foreach (KeyValuePair<Vector3Int, DVGDraggableCharacter> pair in occupants)
+        foreach (KeyValuePair<Vector3Int, VVEDraggableCharacter> pair in occupants)
         {
             if (pair.Value == character)
             {
@@ -81,8 +81,8 @@ public class DVGTilemapBoard : MonoBehaviour
         return grid.GetCellCenterWorld(cell) + placementOffset;
     }
 
-    bool IsOccupied(Vector3Int cell, DVGDraggableCharacter requester)
+    bool IsOccupied(Vector3Int cell, VVEDraggableCharacter requester)
     {
-        return occupants.TryGetValue(cell, out DVGDraggableCharacter occupant) && occupant != null && occupant != requester;
+        return occupants.TryGetValue(cell, out VVEDraggableCharacter occupant) && occupant != null && occupant != requester;
     }
 }

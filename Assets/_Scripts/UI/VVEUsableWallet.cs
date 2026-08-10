@@ -1,12 +1,12 @@
 using System;
 using UnityEngine;
 
-public class DVGUsableWallet : MonoBehaviour
+public class VVEUsableWallet : MonoBehaviour
 {
     [SerializeField] int startingDiamonds = 5;
     [SerializeField] int startingHealingPotions;
 
-    public static DVGUsableWallet Instance { get; private set; }
+    public static VVEUsableWallet Instance { get; private set; }
 
     public int Diamonds { get; private set; }
     public int HealingPotions { get; private set; }

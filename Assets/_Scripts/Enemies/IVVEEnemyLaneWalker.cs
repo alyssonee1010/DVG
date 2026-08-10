@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public interface IDVGEnemyLaneWalker
+public interface IVVEEnemyLaneWalker
 {
     int LaneIndex { get; }
-    DVGHealth Health { get; }
+    VVEHealth Health { get; }
     GameObject gameObject { get; }
 
     void BeginLaneWalk(int laneIndex, Vector3 startPosition, Vector3 endPosition, float speed, int maxHealth);

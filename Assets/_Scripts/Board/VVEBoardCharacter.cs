@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-[RequireComponent(typeof(DVGHealth))]
-public class DVGBoardCharacter : MonoBehaviour
+[RequireComponent(typeof(VVEHealth))]
+public class VVEBoardCharacter : MonoBehaviour
 {
     [Header("Health")]
     [SerializeField] int maxHealth = 100;
@@ -11,26 +11,26 @@ public class DVGBoardCharacter : MonoBehaviour
     [SerializeField] int sortingOrderPerRow = 120;
     [SerializeField] int sortingOrderOffset;
 
-    DVGHealth health;
-    DVGWorldHealthBar healthBar;
+    VVEHealth health;
+    VVEWorldHealthBar healthBar;
 
     public Vector3Int Cell { get; private set; }
     public bool HasCell { get; private set; }
-    public DVGHealth Health => health;
+    public VVEHealth Health => health;
 
     void Awake()
     {
-        health = GetComponent<DVGHealth>();
+        health = GetComponent<VVEHealth>();
         if (health == null)
         {
-            health = gameObject.AddComponent<DVGHealth>();
+            health = gameObject.AddComponent<VVEHealth>();
         }
 
         health.SetMaxHealth(maxHealth);
-        healthBar = GetComponent<DVGWorldHealthBar>();
+        healthBar = GetComponent<VVEWorldHealthBar>();
         if (healthBar == null)
         {
-            healthBar = gameObject.AddComponent<DVGWorldHealthBar>();
+            healthBar = gameObject.AddComponent<VVEWorldHealthBar>();
         }
     }
 

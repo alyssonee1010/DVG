@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DVGThrownPickup : MonoBehaviour
+public class VVEThrownPickup : MonoBehaviour
 {
     Vector3 startPosition;
     Vector3 landingPosition;

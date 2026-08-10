@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class DVGEnemyLaneSpawner : MonoBehaviour
+public class VVEEnemyLaneSpawner : MonoBehaviour
 {
     enum WalkDirection
     {
@@ -27,8 +27,8 @@ public class DVGEnemyLaneSpawner : MonoBehaviour
     }
 
     [Header("Board")]
-    [SerializeField] DVGBoard board;
-    [SerializeField] DVGTilemapBoard tilemapBoard;
+    [SerializeField] VVEBoard board;
+    [SerializeField] VVETilemapBoard tilemapBoard;
     [SerializeField] WalkDirection walkDirection = WalkDirection.RightToLeft;
     [SerializeField] float edgePadding = 0f;
     [SerializeField] float laneYOffset = 0f;
@@ -58,12 +58,12 @@ public class DVGEnemyLaneSpawner : MonoBehaviour
     {
         if (board == null)
         {
-            board = FindAnyObjectByType<DVGBoard>();
+            board = FindAnyObjectByType<VVEBoard>();
         }
 
         if (tilemapBoard == null)
         {
-            tilemapBoard = FindAnyObjectByType<DVGTilemapBoard>();
+            tilemapBoard = FindAnyObjectByType<VVETilemapBoard>();
         }
 
         RebuildLanes();
@@ -134,9 +134,9 @@ public class DVGEnemyLaneSpawner : MonoBehaviour
 
         Lane lane = lanes[Random.Range(0, lanes.Count)];
         MonoBehaviour instance = Instantiate(option.prefab, lane.Start, Quaternion.identity, transform);
-        if (!TryGetLaneWalker(instance, out IDVGEnemyLaneWalker enemy))
+        if (!TryGetLaneWalker(instance, out IVVEEnemyLaneWalker enemy))
         {
-            Debug.LogWarning($"{nameof(DVGEnemyLaneSpawner)} could not spawn '{instance.name}' because it has no lane walker script.");
+            Debug.LogWarning($"{nameof(VVEEnemyLaneSpawner)} could not spawn '{instance.name}' because it has no lane walker script.");
             Destroy(instance.gameObject);
             return;
         }
@@ -279,15 +279,15 @@ public class DVGEnemyLaneSpawner : MonoBehaviour
         return prefab != null && TryGetLaneWalker(prefab, out _);
     }
 
-    bool TryGetLaneWalker(MonoBehaviour source, out IDVGEnemyLaneWalker laneWalker)
+    bool TryGetLaneWalker(MonoBehaviour source, out IVVEEnemyLaneWalker laneWalker)
     {
-        laneWalker = source as IDVGEnemyLaneWalker;
+        laneWalker = source as IVVEEnemyLaneWalker;
         if (laneWalker != null)
         {
             return true;
         }
 
-        laneWalker = source.GetComponent<IDVGEnemyLaneWalker>();
+        laneWalker = source.GetComponent<IVVEEnemyLaneWalker>();
         return laneWalker != null;
     }
 

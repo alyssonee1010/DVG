@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DVGTile : MonoBehaviour
+public class VVETile : MonoBehaviour
 {
     [SerializeField] int row;
     [SerializeField] int column;

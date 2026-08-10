@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[RequireComponent(typeof(DVGBoardCharacter))]
-public class DVGBoardMeleeAttacker : MonoBehaviour
+[RequireComponent(typeof(VVEBoardCharacter))]
+public class VVEBoardMeleeAttacker : MonoBehaviour
 {
     [SerializeField] float attackRange = 1.1f;
     [SerializeField] float attackCooldown = 1.1f;
@@ -11,16 +11,16 @@ public class DVGBoardMeleeAttacker : MonoBehaviour
     [SerializeField] float laneTolerance = 0.45f;
     [SerializeField] string attackTriggerName = "Attack";
 
-    DVGBoardCharacter boardCharacter;
-    DVGHitRecoil stunProfile;
+    VVEBoardCharacter boardCharacter;
+    VVEHitRecoil stunProfile;
     Animator animator;
-    IDVGEnemyLaneWalker attackTarget;
+    IVVEEnemyLaneWalker attackTarget;
     float attackTimer;
 
     void Awake()
     {
-        boardCharacter = GetComponent<DVGBoardCharacter>();
-        stunProfile = GetComponent<DVGHitRecoil>();
+        boardCharacter = GetComponent<VVEBoardCharacter>();
+        stunProfile = GetComponent<VVEHitRecoil>();
         animator = GetComponent<Animator>();
     }
 
@@ -32,7 +32,7 @@ public class DVGBoardMeleeAttacker : MonoBehaviour
             return;
         }
 
-        if (!TryFindEnemyInRange(out IDVGEnemyLaneWalker target))
+        if (!TryFindEnemyInRange(out IVVEEnemyLaneWalker target))
         {
             attackTarget = null;
             animator.ResetTrigger(attackTriggerName);
@@ -55,7 +55,7 @@ public class DVGBoardMeleeAttacker : MonoBehaviour
             }
         }
 
-        DVGHealth targetHealth = attackTarget.Health;
+        VVEHealth targetHealth = attackTarget.Health;
         targetHealth.TakeDamage(attackDamage, recoilMultiplier);
         if (targetHealth.IsAlive && stunProfile != null && TryGetEnemyObject(attackTarget, out GameObject targetObject))
         {
@@ -68,7 +68,7 @@ public class DVGBoardMeleeAttacker : MonoBehaviour
         DealAttackDamage();
     }
 
-    bool TryFindEnemyInRange(out IDVGEnemyLaneWalker target)
+    bool TryFindEnemyInRange(out IVVEEnemyLaneWalker target)
     {
         target = null;
         float bestForwardDistance = float.PositiveInfinity;
@@ -77,7 +77,7 @@ public class DVGBoardMeleeAttacker : MonoBehaviour
 
         foreach (MonoBehaviour behaviour in behaviours)
         {
-            if (behaviour is not IDVGEnemyLaneWalker enemy || !TryGetEnemyObject(enemy, out GameObject enemyObject))
+            if (behaviour is not IVVEEnemyLaneWalker enemy || !TryGetEnemyObject(enemy, out GameObject enemyObject))
             {
                 continue;
             }
@@ -107,12 +107,12 @@ public class DVGBoardMeleeAttacker : MonoBehaviour
         return target != null;
     }
 
-    bool IsValidTarget(IDVGEnemyLaneWalker enemy)
+    bool IsValidTarget(IVVEEnemyLaneWalker enemy)
     {
         return TryGetEnemyObject(enemy, out _) && enemy.Health != null && enemy.Health.IsAlive;
     }
 
-    bool IsInRange(IDVGEnemyLaneWalker enemy)
+    bool IsInRange(IVVEEnemyLaneWalker enemy)
     {
         if (!TryGetEnemyObject(enemy, out GameObject enemyObject))
         {
@@ -125,7 +125,7 @@ public class DVGBoardMeleeAttacker : MonoBehaviour
         return forwardDistance >= 0f && forwardDistance <= attackRange;
     }
 
-    bool IsInSameLane(IDVGEnemyLaneWalker enemy)
+    bool IsInSameLane(IVVEEnemyLaneWalker enemy)
     {
         if (boardCharacter != null && boardCharacter.HasCell)
         {
@@ -136,7 +136,7 @@ public class DVGBoardMeleeAttacker : MonoBehaviour
             && Mathf.Abs(enemyObject.transform.position.y - transform.position.y) <= laneTolerance;
     }
 
-    bool TryGetEnemyObject(IDVGEnemyLaneWalker enemy, out GameObject enemyObject)
+    bool TryGetEnemyObject(IVVEEnemyLaneWalker enemy, out GameObject enemyObject)
     {
         enemyObject = null;
         if (enemy is not MonoBehaviour enemyBehaviour || enemyBehaviour == null)

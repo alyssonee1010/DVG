@@ -1,11 +1,11 @@
 using TMPro;
 using UnityEngine;
 
-public class DVGUsableCounterUI : MonoBehaviour
+public class VVEUsableCounterUI : MonoBehaviour
 {
     enum CounterResource { Diamonds, HealingPotions }
 
-    [SerializeField] DVGUsableWallet wallet;
+    [SerializeField] VVEUsableWallet wallet;
     [SerializeField] CounterResource resource = CounterResource.Diamonds;
     [SerializeField] TMP_Text diamondText;
     [SerializeField] string prefix = "";
@@ -20,7 +20,7 @@ public class DVGUsableCounterUI : MonoBehaviour
 
         if (wallet == null)
         {
-            wallet = DVGUsableWallet.Instance != null ? DVGUsableWallet.Instance : FindAnyObjectByType<DVGUsableWallet>();
+            wallet = VVEUsableWallet.Instance != null ? VVEUsableWallet.Instance : FindAnyObjectByType<VVEUsableWallet>();
         }
 
         if (diamondText == null)
@@ -39,7 +39,7 @@ public class DVGUsableCounterUI : MonoBehaviour
 
         if (wallet == null)
         {
-            wallet = DVGUsableWallet.Instance != null ? DVGUsableWallet.Instance : FindAnyObjectByType<DVGUsableWallet>();
+            wallet = VVEUsableWallet.Instance != null ? VVEUsableWallet.Instance : FindAnyObjectByType<VVEUsableWallet>();
         }
 
         if (wallet != null)
@@ -76,6 +76,6 @@ public class DVGUsableCounterUI : MonoBehaviour
 
     bool IsPlacementSlotPrice()
     {
-        return name == "Price" && GetComponentInParent<DVGPlacementCharacterSlot>() != null;
+        return name == "Price" && GetComponentInParent<VVEPlacementCharacterSlot>() != null;
     }
 }

@@ -3,8 +3,8 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 
-[RequireComponent(typeof(DVGBoardCharacter))]
-public class DVGRowProjectileShooter : MonoBehaviour
+[RequireComponent(typeof(VVEBoardCharacter))]
+public class VVERowProjectileShooter : MonoBehaviour
 {
     [Header("Projectile")]
     [SerializeField] GameObject projectilePrefab;
@@ -43,18 +43,18 @@ public class DVGRowProjectileShooter : MonoBehaviour
     [SerializeField] int projectileSortingOrderPerRow = 120;
     [SerializeField] int projectileSortingOrderOffset = 50;
 
-    DVGBoardCharacter boardCharacter;
-    DVGHitRecoil stunProfile;
+    VVEBoardCharacter boardCharacter;
+    VVEHitRecoil stunProfile;
     Animator animator;
-    IDVGEnemyLaneWalker currentTarget;
-    readonly List<DVGDamageProjectile> projectilePool = new List<DVGDamageProjectile>();
+    IVVEEnemyLaneWalker currentTarget;
+    readonly List<VVEDamageProjectile> projectilePool = new List<VVEDamageProjectile>();
     float fireTimer;
     bool waitingForShootAnimationEvent;
 
     void Awake()
     {
-        boardCharacter = GetComponent<DVGBoardCharacter>();
-        stunProfile = GetComponent<DVGHitRecoil>();
+        boardCharacter = GetComponent<VVEBoardCharacter>();
+        stunProfile = GetComponent<VVEHitRecoil>();
         animator = GetComponent<Animator>();
         PreloadProjectiles();
     }
@@ -63,7 +63,7 @@ public class DVGRowProjectileShooter : MonoBehaviour
     {
         fireTimer -= Time.deltaTime;
 
-        if (projectilePrefab == null || !TryFindTarget(out IDVGEnemyLaneWalker target))
+        if (projectilePrefab == null || !TryFindTarget(out IVVEEnemyLaneWalker target))
         {
             currentTarget = null;
             waitingForShootAnimationEvent = false;
@@ -101,7 +101,7 @@ public class DVGRowProjectileShooter : MonoBehaviour
             ? firePoint.position
             : transform.TransformPoint(firePointOffset);
 
-        DVGDamageProjectile projectile = GetProjectile();
+        VVEDamageProjectile projectile = GetProjectile();
         if (projectile == null)
         {
             return;
@@ -122,7 +122,7 @@ public class DVGRowProjectileShooter : MonoBehaviour
         ShootProjectile();
     }
 
-    bool TryFindTarget(out IDVGEnemyLaneWalker bestTarget)
+    bool TryFindTarget(out IVVEEnemyLaneWalker bestTarget)
     {
         bestTarget = null;
         float bestForwardDistance = float.PositiveInfinity;
@@ -131,7 +131,7 @@ public class DVGRowProjectileShooter : MonoBehaviour
 
         foreach (MonoBehaviour behaviour in behaviours)
         {
-            if (behaviour is not IDVGEnemyLaneWalker enemy || !TryGetEnemyObject(enemy, out GameObject enemyObject))
+            if (behaviour is not IVVEEnemyLaneWalker enemy || !TryGetEnemyObject(enemy, out GameObject enemyObject))
             {
                 continue;
             }
@@ -163,7 +163,7 @@ public class DVGRowProjectileShooter : MonoBehaviour
         return bestTarget != null;
     }
 
-    bool IsInSameLane(IDVGEnemyLaneWalker enemy)
+    bool IsInSameLane(IVVEEnemyLaneWalker enemy)
     {
         if (boardCharacter != null && boardCharacter.HasCell)
         {
@@ -174,7 +174,7 @@ public class DVGRowProjectileShooter : MonoBehaviour
             && Mathf.Abs(enemyObject.transform.position.y - transform.position.y) <= laneTolerance;
     }
 
-    bool TryGetEnemyObject(IDVGEnemyLaneWalker enemy, out GameObject enemyObject)
+    bool TryGetEnemyObject(IVVEEnemyLaneWalker enemy, out GameObject enemyObject)
     {
         enemyObject = null;
         if (enemy is not MonoBehaviour enemyBehaviour || enemyBehaviour == null)
@@ -210,7 +210,7 @@ public class DVGRowProjectileShooter : MonoBehaviour
         }
     }
 
-    DVGDamageProjectile GetProjectile()
+    VVEDamageProjectile GetProjectile()
     {
         if (!useProjectilePool)
         {
@@ -219,7 +219,7 @@ public class DVGRowProjectileShooter : MonoBehaviour
 
         for (int i = 0; i < projectilePool.Count; i++)
         {
-            DVGDamageProjectile pooledProjectile = projectilePool[i];
+            VVEDamageProjectile pooledProjectile = projectilePool[i];
             if (pooledProjectile != null && !pooledProjectile.gameObject.activeSelf)
             {
                 return pooledProjectile;
@@ -234,9 +234,9 @@ public class DVGRowProjectileShooter : MonoBehaviour
         return CreatePooledProjectile();
     }
 
-    DVGDamageProjectile CreatePooledProjectile()
+    VVEDamageProjectile CreatePooledProjectile()
     {
-        DVGDamageProjectile projectile = CreateProjectile(true);
+        VVEDamageProjectile projectile = CreateProjectile(true);
         if (projectile != null)
         {
             projectilePool.Add(projectile);
@@ -246,13 +246,13 @@ public class DVGRowProjectileShooter : MonoBehaviour
         return projectile;
     }
 
-    DVGDamageProjectile CreateProjectile(bool pooled)
+    VVEDamageProjectile CreateProjectile(bool pooled)
     {
         GameObject projectileObject = Instantiate(projectilePrefab);
-        DVGDamageProjectile projectile = projectileObject.GetComponent<DVGDamageProjectile>();
+        VVEDamageProjectile projectile = projectileObject.GetComponent<VVEDamageProjectile>();
         if (projectile == null)
         {
-            projectile = projectileObject.AddComponent<DVGDamageProjectile>();
+            projectile = projectileObject.AddComponent<VVEDamageProjectile>();
         }
 
         projectile.SetReturnToPool(pooled);

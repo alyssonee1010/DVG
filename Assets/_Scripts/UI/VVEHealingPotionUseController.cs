@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class DVGHealingPotionUseController : MonoBehaviour
+public class VVEHealingPotionUseController : MonoBehaviour
 {
-    [SerializeField] DVGUsableWallet wallet;
+    [SerializeField] VVEUsableWallet wallet;
     [SerializeField] Sprite potionIcon;
     [SerializeField] string scenePotionName = "Healing Potion";
     [SerializeField] string usableUiName = "Usable_UI";
@@ -28,10 +28,10 @@ public class DVGHealingPotionUseController : MonoBehaviour
     Transform scenePotionTransform;
     SpriteRenderer potionGhostRenderer;
     SpriteRenderer potionCursorGhostRenderer;
-    DVGBoardCharacter hoveredTargetCharacter;
+    VVEBoardCharacter hoveredTargetCharacter;
     bool isAiming;
 
-    public static DVGHealingPotionUseController Instance { get; private set; }
+    public static VVEHealingPotionUseController Instance { get; private set; }
     public bool IsAiming => isAiming;
 
     void Awake()
@@ -43,12 +43,12 @@ public class DVGHealingPotionUseController : MonoBehaviour
 
         if (wallet == null)
         {
-            wallet = GetComponent<DVGUsableWallet>();
+            wallet = GetComponent<VVEUsableWallet>();
         }
 
         if (wallet == null)
         {
-            wallet = DVGUsableWallet.Instance != null ? DVGUsableWallet.Instance : FindAnyObjectByType<DVGUsableWallet>();
+            wallet = VVEUsableWallet.Instance != null ? VVEUsableWallet.Instance : FindAnyObjectByType<VVEUsableWallet>();
         }
 
         EnsureFallbackCounter();
@@ -117,7 +117,7 @@ public class DVGHealingPotionUseController : MonoBehaviour
             return false;
         }
 
-        DVGBoardCharacter target = FindDamagedCharacterAt(worldPosition);
+        VVEBoardCharacter target = FindDamagedCharacterAt(worldPosition);
         if (target != null && wallet != null && wallet.TrySpendHealingPotion())
         {
             ClearTargetTint();
@@ -207,7 +207,7 @@ public class DVGHealingPotionUseController : MonoBehaviour
         return false;
     }
 
-    DVGBoardCharacter FindDamagedCharacterAt(Vector3 worldPosition)
+    VVEBoardCharacter FindDamagedCharacterAt(Vector3 worldPosition)
     {
         Collider2D[] hits = Physics2D.OverlapPointAll(worldPosition);
         foreach (Collider2D hit in hits)
@@ -217,17 +217,17 @@ public class DVGHealingPotionUseController : MonoBehaviour
                 continue;
             }
 
-            DVGBoardCharacter character = hit.GetComponentInParent<DVGBoardCharacter>();
+            VVEBoardCharacter character = hit.GetComponentInParent<VVEBoardCharacter>();
             if (IsDamagedCharacter(character))
             {
                 return character;
             }
         }
 
-        DVGBoardCharacter bestCharacter = null;
+        VVEBoardCharacter bestCharacter = null;
         float bestDistance = clickSearchRadius;
-        DVGBoardCharacter[] characters = FindObjectsByType<DVGBoardCharacter>(FindObjectsInactive.Exclude);
-        foreach (DVGBoardCharacter character in characters)
+        VVEBoardCharacter[] characters = FindObjectsByType<VVEBoardCharacter>(FindObjectsInactive.Exclude);
+        foreach (VVEBoardCharacter character in characters)
         {
             if (!IsDamagedCharacter(character))
             {
@@ -247,8 +247,8 @@ public class DVGHealingPotionUseController : MonoBehaviour
 
     bool HasDamagedCharacter()
     {
-        DVGBoardCharacter[] characters = FindObjectsByType<DVGBoardCharacter>(FindObjectsInactive.Exclude);
-        foreach (DVGBoardCharacter character in characters)
+        VVEBoardCharacter[] characters = FindObjectsByType<VVEBoardCharacter>(FindObjectsInactive.Exclude);
+        foreach (VVEBoardCharacter character in characters)
         {
             if (IsDamagedCharacter(character))
             {
@@ -259,7 +259,7 @@ public class DVGHealingPotionUseController : MonoBehaviour
         return false;
     }
 
-    bool IsDamagedCharacter(DVGBoardCharacter character)
+    bool IsDamagedCharacter(VVEBoardCharacter character)
     {
         return character != null
             && character.isActiveAndEnabled
@@ -270,7 +270,7 @@ public class DVGHealingPotionUseController : MonoBehaviour
 
     void UpdateTargetTint()
     {
-        DVGBoardCharacter hoveredCharacter = FindDamagedCharacterAt(GetMouseWorldPosition());
+        VVEBoardCharacter hoveredCharacter = FindDamagedCharacterAt(GetMouseWorldPosition());
         if (hoveredCharacter != hoveredTargetCharacter)
         {
             ClearTargetTint();
@@ -415,7 +415,7 @@ public class DVGHealingPotionUseController : MonoBehaviour
         originalColors.Remove(renderer);
     }
 
-    void RestoreCharacterTint(DVGBoardCharacter character)
+    void RestoreCharacterTint(VVEBoardCharacter character)
     {
         if (character == null)
         {
@@ -564,7 +564,7 @@ public class DVGHealingPotionUseController : MonoBehaviour
         return null;
     }
 
-    void PlayHealFlash(DVGBoardCharacter target)
+    void PlayHealFlash(VVEBoardCharacter target)
     {
         if (target != null && target.gameObject.activeInHierarchy)
         {
@@ -572,7 +572,7 @@ public class DVGHealingPotionUseController : MonoBehaviour
         }
     }
 
-    IEnumerator HealFlashRoutine(DVGBoardCharacter target)
+    IEnumerator HealFlashRoutine(VVEBoardCharacter target)
     {
         SpriteRenderer[] renderers = target.GetComponentsInChildren<SpriteRenderer>(true);
         Dictionary<SpriteRenderer, Color> flashOriginals = new Dictionary<SpriteRenderer, Color>();
@@ -629,14 +629,14 @@ public class DVGHealingPotionUseController : MonoBehaviour
         return renderer != null && renderer.gameObject.name == "Healing Target Ghost Effect";
     }
 
-    void RefreshHealthBar(DVGBoardCharacter character)
+    void RefreshHealthBar(VVEBoardCharacter character)
     {
         if (character == null)
         {
             return;
         }
 
-        DVGWorldHealthBar healthBar = character.GetComponent<DVGWorldHealthBar>();
+        VVEWorldHealthBar healthBar = character.GetComponent<VVEWorldHealthBar>();
         if (healthBar != null)
         {
             healthBar.Refresh();

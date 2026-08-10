@@ -1,8 +1,8 @@
-# Dev vs Gamers
+# Vikings vs Everyone
 
-Dev vs Gamers is a Unity 2D board-defense prototype. The current build is centered on a 6-row lane board where the player spends diamonds to place defenders, collects resource pickups, uses healing potions, and tries to stop Viking walkers before they reach the chest.
+Vikings vs Everyone is the current working title for this Unity 2D board-defense prototype. The current build is centered on a 6-row lane board where the player spends diamonds to place defenders, collects resource pickups, uses healing potions, and tries to stop Viking walkers before they reach the chest.
 
-The repo also still contains some earlier platformer-style scripts and prefabs. Those are kept in the project, but the active gameplay direction is the DVG board/lane-defense flow.
+The repo and scripts now use the `VVE` prefix in gameplay class and prefab names.
 
 ## Current Playable State
 
@@ -10,9 +10,9 @@ The repo also still contains some earlier platformer-style scripts and prefabs. 
 - Backup recovered scene: `Assets/Scenes/Recovered_PlayMode_20260705_1956.unity`
 - Unity version: `6000.5.0f1`
 - Render stack: Unity 2D feature set with URP `17.5.0`
-- Core board: 6 lanes by 20 columns, represented by `DVG Board 20x6.prefab` and a tilemap-backed placement area
-- Enemy pressure: `DVGEnemyLaneSpawner` sends Viking walkers down random lanes and ramps spawn intensity over time
-- Player economy: diamonds buy placed characters; miners can generate more diamonds; potion makers can generate healing potions
+- Core board: 6 lanes by 20 columns, represented by `VVE Board 20x6.prefab` and a tilemap-backed placement area
+- Enemy pressure: `VVEEnemyLaneSpawner` sends Viking walkers down random lanes and ramps spawn intensity quickly over time
+- Player economy: `Level 1` starts with 14 diamonds; miners can generate more diamonds; potion makers can generate healing potions
 
 ## Controls
 
@@ -49,7 +49,7 @@ The repo also still contains some earlier platformer-style scripts and prefabs. 
 | `Assets/_Scripts/Placement` | Character slot selection, placement preview, spending, removal, and click handling |
 | `Assets/_Scripts/UI` | Diamond/potion wallet, counters, healing potion targeting, and world health bars |
 | `Assets/Prefabs/Placement Characters` | Current placeable character prefabs |
-| `Assets/Prefabs/Vikings` | Current DVG lane enemy prefab |
+| `Assets/Prefabs/Vikings` | Current lane enemy prefab |
 | `Assets/Prefabs/Projectiles` | Arrow and fireball projectile prefabs |
 | `Assets/Art`, `Assets/Vikings`, `Assets/Potions`, `Assets/Gems and gold`, `Assets/Sounds` | Imported art/audio packs and generated content |
 
@@ -73,4 +73,5 @@ The repo also still contains some earlier platformer-style scripts and prefabs. 
 - The scene has local tuning that differs from some prefab defaults. For example, the active enemy spawner in `Level 1` uses a Viking walker option with higher health than the prefab baseline.
 - `PlantPlacementManager` is the main placement class, but its file is named `CharPlacementManagement.cs`.
 - There are pre-board-defense platformer scripts such as `PlayerController`, `Enemy`, `Door`, `Collectable`, and `Breakable`. Treat them as legacy/supporting material unless a scene explicitly uses them.
+- Build settings currently reference a disabled `Assets/Scenes/Level 2.unity`, but that scene file is not present in the current project tree.
 - Some imported asset folders are large and include unused or backup content. Prefer editing runtime prefabs/scenes in `Assets/Prefabs`, `Assets/Scenes`, and `Assets/_Scripts`.

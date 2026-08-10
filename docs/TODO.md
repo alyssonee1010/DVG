@@ -1,6 +1,6 @@
 # TODO
 
-Working list for upcoming Dev vs Gamers improvements.
+Working list for upcoming Vikings vs Everyone improvements.
 
 ## Gameplay
 

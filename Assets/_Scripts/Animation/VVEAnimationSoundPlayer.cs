@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DVGAnimationSoundPlayer : MonoBehaviour
+public class VVEAnimationSoundPlayer : MonoBehaviour
 {
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip[] attackSounds;

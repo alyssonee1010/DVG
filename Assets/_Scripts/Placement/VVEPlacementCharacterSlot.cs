@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 
-public class DVGPlacementCharacterSlot : MonoBehaviour
+public class VVEPlacementCharacterSlot : MonoBehaviour
 {
     const string PriceTextObjectName = "Price";
 

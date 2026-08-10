@@ -364,7 +364,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b922709e23510848a5a69cbc2548944, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DVGHealth
+  m_EditorClassIdentifier: Assembly-CSharp::VVEHealth
   maxHealth: 100
   destroyWhenDead: 1
 --- !u!114 &5244383168775246441
@@ -378,8 +378,8 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7463907aaacc2354dbbe0bc8fd073735, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DVGEnemyVikingWalker
-  moveSpeed: 0.75
+  m_EditorClassIdentifier: Assembly-CSharp::VVEEnemyVikingWalker
+  moveSpeed: 0.8
   reachDistance: 0.05
   attackStartDistance: 0.8
   laneTolerance: 0.45
@@ -448,7 +448,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6bee1f306e5027f43a8657f366182449, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DVGHitRecoil
+  m_EditorClassIdentifier: Assembly-CSharp::VVEHitRecoil
   recoilTarget: {fileID: 928898346640183345}
   applyInWorldSpace: 1
   returnAfterRecoil: 0
@@ -459,7 +459,7 @@ MonoBehaviour:
   triggerStunAnimation: 1
   animator: {fileID: 6799631004367217897}
   stunTriggerName: Stun
-  stunHitChance: 0.4
+  stunHitChance: 0.25
   stunResistancePercent: 100
   flashOnHit: 1
   hitFlashTint: {r: 1, g: 0.22, b: 0.16, a: 1}
@@ -573,7 +573,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a49d5cab163bbd41adf29b392364bcf, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DVGAnimationSoundPlayer
+  m_EditorClassIdentifier: Assembly-CSharp::VVEAnimationSoundPlayer
   audioSource: {fileID: 0}
   attackSounds:
   - {fileID: 8300000, guid: a13cebecdfb1bb44dab41be90c72db7d, type: 3}

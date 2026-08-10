@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(DVGHealth))]
-public class DVGHitRecoil : MonoBehaviour
+[RequireComponent(typeof(VVEHealth))]
+public class VVEHitRecoil : MonoBehaviour
 {
     [SerializeField] Transform recoilTarget;
     [SerializeField] bool applyInWorldSpace = true;
@@ -31,9 +31,9 @@ public class DVGHitRecoil : MonoBehaviour
     [SerializeField] float hitFlashSeconds = 0.08f;
 
     [Header("Audio")]
-    [SerializeField] DVGAnimationSoundPlayer soundPlayer;
+    [SerializeField] VVEAnimationSoundPlayer soundPlayer;
 
-    DVGHealth health;
+    VVEHealth health;
     int lastHealth;
     float recoilTimer;
     Vector3 appliedOffset;
@@ -48,7 +48,7 @@ public class DVGHitRecoil : MonoBehaviour
 
     void Awake()
     {
-        health = GetComponent<DVGHealth>();
+        health = GetComponent<VVEHealth>();
         if (recoilTarget == null)
         {
             recoilTarget = transform;
@@ -61,7 +61,7 @@ public class DVGHitRecoil : MonoBehaviour
 
         if (soundPlayer == null)
         {
-            soundPlayer = GetComponent<DVGAnimationSoundPlayer>();
+            soundPlayer = GetComponent<VVEAnimationSoundPlayer>();
         }
     }
 
@@ -69,7 +69,7 @@ public class DVGHitRecoil : MonoBehaviour
     {
         if (health == null)
         {
-            health = GetComponent<DVGHealth>();
+            health = GetComponent<VVEHealth>();
         }
 
         lastHealth = health != null ? health.CurrentHealth : 0;
@@ -139,7 +139,7 @@ public class DVGHitRecoil : MonoBehaviour
         ApplyOffset(deltaOffset);
     }
 
-    void OnHealthChanged(DVGHealth changedHealth, int currentHealth)
+    void OnHealthChanged(VVEHealth changedHealth, int currentHealth)
     {
         if (currentHealth < lastHealth)
         {
@@ -194,10 +194,10 @@ public class DVGHitRecoil : MonoBehaviour
             return false;
         }
 
-        DVGHitRecoil targetStun = target.GetComponent<DVGHitRecoil>();
+        VVEHitRecoil targetStun = target.GetComponent<VVEHitRecoil>();
         if (targetStun == null)
         {
-            targetStun = target.GetComponentInParent<DVGHitRecoil>();
+            targetStun = target.GetComponentInParent<VVEHitRecoil>();
         }
 
         return targetStun != null && targetStun.TryReceiveStun(StunHitChance);
@@ -207,7 +207,7 @@ public class DVGHitRecoil : MonoBehaviour
     {
         if (health == null)
         {
-            health = GetComponent<DVGHealth>();
+            health = GetComponent<VVEHealth>();
         }
 
         if (health != null && !health.IsAlive)
@@ -229,7 +229,7 @@ public class DVGHitRecoil : MonoBehaviour
     {
         if (soundPlayer == null)
         {
-            soundPlayer = GetComponent<DVGAnimationSoundPlayer>();
+            soundPlayer = GetComponent<VVEAnimationSoundPlayer>();
         }
 
         if (soundPlayer != null)

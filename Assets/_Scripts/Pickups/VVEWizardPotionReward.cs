@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class DVGWizardPotionReward : MonoBehaviour
+public class VVEWizardPotionReward : MonoBehaviour
 {
     [Header("Reward Timing")]
     [Min(1)]
@@ -32,7 +32,7 @@ public class DVGWizardPotionReward : MonoBehaviour
     [SerializeField] float potionColliderRadius = 0.3f;
 
     [Header("Audio")]
-    [SerializeField] DVGAnimationSoundPlayer soundPlayer;
+    [SerializeField] VVEAnimationSoundPlayer soundPlayer;
 
     [Header("Editor Preview")]
     [SerializeField] bool showPotionPreview = true;
@@ -126,7 +126,7 @@ public class DVGWizardPotionReward : MonoBehaviour
             return;
         }
 
-        DVGThrownPickup thrownPickup = potion.AddComponent<DVGThrownPickup>();
+        VVEThrownPickup thrownPickup = potion.AddComponent<VVEThrownPickup>();
         thrownPickup.Launch(startPosition, landingPosition, potionThrowArcHeight, potionThrowDuration);
     }
 
@@ -145,8 +145,8 @@ public class DVGWizardPotionReward : MonoBehaviour
         collider.isTrigger = true;
         collider.radius = potionColliderRadius;
 
-        DVGBoardPickup pickup = spawned.AddComponent<DVGBoardPickup>();
-        pickup.Initialize(potionValue, DVGBoardPickup.PickupResource.HealingPotions, CacheSoundPlayer());
+        VVEBoardPickup pickup = spawned.AddComponent<VVEBoardPickup>();
+        pickup.Initialize(potionValue, VVEBoardPickup.PickupResource.HealingPotions, CacheSoundPlayer());
         return spawned;
     }
 
@@ -178,11 +178,11 @@ public class DVGWizardPotionReward : MonoBehaviour
         return potionLandingOffset + new Vector2(randomX, randomY);
     }
 
-    DVGAnimationSoundPlayer CacheSoundPlayer()
+    VVEAnimationSoundPlayer CacheSoundPlayer()
     {
         if (soundPlayer == null)
         {
-            soundPlayer = GetComponent<DVGAnimationSoundPlayer>();
+            soundPlayer = GetComponent<VVEAnimationSoundPlayer>();
         }
 
         return soundPlayer;

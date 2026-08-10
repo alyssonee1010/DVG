@@ -1,13 +1,13 @@
 using System.Collections;
 using UnityEngine;
 
-public class DVGBoardPickup : MonoBehaviour
+public class VVEBoardPickup : MonoBehaviour
 {
     public enum PickupResource { Diamonds, HealingPotions }
 
     [SerializeField] int value = 1;
     [SerializeField] PickupResource resource = PickupResource.Diamonds;
-    [SerializeField] DVGAnimationSoundPlayer collectSoundPlayer;
+    [SerializeField] VVEAnimationSoundPlayer collectSoundPlayer;
 
     [Header("Lifetime")]
     [SerializeField, Min(0f)] float lifetimeSeconds = 6f;
@@ -47,13 +47,13 @@ public class DVGBoardPickup : MonoBehaviour
         resource = pickupResource;
     }
 
-    public void Initialize(int pickupValue, DVGAnimationSoundPlayer soundPlayer)
+    public void Initialize(int pickupValue, VVEAnimationSoundPlayer soundPlayer)
     {
         value = pickupValue;
         collectSoundPlayer = soundPlayer;
     }
 
-    public void Initialize(int pickupValue, PickupResource pickupResource, DVGAnimationSoundPlayer soundPlayer)
+    public void Initialize(int pickupValue, PickupResource pickupResource, VVEAnimationSoundPlayer soundPlayer)
     {
         value = pickupValue;
         resource = pickupResource;
@@ -71,7 +71,7 @@ public class DVGBoardPickup : MonoBehaviour
         lastCollectedFrame = Time.frameCount;
         StopLifetimeTimer();
 
-        DVGUsableWallet wallet = DVGUsableWallet.Instance != null ? DVGUsableWallet.Instance : FindAnyObjectByType<DVGUsableWallet>();
+        VVEUsableWallet wallet = VVEUsableWallet.Instance != null ? VVEUsableWallet.Instance : FindAnyObjectByType<VVEUsableWallet>();
         if (wallet != null)
         {
             if (resource == PickupResource.HealingPotions)
@@ -140,7 +140,7 @@ public class DVGBoardPickup : MonoBehaviour
         }
 
         GameObject effectObject = new GameObject(name + " Collect Effect");
-        DVGPickupCollectEffect effect = effectObject.AddComponent<DVGPickupCollectEffect>();
+        VVEPickupCollectEffect effect = effectObject.AddComponent<VVEPickupCollectEffect>();
         effect.Initialize(spriteRenderer, collectEffectDuration, collectEffectScaleMultiplier, collectEffectDrift, collectEffectTint);
     }
 }

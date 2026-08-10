@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DVGDamageProjectile : MonoBehaviour
+public class VVEDamageProjectile : MonoBehaviour
 {
     [SerializeField] int damage = 25;
     [SerializeField] float recoilMultiplier = 1f;
@@ -16,7 +16,7 @@ public class DVGDamageProjectile : MonoBehaviour
     bool returnToPool;
     bool hasHit;
     float lifetimeTimer;
-    DVGHitRecoil stunSource;
+    VVEHitRecoil stunSource;
 
     void OnEnable()
     {
@@ -44,7 +44,7 @@ public class DVGDamageProjectile : MonoBehaviour
         returnToPool = value;
     }
 
-    public void SetStunSource(DVGHitRecoil source)
+    public void SetStunSource(VVEHitRecoil source)
     {
         stunSource = source;
     }
@@ -93,7 +93,7 @@ public class DVGDamageProjectile : MonoBehaviour
             return;
         }
 
-        IDVGEnemyLaneWalker enemy = GetEnemyLaneWalker(other);
+        IVVEEnemyLaneWalker enemy = GetEnemyLaneWalker(other);
         if (!TryGetEnemyObject(enemy, out _) || enemy.Health == null || !enemy.Health.IsAlive)
         {
             return;
@@ -117,7 +117,7 @@ public class DVGDamageProjectile : MonoBehaviour
         MonoBehaviour[] behaviours = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Exclude);
         foreach (MonoBehaviour behaviour in behaviours)
         {
-            if (behaviour is not IDVGEnemyLaneWalker enemy || !TryGetEnemyObject(enemy, out GameObject enemyObject))
+            if (behaviour is not IVVEEnemyLaneWalker enemy || !TryGetEnemyObject(enemy, out GameObject enemyObject))
             {
                 continue;
             }
@@ -148,10 +148,10 @@ public class DVGDamageProjectile : MonoBehaviour
         }
     }
 
-    void DamageEnemy(IDVGEnemyLaneWalker enemy)
+    void DamageEnemy(IVVEEnemyLaneWalker enemy)
     {
         hasHit = true;
-        DVGHealth enemyHealth = enemy.Health;
+        VVEHealth enemyHealth = enemy.Health;
         enemyHealth.TakeDamage(damage, recoilMultiplier);
         if (enemyHealth.IsAlive && stunSource != null && TryGetEnemyObject(enemy, out GameObject enemyObject))
         {
@@ -238,12 +238,12 @@ public class DVGDamageProjectile : MonoBehaviour
         return enter <= exit;
     }
 
-    IDVGEnemyLaneWalker GetEnemyLaneWalker(Collider2D other)
+    IVVEEnemyLaneWalker GetEnemyLaneWalker(Collider2D other)
     {
         MonoBehaviour[] behaviours = other.GetComponentsInParent<MonoBehaviour>();
         foreach (MonoBehaviour behaviour in behaviours)
         {
-            if (behaviour is IDVGEnemyLaneWalker enemy)
+            if (behaviour is IVVEEnemyLaneWalker enemy)
             {
                 return enemy;
             }
@@ -252,7 +252,7 @@ public class DVGDamageProjectile : MonoBehaviour
         return null;
     }
 
-    bool TryGetEnemyObject(IDVGEnemyLaneWalker enemy, out GameObject enemyObject)
+    bool TryGetEnemyObject(IVVEEnemyLaneWalker enemy, out GameObject enemyObject)
     {
         enemyObject = null;
         if (enemy is not MonoBehaviour enemyBehaviour || enemyBehaviour == null)

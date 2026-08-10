@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class DVGHealth : MonoBehaviour
+public class VVEHealth : MonoBehaviour
 {
     [SerializeField] int maxHealth = 100;
     [SerializeField] bool destroyWhenDead = true;
@@ -11,8 +11,8 @@ public class DVGHealth : MonoBehaviour
     public bool IsAlive => CurrentHealth > 0;
     public float LastDamageRecoilMultiplier { get; private set; } = 1f;
 
-    public event Action<DVGHealth> Died;
-    public event Action<DVGHealth, int> HealthChanged;
+    public event Action<VVEHealth> Died;
+    public event Action<VVEHealth, int> HealthChanged;
 
     void Awake()
     {

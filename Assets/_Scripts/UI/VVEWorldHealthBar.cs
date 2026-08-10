@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[RequireComponent(typeof(DVGHealth))]
-public class DVGWorldHealthBar : MonoBehaviour
+[RequireComponent(typeof(VVEHealth))]
+public class VVEWorldHealthBar : MonoBehaviour
 {
     const string BarRootName = "Health Bar";
 
@@ -14,7 +14,7 @@ public class DVGWorldHealthBar : MonoBehaviour
     [SerializeField] int sortingOrder = 10000;
     [SerializeField] bool hideWhenFull = true;
 
-    DVGHealth health;
+    VVEHealth health;
     Transform barRoot;
     SpriteRenderer backgroundRenderer;
     SpriteRenderer fillRenderer;
@@ -23,7 +23,7 @@ public class DVGWorldHealthBar : MonoBehaviour
 
     void Awake()
     {
-        health = GetComponent<DVGHealth>();
+        health = GetComponent<VVEHealth>();
         EnsureBarObjects();
         UpdateBar();
     }
@@ -32,7 +32,7 @@ public class DVGWorldHealthBar : MonoBehaviour
     {
         if (health == null)
         {
-            health = GetComponent<DVGHealth>();
+            health = GetComponent<VVEHealth>();
         }
 
         if (health != null)
@@ -52,7 +52,7 @@ public class DVGWorldHealthBar : MonoBehaviour
         }
     }
 
-    void OnHealthChanged(DVGHealth changedHealth, int currentHealth)
+    void OnHealthChanged(VVEHealth changedHealth, int currentHealth)
     {
         UpdateBar();
     }

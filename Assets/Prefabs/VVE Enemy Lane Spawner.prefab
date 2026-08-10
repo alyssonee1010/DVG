@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 100001}
   - component: {fileID: 114001}
   m_Layer: 0
-  m_Name: DVG Enemy Lane Spawner
+  m_Name: VVE Enemy Lane Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,7 +43,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8c48f39debda32a4192d06c3535be944, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DVGEnemyLaneSpawner
+  m_EditorClassIdentifier: Assembly-CSharp::VVEEnemyLaneSpawner
   board: {fileID: 0}
   tilemapBoard: {fileID: 0}
   walkDirection: 0

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DVGPickupCollectEffect : MonoBehaviour
+public class VVEPickupCollectEffect : MonoBehaviour
 {
     SpriteRenderer spriteRenderer;
     Vector3 startScale;

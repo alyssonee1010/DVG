@@ -5,8 +5,8 @@ using UnityEngine.Tilemaps;
 public class PlantPlacementManager : MonoBehaviour
 {
     [SerializeField] private Tilemap placementTilemap;
-    [SerializeField] private DVGUsableWallet usableWallet;
-    [SerializeField] private DVGHealingPotionUseController healingPotionUseController;
+    [SerializeField] private VVEUsableWallet usableWallet;
+    [SerializeField] private VVEHealingPotionUseController healingPotionUseController;
     [SerializeField] private Vector2 placementOffset = new Vector2(-0.2f, 0.2f);
     [SerializeField, Range(0.1f, 1f)] private float previewAlpha = 0.45f;
     [SerializeField] private Color validPreviewTint = Color.white;
@@ -17,9 +17,9 @@ public class PlantPlacementManager : MonoBehaviour
     [SerializeField] private KeyCode toggleRemoveToolKey = KeyCode.X;
     [SerializeField] private KeyCode holdRemoveToolKey = KeyCode.LeftShift;
 
-    private Dictionary<Vector3Int, DVGBoardCharacter> occupiedCells = new Dictionary<Vector3Int, DVGBoardCharacter>();
+    private Dictionary<Vector3Int, VVEBoardCharacter> occupiedCells = new Dictionary<Vector3Int, VVEBoardCharacter>();
     private GameObject selectedPlantPrefab;
-    private DVGPlacementCharacterSlot selectedSlot;
+    private VVEPlacementCharacterSlot selectedSlot;
     private GameObject placementPreview;
     private SpriteRenderer[] previewRenderers;
     private bool removeToolSelected;
@@ -31,14 +31,14 @@ public class PlantPlacementManager : MonoBehaviour
     {
         if (usableWallet == null)
         {
-            usableWallet = DVGUsableWallet.Instance != null ? DVGUsableWallet.Instance : FindAnyObjectByType<DVGUsableWallet>();
+            usableWallet = VVEUsableWallet.Instance != null ? VVEUsableWallet.Instance : FindAnyObjectByType<VVEUsableWallet>();
         }
 
         if (healingPotionUseController == null)
         {
-            healingPotionUseController = DVGHealingPotionUseController.Instance != null
-                ? DVGHealingPotionUseController.Instance
-                : FindAnyObjectByType<DVGHealingPotionUseController>();
+            healingPotionUseController = VVEHealingPotionUseController.Instance != null
+                ? VVEHealingPotionUseController.Instance
+                : FindAnyObjectByType<VVEHealingPotionUseController>();
         }
     }
 
@@ -97,7 +97,7 @@ public class PlantPlacementManager : MonoBehaviour
     private bool TryRemovePlacedCharacter()
     {
         CleanupOccupiedCells();
-        if (!TryGetPlacedCharacterAt(GetMouseWorldPosition(), out Vector3Int cellPosition, out DVGBoardCharacter character))
+        if (!TryGetPlacedCharacterAt(GetMouseWorldPosition(), out Vector3Int cellPosition, out VVEBoardCharacter character))
         {
             Debug.Log("No placed character to remove here.");
             return false;
@@ -117,7 +117,7 @@ public class PlantPlacementManager : MonoBehaviour
         return true;
     }
 
-    private bool TryGetPlacedCharacterAt(Vector3 worldPosition, out Vector3Int cellPosition, out DVGBoardCharacter character)
+    private bool TryGetPlacedCharacterAt(Vector3 worldPosition, out Vector3Int cellPosition, out VVEBoardCharacter character)
     {
         cellPosition = placementTilemap.WorldToCell(worldPosition);
         if (occupiedCells.TryGetValue(cellPosition, out character) && character != null)
@@ -128,14 +128,14 @@ public class PlantPlacementManager : MonoBehaviour
         Collider2D[] hits = Physics2D.OverlapPointAll(worldPosition);
         foreach (Collider2D hit in hits)
         {
-            DVGBoardCharacter hitCharacter = hit.GetComponentInParent<DVGBoardCharacter>();
+            VVEBoardCharacter hitCharacter = hit.GetComponentInParent<VVEBoardCharacter>();
             if (hitCharacter == null)
             {
                 continue;
             }
 
             if (hitCharacter.HasCell
-                && occupiedCells.TryGetValue(hitCharacter.Cell, out DVGBoardCharacter occupiedCharacter)
+                && occupiedCells.TryGetValue(hitCharacter.Cell, out VVEBoardCharacter occupiedCharacter)
                 && occupiedCharacter == hitCharacter)
             {
                 cellPosition = hitCharacter.Cell;
@@ -143,7 +143,7 @@ public class PlantPlacementManager : MonoBehaviour
                 return true;
             }
 
-            foreach (KeyValuePair<Vector3Int, DVGBoardCharacter> occupiedCell in occupiedCells)
+            foreach (KeyValuePair<Vector3Int, VVEBoardCharacter> occupiedCell in occupiedCells)
             {
                 if (occupiedCell.Value == hitCharacter)
                 {
@@ -164,10 +164,10 @@ public class PlantPlacementManager : MonoBehaviour
         Collider2D[] hits = Physics2D.OverlapPointAll(mouseWorldPosition);
         foreach (Collider2D hit in hits)
         {
-            DVGBoardPickup pickup = hit.GetComponentInParent<DVGBoardPickup>();
+            VVEBoardPickup pickup = hit.GetComponentInParent<VVEBoardPickup>();
             if (pickup == null)
             {
-                pickup = hit.GetComponentInChildren<DVGBoardPickup>();
+                pickup = hit.GetComponentInChildren<VVEBoardPickup>();
             }
 
             if (pickup == null)
@@ -185,9 +185,9 @@ public class PlantPlacementManager : MonoBehaviour
     {
         if (healingPotionUseController == null)
         {
-            healingPotionUseController = DVGHealingPotionUseController.Instance != null
-                ? DVGHealingPotionUseController.Instance
-                : FindAnyObjectByType<DVGHealingPotionUseController>();
+            healingPotionUseController = VVEHealingPotionUseController.Instance != null
+                ? VVEHealingPotionUseController.Instance
+                : FindAnyObjectByType<VVEHealingPotionUseController>();
         }
 
         return healingPotionUseController != null && healingPotionUseController.TryHandlePrimaryClick(GetMouseWorldPosition());
@@ -199,10 +199,10 @@ public class PlantPlacementManager : MonoBehaviour
         Collider2D[] hits = Physics2D.OverlapPointAll(mouseWorldPosition);
         foreach (Collider2D hit in hits)
         {
-            DVGPlacementCharacterSlot slot = hit.GetComponentInParent<DVGPlacementCharacterSlot>();
+            VVEPlacementCharacterSlot slot = hit.GetComponentInParent<VVEPlacementCharacterSlot>();
             if (slot == null)
             {
-                slot = hit.GetComponentInChildren<DVGPlacementCharacterSlot>();
+                slot = hit.GetComponentInChildren<VVEPlacementCharacterSlot>();
             }
 
             if (slot == null)
@@ -266,10 +266,10 @@ public class PlantPlacementManager : MonoBehaviour
         }
 
         GameObject spawnedPlant = Instantiate(selectedPlantPrefab, spawnPosition, Quaternion.identity);
-        DVGBoardCharacter boardCharacter = spawnedPlant.GetComponent<DVGBoardCharacter>();
+        VVEBoardCharacter boardCharacter = spawnedPlant.GetComponent<VVEBoardCharacter>();
         if (boardCharacter == null)
         {
-            boardCharacter = spawnedPlant.AddComponent<DVGBoardCharacter>();
+            boardCharacter = spawnedPlant.AddComponent<VVEBoardCharacter>();
         }
 
         boardCharacter.SetCell(cellPosition);
@@ -279,7 +279,7 @@ public class PlantPlacementManager : MonoBehaviour
         Debug.Log("Placed " + spawnedPlant.name + " at cell " + cellPosition);
     }
 
-    public void SelectCharacter(DVGPlacementCharacterSlot slot)
+    public void SelectCharacter(VVEPlacementCharacterSlot slot)
     {
         if (slot == null || slot.CharacterPrefab == null)
         {
@@ -293,9 +293,9 @@ public class PlantPlacementManager : MonoBehaviour
 
         if (healingPotionUseController == null)
         {
-            healingPotionUseController = DVGHealingPotionUseController.Instance != null
-                ? DVGHealingPotionUseController.Instance
-                : FindAnyObjectByType<DVGHealingPotionUseController>();
+            healingPotionUseController = VVEHealingPotionUseController.Instance != null
+                ? VVEHealingPotionUseController.Instance
+                : FindAnyObjectByType<VVEHealingPotionUseController>();
         }
 
         if (healingPotionUseController != null)
@@ -457,9 +457,9 @@ public class PlantPlacementManager : MonoBehaviour
     private void CleanupOccupiedCells()
     {
         List<Vector3Int> clearedCells = new List<Vector3Int>();
-        foreach (KeyValuePair<Vector3Int, DVGBoardCharacter> occupiedCell in occupiedCells)
+        foreach (KeyValuePair<Vector3Int, VVEBoardCharacter> occupiedCell in occupiedCells)
         {
-            DVGBoardCharacter character = occupiedCell.Value;
+            VVEBoardCharacter character = occupiedCell.Value;
             if (character == null || character.Health == null || !character.Health.IsAlive)
             {
                 clearedCells.Add(occupiedCell.Key);

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class DVGMinerMiningReward : MonoBehaviour
+public class VVEMinerMiningReward : MonoBehaviour
 {
     [Header("Reward Timing")]
     [Min(1)]
@@ -33,7 +33,7 @@ public class DVGMinerMiningReward : MonoBehaviour
     [SerializeField] float blueGemColliderRadius = 0.28f;
 
     [Header("Audio")]
-    [SerializeField] DVGAnimationSoundPlayer soundPlayer;
+    [SerializeField] VVEAnimationSoundPlayer soundPlayer;
 
     [Header("Editor Preview")]
     [SerializeField] bool showBlueGemPreview = true;
@@ -109,7 +109,7 @@ public class DVGMinerMiningReward : MonoBehaviour
             return;
         }
 
-        DVGThrownPickup thrownPickup = gem.AddComponent<DVGThrownPickup>();
+        VVEThrownPickup thrownPickup = gem.AddComponent<VVEThrownPickup>();
         thrownPickup.Launch(startPosition, landingPosition, blueGemThrowArcHeight, blueGemThrowDuration);
     }
 
@@ -146,7 +146,7 @@ public class DVGMinerMiningReward : MonoBehaviour
             collider.isTrigger = true;
             collider.radius = blueGemColliderRadius;
 
-            DVGBoardPickup pickup = spawned.AddComponent<DVGBoardPickup>();
+            VVEBoardPickup pickup = spawned.AddComponent<VVEBoardPickup>();
             pickup.Initialize(blueGemValue, CacheSoundPlayer());
         }
 
@@ -186,11 +186,11 @@ public class DVGMinerMiningReward : MonoBehaviour
         return blueGemLandingOffset + new Vector2(randomX, randomY);
     }
 
-    DVGAnimationSoundPlayer CacheSoundPlayer()
+    VVEAnimationSoundPlayer CacheSoundPlayer()
     {
         if (soundPlayer == null)
         {
-            soundPlayer = GetComponent<DVGAnimationSoundPlayer>();
+            soundPlayer = GetComponent<VVEAnimationSoundPlayer>();
         }
 
         return soundPlayer;

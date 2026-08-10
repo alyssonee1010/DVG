@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-[RequireComponent(typeof(DVGHealth))]
-public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
+[RequireComponent(typeof(VVEHealth))]
+public class VVEEnemyVikingWalker : MonoBehaviour, IVVEEnemyLaneWalker
 {
     const string AttackTriggerName = "Attack";
     const string AfterKillTriggerName = "AfterKill";
@@ -29,11 +29,11 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
     [SerializeField] int sortingOrderPerRow = 120;
     [SerializeField] int sortingOrderOffset = 30;
 
-    DVGHealth health;
-    DVGHitRecoil stunProfile;
+    VVEHealth health;
+    VVEHitRecoil stunProfile;
     Animator animator;
     Vector3 targetPosition;
-    DVGBoardCharacter attackTarget;
+    VVEBoardCharacter attackTarget;
     bool hasTarget;
     bool hasAttackTarget;
     bool isAfterKillLocked;
@@ -42,7 +42,7 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
     float walkDirection = -1f;
 
     public int LaneIndex { get; private set; }
-    public DVGHealth Health => health;
+    public VVEHealth Health => health;
 
     public float MoveSpeed
     {
@@ -52,8 +52,8 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
 
     void Awake()
     {
-        health = GetComponent<DVGHealth>();
-        stunProfile = GetComponent<DVGHitRecoil>();
+        health = GetComponent<VVEHealth>();
+        stunProfile = GetComponent<VVEHitRecoil>();
         animator = GetComponent<Animator>();
     }
 
@@ -61,7 +61,7 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
     {
         if (health == null)
         {
-            health = GetComponent<DVGHealth>();
+            health = GetComponent<VVEHealth>();
         }
 
         if (health != null)
@@ -121,7 +121,7 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
         if ((transform.position - targetPosition).sqrMagnitude <= reachDistance * reachDistance)
         {
-            DVGBoardLife.TryDamageActiveBoardLife(boardDamageOnExit);
+            VVEBoardLife.TryDamageActiveBoardLife(boardDamageOnExit);
             Destroy(gameObject);
         }
     }
@@ -144,7 +144,7 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
 
         if (health == null)
         {
-            health = GetComponent<DVGHealth>();
+            health = GetComponent<VVEHealth>();
         }
 
         health.SetMaxHealth(maxHealth);
@@ -152,7 +152,7 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
         ApplyRowSorting(laneIndex);
     }
 
-    void OnHealthChanged(DVGHealth changedHealth, int currentHealth)
+    void OnHealthChanged(VVEHealth changedHealth, int currentHealth)
     {
         bool tookDamage = currentHealth < lastHealth;
         lastHealth = currentHealth;
@@ -177,8 +177,8 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
 
     bool TryFindAttackTarget()
     {
-        DVGBoardCharacter[] characters = FindObjectsByType<DVGBoardCharacter>(FindObjectsInactive.Exclude);
-        foreach (DVGBoardCharacter character in characters)
+        VVEBoardCharacter[] characters = FindObjectsByType<VVEBoardCharacter>(FindObjectsInactive.Exclude);
+        foreach (VVEBoardCharacter character in characters)
         {
             if (character == null || !character.isActiveAndEnabled)
             {
@@ -265,7 +265,7 @@ public class DVGEnemyVikingWalker : MonoBehaviour, IDVGEnemyLaneWalker
         }
     }
 
-    float GetForwardDistanceTo(DVGBoardCharacter character)
+    float GetForwardDistanceTo(VVEBoardCharacter character)
     {
         Bounds selfBounds = GetBounds(GetComponent<Collider2D>(), transform.position);
         Bounds targetBounds = GetBounds(character.GetComponent<Collider2D>(), character.transform.position);

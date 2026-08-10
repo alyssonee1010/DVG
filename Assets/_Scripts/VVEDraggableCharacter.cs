@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class DVGDraggableCharacter : MonoBehaviour
+public class VVEDraggableCharacter : MonoBehaviour
 {
     [SerializeField] float dragZ = 0f;
 
     Camera dragCamera;
-    DVGTilemapBoard currentBoard;
+    VVETilemapBoard currentBoard;
     Vector3Int currentCell;
     Vector3 dragOffset;
     Vector3 returnPosition;
@@ -57,7 +57,7 @@ public class DVGDraggableCharacter : MonoBehaviour
         }
 
         isDragging = false;
-        DVGTilemapBoard board = FindAnyObjectByType<DVGTilemapBoard>();
+        VVETilemapBoard board = FindAnyObjectByType<VVETilemapBoard>();
         if (board != null && board.TryPlace(this, transform.position))
         {
             return;
@@ -66,7 +66,7 @@ public class DVGDraggableCharacter : MonoBehaviour
         transform.position = returnPosition;
     }
 
-    public void SetCurrentCell(DVGTilemapBoard board, Vector3Int cell)
+    public void SetCurrentCell(VVETilemapBoard board, Vector3Int cell)
     {
         currentBoard = board;
         currentCell = cell;

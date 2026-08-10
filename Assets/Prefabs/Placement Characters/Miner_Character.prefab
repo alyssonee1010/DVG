@@ -446,7 +446,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06d2124ce7be16045a802f096dd8eb27, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DVGMinerMiningReward
+  m_EditorClassIdentifier: Assembly-CSharp::VVEMinerMiningReward
   eventCallsPerGem: 4
   flareSprite: {fileID: 21300000, guid: 887478d88ef86114d8b01cd9f4cb3a58, type: 3}
   blueGemSprite: {fileID: 21300002, guid: 0c9b1d0b2a4552241a19ab70af3b4ee3, type: 3}
@@ -478,7 +478,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b922709e23510848a5a69cbc2548944, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DVGHealth
+  m_EditorClassIdentifier: Assembly-CSharp::VVEHealth
   maxHealth: 100
   destroyWhenDead: 1
 --- !u!114 &3406160727016397128
@@ -492,7 +492,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2872673eaef36cd45842ab6b3292e6ca, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DVGBoardCharacter
+  m_EditorClassIdentifier: Assembly-CSharp::VVEBoardCharacter
   maxHealth: 100
   sortingOrderBase: 1000
   sortingOrderPerRow: 120
@@ -508,7 +508,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6bee1f306e5027f43a8657f366182449, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DVGHitRecoil
+  m_EditorClassIdentifier: Assembly-CSharp::VVEHitRecoil
   recoilTarget: {fileID: 0}
   applyInWorldSpace: 1
   returnAfterRecoil: 1
@@ -633,7 +633,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a49d5cab163bbd41adf29b392364bcf, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DVGAnimationSoundPlayer
+  m_EditorClassIdentifier: Assembly-CSharp::VVEAnimationSoundPlayer
   audioSource: {fileID: 0}
   attackSounds: []
   effortSounds: []

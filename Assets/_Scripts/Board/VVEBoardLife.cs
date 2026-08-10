@@ -1,9 +1,9 @@
 using TMPro;
 using UnityEngine;
 
-[RequireComponent(typeof(DVGHealth))]
-[RequireComponent(typeof(DVGWorldHealthBar))]
-public class DVGBoardLife : MonoBehaviour
+[RequireComponent(typeof(VVEHealth))]
+[RequireComponent(typeof(VVEWorldHealthBar))]
+public class VVEBoardLife : MonoBehaviour
 {
     [SerializeField, Min(1)] int startingLife = 5;
     [SerializeField, Min(1)] int defaultDamagePerEnemy = 1;
@@ -13,11 +13,11 @@ public class DVGBoardLife : MonoBehaviour
     [SerializeField] float gameOverFontSize = 1.2f;
     [SerializeField] Color gameOverColor = new Color(1f, 0.12f, 0.08f, 1f);
 
-    DVGHealth health;
+    VVEHealth health;
     TextMeshPro gameOverText;
     bool isGameOver;
 
-    public static DVGBoardLife Instance { get; private set; }
+    public static VVEBoardLife Instance { get; private set; }
     public bool IsGameOver => isGameOver;
 
     void Awake()
@@ -27,7 +27,7 @@ public class DVGBoardLife : MonoBehaviour
             Instance = this;
         }
 
-        health = GetComponent<DVGHealth>();
+        health = GetComponent<VVEHealth>();
         health.SetMaxHealth(startingLife);
         health.Died += OnBoardLifeDepleted;
         EnsureGameOverText();
@@ -49,7 +49,7 @@ public class DVGBoardLife : MonoBehaviour
 
     public static bool TryDamageActiveBoardLife(int damage)
     {
-        DVGBoardLife boardLife = Instance != null ? Instance : FindAnyObjectByType<DVGBoardLife>();
+        VVEBoardLife boardLife = Instance != null ? Instance : FindAnyObjectByType<VVEBoardLife>();
         if (boardLife == null)
         {
             return false;
@@ -69,7 +69,7 @@ public class DVGBoardLife : MonoBehaviour
         health.TakeDamage(damage > 0 ? damage : defaultDamagePerEnemy);
     }
 
-    void OnBoardLifeDepleted(DVGHealth depletedHealth)
+    void OnBoardLifeDepleted(VVEHealth depletedHealth)
     {
         if (isGameOver)
         {
