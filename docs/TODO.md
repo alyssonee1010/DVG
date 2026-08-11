@@ -25,6 +25,7 @@ Working list for upcoming Vikings vs Everyone improvements.
 - Add the new Viking variants:
   - naked Viking
   - woman Viking
+- Viking falls from the sky
 
 ## UI
 
@@ -38,3 +39,4 @@ Working list for upcoming Vikings vs Everyone improvements.
 ## Audio
 
 - Add wizard sound effects.
+- Fix sound timing.
