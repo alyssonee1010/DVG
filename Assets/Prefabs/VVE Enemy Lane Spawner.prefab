@@ -56,6 +56,10 @@ MonoBehaviour:
     maxHealth: 100
     moveSpeed: 0.75
     weight: 1
+  - prefab: {fileID: 6627431872690101012, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
+    maxHealth: 100
+    moveSpeed: 0.75
+    weight: 1
   spawnOnStart: 0
   initialDelay: 22
   spawnInterval: 11

@@ -3782,6 +3782,111 @@ MonoBehaviour:
   costPrefix: 
   selectionIndicator: {fileID: 0}
   selectedScaleMultiplier: 1.2
+--- !u!1001 &463229749
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 61824168368404096, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
+      propertyPath: m_Name
+      value: SHORTS
+      objectReference: {fileID: 0}
+    - target: {fileID: 1635666614447641621, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
+      propertyPath: m_Name
+      value: ARM_L
+      objectReference: {fileID: 0}
+    - target: {fileID: 1724784371008825023, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
+      propertyPath: m_Name
+      value: ARM_R
+      objectReference: {fileID: 0}
+    - target: {fileID: 2070532803349177268, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
+      propertyPath: m_Name
+      value: LEG_R
+      objectReference: {fileID: 0}
+    - target: {fileID: 2642230650975909330, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
+      propertyPath: m_Name
+      value: HAND_R
+      objectReference: {fileID: 0}
+    - target: {fileID: 3447288158030676151, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
+      propertyPath: m_Name
+      value: SHOULDER_L
+      objectReference: {fileID: 0}
+    - target: {fileID: 3942927606214138917, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
+      propertyPath: m_Name
+      value: BODY
+      objectReference: {fileID: 0}
+    - target: {fileID: 4339178241211720434, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
+      propertyPath: m_Name
+      value: HAND_L
+      objectReference: {fileID: 0}
+    - target: {fileID: 4746596934570179504, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
+      propertyPath: m_Name
+      value: RIGHT_R
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837196258777046893, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
+      propertyPath: m_Name
+      value: HEAD
+      objectReference: {fileID: 0}
+    - target: {fileID: 7069164359072360354, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
+      propertyPath: m_Name
+      value: Naked_viking
+      objectReference: {fileID: 0}
+    - target: {fileID: 7155092844304817129, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
+      propertyPath: m_Name
+      value: LEG_L
+      objectReference: {fileID: 0}
+    - target: {fileID: 8273867137036550081, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.24
+      objectReference: {fileID: 0}
+    - target: {fileID: 8273867137036550081, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 8273867137036550081, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8273867137036550081, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8273867137036550081, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8273867137036550081, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8273867137036550081, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8273867137036550081, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8273867137036550081, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8273867137036550081, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8429563209754492102, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
+      propertyPath: m_Name
+      value: HELMET
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
 --- !u!1 &483315594
 GameObject:
   m_ObjectHideFlags: 0
@@ -11251,6 +11356,10 @@ MonoBehaviour:
     maxHealth: 140
     moveSpeed: 0.9
     weight: 1
+  - prefab: {fileID: 6627431872690101012, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
+    maxHealth: 140
+    moveSpeed: 0.9
+    weight: 1
   spawnOnStart: 0
   initialDelay: 10
   spawnInterval: 8
@@ -11612,3 +11721,4 @@ SceneRoots:
   - {fileID: 1822400685}
   - {fileID: 865357834}
   - {fileID: 1595011911}
+  - {fileID: 463229749}
