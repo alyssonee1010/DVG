@@ -18,15 +18,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.7
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.7
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.7
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -34,7 +34,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.537451
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
       propertyPath: m_LocalPosition.z
@@ -218,14 +218,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7463907aaacc2354dbbe0bc8fd073735, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VVEEnemyVikingWalker
-  moveSpeed: 0.9
-  reachDistance: 0.05
+  moveSpeed: 1.2
+  reachDistance: 0.1
   attackStartDistance: -1
   laneTolerance: 0.45
   overlapTolerance: 0.1
-  attackDamage: 10
+  attackDamage: 80
   attackRecoilMultiplier: 1
-  afterKillLockSeconds: 0.8
   boardDamageOnExit: 1
   sortingOrderBase: 1000
   sortingOrderPerRow: 120
