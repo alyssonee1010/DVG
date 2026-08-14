@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8739649247915745802, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
+      propertyPath: m_Name
+      value: LEG_L
+      objectReference: {fileID: 0}
     - target: {fileID: -8653719598885068355, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
       propertyPath: m_Name
       value: Naked_viking
@@ -68,6 +72,18 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -4515299946176187443, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
+      propertyPath: m_Name
+      value: HAND_R
+      objectReference: {fileID: 0}
+    - target: {fileID: -2753208147907320595, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
+      propertyPath: m_Name
+      value: HAND_L
+      objectReference: {fileID: 0}
+    - target: {fileID: -1934616440457695073, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
+      propertyPath: m_Name
+      value: SHORTS
+      objectReference: {fileID: 0}
     - target: {fileID: -1210535697229515816, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.98293716
@@ -87,6 +103,38 @@ PrefabInstance:
     - target: {fileID: -1210535697229515816, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -21.199
+      objectReference: {fileID: 0}
+    - target: {fileID: 1226856290385181401, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
+      propertyPath: m_Name
+      value: HELMET
+      objectReference: {fileID: 0}
+    - target: {fileID: 2603701376689241519, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
+      propertyPath: m_Name
+      value: SHOULD_R
+      objectReference: {fileID: 0}
+    - target: {fileID: 3818097326424562034, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
+      propertyPath: m_Name
+      value: HEAD
+      objectReference: {fileID: 0}
+    - target: {fileID: 5344156512809305768, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
+      propertyPath: m_Name
+      value: SHOULDER_L
+      objectReference: {fileID: 0}
+    - target: {fileID: 6000324796305054266, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
+      propertyPath: m_Name
+      value: TORSO
+      objectReference: {fileID: 0}
+    - target: {fileID: 8219863611336745120, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
+      propertyPath: m_Name
+      value: ARM_R
+      objectReference: {fileID: 0}
+    - target: {fileID: 8308708408767058442, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
+      propertyPath: m_Name
+      value: ARM_L
+      objectReference: {fileID: 0}
+    - target: {fileID: 8737399740023006635, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
+      propertyPath: m_Name
+      value: LEG_R
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
