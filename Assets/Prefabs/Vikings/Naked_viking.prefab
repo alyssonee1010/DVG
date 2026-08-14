@@ -18,15 +18,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.8
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.8
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.8
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -220,15 +220,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::VVEEnemyVikingWalker
   moveSpeed: 1.2
   reachDistance: 0.1
-  attackStartDistance: -1
-  laneTolerance: 0.45
+  attackStartDistance: 0.8
+  depthTolerance: 0.45
   overlapTolerance: 0.1
-  attackDamage: 80
+  attackDamage: 40
+  firstAttackDamageMultiplier: 2
   attackRecoilMultiplier: 1
+  useAttackAnimationEvents: 1
+  fallbackFirstAttackDelay: 0.5
+  fallbackAttackInterval: 1.5
+  afterKillLockSeconds: 0
   boardDamageOnExit: 1
-  sortingOrderBase: 1000
-  sortingOrderPerRow: 120
-  sortingOrderOffset: 30
 --- !u!61 &6627431872690101013
 BoxCollider2D:
   m_ObjectHideFlags: 0

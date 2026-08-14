@@ -385,7 +385,11 @@ MonoBehaviour:
   laneTolerance: 0.45
   overlapTolerance: 0.1
   attackDamage: 10
+  firstAttackDamageMultiplier: 1
   attackRecoilMultiplier: 1
+  useAttackAnimationEvents: 1
+  fallbackFirstAttackDelay: 0.5
+  fallbackAttackInterval: 1.5
   afterKillLockSeconds: 0.8
   boardDamageOnExit: 1
   sortingOrderBase: 1000

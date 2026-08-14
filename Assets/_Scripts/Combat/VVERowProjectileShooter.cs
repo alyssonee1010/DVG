@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 
 [RequireComponent(typeof(VVEBoardCharacter))]
@@ -31,17 +30,13 @@ public class VVERowProjectileShooter : MonoBehaviour
     [SerializeField] float minimumFireDistance = 0.2f;
     [Tooltip("Only used before the character is placed on a board cell.")]
     [Min(0f)]
-    [SerializeField] float laneTolerance = 0.45f;
+    [FormerlySerializedAs("laneTolerance")]
+    [SerializeField] float depthTolerance = VVELaneDepth.DefaultDepthTolerance;
 
     [Header("Animation")]
     [SerializeField] bool playShootAnimation = true;
     [SerializeField] bool waitForShootAnimationEvent;
     [SerializeField] string shootTriggerName = "Attack";
-
-    [Header("Projectile Sorting")]
-    [SerializeField] int projectileSortingOrderBase = 1000;
-    [SerializeField] int projectileSortingOrderPerRow = 120;
-    [SerializeField] int projectileSortingOrderOffset = 50;
 
     VVEBoardCharacter boardCharacter;
     VVEHitRecoil stunProfile;
@@ -100,6 +95,7 @@ public class VVERowProjectileShooter : MonoBehaviour
         Vector3 spawnPosition = firePoint != null
             ? firePoint.position
             : transform.TransformPoint(firePointOffset);
+        spawnPosition = VVELaneDepth.WithLaneZ(spawnPosition, laneIndex);
 
         VVEDamageProjectile projectile = GetProjectile();
         if (projectile == null)
@@ -111,7 +107,7 @@ public class VVERowProjectileShooter : MonoBehaviour
         projectile.SetDamage(projectileDamage);
         projectile.SetStunSource(stunProfile);
         projectileObject.transform.SetPositionAndRotation(spawnPosition, Quaternion.identity);
-        ApplyProjectileSorting(projectileObject, laneIndex);
+        VVELaneDepth.ApplyGameplaySortingGroup(projectileObject);
 
         projectileObject.SetActive(true);
         projectile.Launch(projectileDirection, laneIndex);
@@ -165,13 +161,9 @@ public class VVERowProjectileShooter : MonoBehaviour
 
     bool IsInSameLane(IVVEEnemyLaneWalker enemy)
     {
-        if (boardCharacter != null && boardCharacter.HasCell)
-        {
-            return enemy.LaneIndex == boardCharacter.Cell.y;
-        }
-
         return TryGetEnemyObject(enemy, out GameObject enemyObject)
-            && Mathf.Abs(enemyObject.transform.position.y - transform.position.y) <= laneTolerance;
+            && (boardCharacter == null || !boardCharacter.HasCell || enemy.LaneIndex == boardCharacter.Cell.y)
+            && VVELaneDepth.IsSameDepth(transform, enemyObject.transform, depthTolerance);
     }
 
     bool TryGetEnemyObject(IVVEEnemyLaneWalker enemy, out GameObject enemyObject)
@@ -257,24 +249,6 @@ public class VVERowProjectileShooter : MonoBehaviour
 
         projectile.SetReturnToPool(pooled);
         return projectile;
-    }
-
-    void ApplyProjectileSorting(GameObject projectileObject, int laneIndex)
-    {
-        int sortingOrder = projectileSortingOrderBase - laneIndex * projectileSortingOrderPerRow + projectileSortingOrderOffset;
-
-        SortingGroup sortingGroup = projectileObject.GetComponent<SortingGroup>();
-        if (sortingGroup != null)
-        {
-            sortingGroup.sortingOrder = sortingOrder;
-            return;
-        }
-
-        SpriteRenderer[] spriteRenderers = projectileObject.GetComponentsInChildren<SpriteRenderer>();
-        foreach (SpriteRenderer spriteRenderer in spriteRenderers)
-        {
-            spriteRenderer.sortingOrder = sortingOrder;
-        }
     }
 
     bool PlayShootAnimation()

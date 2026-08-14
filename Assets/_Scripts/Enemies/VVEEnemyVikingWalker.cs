@@ -1,11 +1,13 @@
 using UnityEngine;
-using UnityEngine.Rendering;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(VVEHealth))]
 public class VVEEnemyVikingWalker : MonoBehaviour, IVVEEnemyLaneWalker
 {
     const string AttackTriggerName = "Attack";
+    const string AfterKillTriggerName = "AfterKill";
     const string WalkStateName = "walk";
+    const string WalkingStateName = "walking";
 
     [Header("Movement")]
     [SerializeField] float moveSpeed = 0.75f;
@@ -13,20 +15,23 @@ public class VVEEnemyVikingWalker : MonoBehaviour, IVVEEnemyLaneWalker
 
     [Header("Targeting")]
     [SerializeField] float attackStartDistance = 0.8f;
-    [SerializeField] float laneTolerance = 0.45f;
+    [FormerlySerializedAs("laneTolerance")]
+    [SerializeField, Min(0f)] float depthTolerance = VVELaneDepth.DefaultDepthTolerance;
     [SerializeField] float overlapTolerance = 0.05f;
 
     [Header("Attack")]
     [SerializeField] int attackDamage = 25;
+    [SerializeField, Min(0f)] float firstAttackDamageMultiplier = 1f;
     [SerializeField] float attackRecoilMultiplier = 1f;
+    [SerializeField] bool useAttackAnimationEvents = true;
+    [SerializeField, Min(0f)] float fallbackFirstAttackDelay = 0.5f;
+    [SerializeField, Min(0.01f)] float fallbackAttackInterval = 1.5f;
+
+    [Header("Animation")]
+    [SerializeField, Min(0f)] float afterKillLockSeconds = 0.8f;
 
     [Header("Board Damage")]
     [SerializeField, Min(1)] int boardDamageOnExit = 1;
-
-    [Header("Sorting")]
-    [SerializeField] int sortingOrderBase = 1000;
-    [SerializeField] int sortingOrderPerRow = 120;
-    [SerializeField] int sortingOrderOffset = 30;
 
     VVEHealth health;
     VVEHitRecoil stunProfile;
@@ -37,6 +42,8 @@ public class VVEEnemyVikingWalker : MonoBehaviour, IVVEEnemyLaneWalker
     bool hasAttackTarget;
     int lastHealth;
     float walkDirection = -1f;
+    float fallbackAttackTimer;
+    float afterKillTimer;
 
     public int LaneIndex { get; private set; }
     public VVEHealth Health => health;
@@ -83,11 +90,23 @@ public class VVEEnemyVikingWalker : MonoBehaviour, IVVEEnemyLaneWalker
             return;
         }
 
+        if (afterKillTimer > 0f)
+        {
+            afterKillTimer -= Time.deltaTime;
+            return;
+        }
+
         if (hasAttackTarget)
         {
             if (attackTarget == null || attackTarget.Health == null || !attackTarget.Health.IsAlive)
             {
                 ResumeWalking();
+                return;
+            }
+
+            if (!useAttackAnimationEvents)
+            {
+                TickFallbackAttack();
             }
 
             return;
@@ -96,6 +115,7 @@ public class VVEEnemyVikingWalker : MonoBehaviour, IVVEEnemyLaneWalker
         if (TryFindAttackTarget())
         {
             hasAttackTarget = true;
+            fallbackAttackTimer = fallbackFirstAttackDelay;
             if (animator != null)
             {
                 animator.SetTrigger(AttackTriggerName);
@@ -115,12 +135,16 @@ public class VVEEnemyVikingWalker : MonoBehaviour, IVVEEnemyLaneWalker
     public void BeginLaneWalk(int laneIndex, Vector3 startPosition, Vector3 endPosition, float speed, int maxHealth)
     {
         LaneIndex = laneIndex;
+        startPosition = VVELaneDepth.WithLaneZ(startPosition, laneIndex);
+        endPosition = VVELaneDepth.WithLaneZ(endPosition, laneIndex);
         transform.position = startPosition;
         targetPosition = endPosition;
         moveSpeed = Mathf.Max(0f, speed);
         hasTarget = true;
         hasAttackTarget = false;
         attackTarget = null;
+        fallbackAttackTimer = 0f;
+        afterKillTimer = 0f;
         walkDirection = Mathf.Sign(endPosition.x - startPosition.x);
         if (Mathf.Approximately(walkDirection, 0f))
         {
@@ -134,7 +158,7 @@ public class VVEEnemyVikingWalker : MonoBehaviour, IVVEEnemyLaneWalker
 
         health.SetMaxHealth(maxHealth);
         lastHealth = health.CurrentHealth;
-        ApplyRowSorting(laneIndex);
+        ApplyLaneDepth(laneIndex);
     }
 
     void OnHealthChanged(VVEHealth changedHealth, int currentHealth)
@@ -172,14 +196,7 @@ public class VVEEnemyVikingWalker : MonoBehaviour, IVVEEnemyLaneWalker
                 continue;
             }
 
-            if (character.HasCell)
-            {
-                if (character.Cell.y != LaneIndex)
-                {
-                    continue;
-                }
-            }
-            else if (Mathf.Abs(character.transform.position.y - transform.position.y) > laneTolerance)
+            if (!IsInSameLaneDepth(character))
             {
                 continue;
             }
@@ -199,13 +216,25 @@ public class VVEEnemyVikingWalker : MonoBehaviour, IVVEEnemyLaneWalker
 
     public void DealAttackDamage()
     {
+        DealAttackDamage(1f);
+    }
+
+    void DealAttackDamage(float damageMultiplier)
+    {
         if (attackTarget == null || attackTarget.Health == null || !attackTarget.Health.IsAlive)
         {
             ResumeWalking();
             return;
         }
 
-        attackTarget.Health.TakeDamage(attackDamage, attackRecoilMultiplier);
+        if (!IsInSameLaneDepth(attackTarget))
+        {
+            ResumeWalking();
+            return;
+        }
+
+        int scaledDamage = Mathf.RoundToInt(attackDamage * damageMultiplier);
+        attackTarget.Health.TakeDamage(scaledDamage, attackRecoilMultiplier);
         if (attackTarget.Health.IsAlive && stunProfile != null)
         {
             stunProfile.TryStunTarget(attackTarget.gameObject);
@@ -213,7 +242,7 @@ public class VVEEnemyVikingWalker : MonoBehaviour, IVVEEnemyLaneWalker
 
         if (!attackTarget.Health.IsAlive)
         {
-            ResumeWalking();
+            HandleKilledAttackTarget();
         }
     }
 
@@ -222,15 +251,83 @@ public class VVEEnemyVikingWalker : MonoBehaviour, IVVEEnemyLaneWalker
         DealAttackDamage();
     }
 
+    public void DealFirstAttackDamageAnimationEvent()
+    {
+        DealAttackDamage(firstAttackDamageMultiplier);
+    }
+
     void ResumeWalking()
     {
         attackTarget = null;
         hasAttackTarget = false;
+        fallbackAttackTimer = 0f;
+        afterKillTimer = 0f;
         if (animator != null)
         {
             animator.ResetTrigger(AttackTriggerName);
-            animator.Play(WalkStateName);
+            PlayWalkState();
         }
+    }
+
+    void HandleKilledAttackTarget()
+    {
+        attackTarget = null;
+        hasAttackTarget = false;
+        fallbackAttackTimer = 0f;
+
+        if (animator != null && HasAnimatorParameter(AfterKillTriggerName))
+        {
+            animator.ResetTrigger(AttackTriggerName);
+            animator.SetTrigger(AfterKillTriggerName);
+            afterKillTimer = afterKillLockSeconds;
+            return;
+        }
+
+        ResumeWalking();
+    }
+
+    void TickFallbackAttack()
+    {
+        fallbackAttackTimer -= Time.deltaTime;
+        if (fallbackAttackTimer > 0f)
+        {
+            return;
+        }
+
+        DealAttackDamage();
+        if (hasAttackTarget)
+        {
+            fallbackAttackTimer = fallbackAttackInterval;
+        }
+    }
+
+    void PlayWalkState()
+    {
+        int walkingHash = Animator.StringToHash(WalkingStateName);
+        if (animator.HasState(0, walkingHash))
+        {
+            animator.Play(walkingHash, 0);
+            return;
+        }
+
+        int walkHash = Animator.StringToHash(WalkStateName);
+        if (animator.HasState(0, walkHash))
+        {
+            animator.Play(walkHash, 0);
+        }
+    }
+
+    bool HasAnimatorParameter(string parameterName)
+    {
+        foreach (AnimatorControllerParameter parameter in animator.parameters)
+        {
+            if (parameter.name == parameterName)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     float GetForwardDistanceTo(VVEBoardCharacter character)
@@ -253,14 +350,24 @@ public class VVEEnemyVikingWalker : MonoBehaviour, IVVEEnemyLaneWalker
         return new Bounds(fallbackPosition, Vector3.one * 0.5f);
     }
 
-    void ApplyRowSorting(int row)
+    bool IsInSameLaneDepth(VVEBoardCharacter character)
     {
-        SortingGroup sortingGroup = GetComponent<SortingGroup>();
-        if (sortingGroup == null)
+        if (character == null)
         {
-            sortingGroup = gameObject.AddComponent<SortingGroup>();
+            return false;
         }
 
-        sortingGroup.sortingOrder = sortingOrderBase - row * sortingOrderPerRow + sortingOrderOffset;
+        if (character.HasCell && character.Cell.y != LaneIndex)
+        {
+            return false;
+        }
+
+        return VVELaneDepth.IsSameDepth(transform, character.transform, depthTolerance);
+    }
+
+    void ApplyLaneDepth(int laneIndex)
+    {
+        transform.position = VVELaneDepth.WithLaneZ(transform.position, laneIndex);
+        VVELaneDepth.ApplyGameplaySortingGroup(gameObject);
     }
 }

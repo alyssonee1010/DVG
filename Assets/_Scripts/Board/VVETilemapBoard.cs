@@ -42,7 +42,7 @@ public class VVETilemapBoard : MonoBehaviour
         Clear(character);
         occupants[cell] = character;
         character.SetCurrentCell(this, cell);
-        character.transform.position = GetCellCenterWorld(cell);
+        character.transform.position = VVELaneDepth.WithLaneZ(GetCellCenterWorld(cell), cell.y);
         return true;
     }
 

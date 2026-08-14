@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(VVEBoardCharacter))]
 public class VVEBoardMeleeAttacker : MonoBehaviour
@@ -8,7 +9,8 @@ public class VVEBoardMeleeAttacker : MonoBehaviour
     [SerializeField] int attackDamage = 20;
     [SerializeField] float recoilMultiplier = 1f;
     [SerializeField] Vector2 attackDirection = Vector2.right;
-    [SerializeField] float laneTolerance = 0.45f;
+    [FormerlySerializedAs("laneTolerance")]
+    [SerializeField, Min(0f)] float depthTolerance = VVELaneDepth.DefaultDepthTolerance;
     [SerializeField] string attackTriggerName = "Attack";
 
     VVEBoardCharacter boardCharacter;
@@ -127,13 +129,9 @@ public class VVEBoardMeleeAttacker : MonoBehaviour
 
     bool IsInSameLane(IVVEEnemyLaneWalker enemy)
     {
-        if (boardCharacter != null && boardCharacter.HasCell)
-        {
-            return enemy.LaneIndex == boardCharacter.Cell.y;
-        }
-
         return TryGetEnemyObject(enemy, out GameObject enemyObject)
-            && Mathf.Abs(enemyObject.transform.position.y - transform.position.y) <= laneTolerance;
+            && (boardCharacter == null || !boardCharacter.HasCell || enemy.LaneIndex == boardCharacter.Cell.y)
+            && VVELaneDepth.IsSameDepth(transform, enemyObject.transform, depthTolerance);
     }
 
     bool TryGetEnemyObject(IVVEEnemyLaneWalker enemy, out GameObject enemyObject)

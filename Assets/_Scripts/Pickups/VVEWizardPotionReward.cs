@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class VVEWizardPotionReward : MonoBehaviour
 {
@@ -21,7 +20,6 @@ public class VVEWizardPotionReward : MonoBehaviour
 
     [Header("Visuals")]
     [SerializeField] Vector3 potionScale = new Vector3(1.4f, 1.4f, 1f);
-    [SerializeField] int sortingOrderOffset = 25;
 
     [Header("Throw")]
     [SerializeField] float potionThrowDuration = 0.32f;
@@ -152,23 +150,7 @@ public class VVEWizardPotionReward : MonoBehaviour
 
     void ApplySorting(SpriteRenderer spawnedRenderer)
     {
-        SortingGroup sortingGroup = GetComponent<SortingGroup>();
-        if (sortingGroup != null)
-        {
-            spawnedRenderer.sortingLayerID = sortingGroup.sortingLayerID;
-            spawnedRenderer.sortingOrder = sortingGroup.sortingOrder + sortingOrderOffset;
-            return;
-        }
-
-        SpriteRenderer sourceRenderer = GetComponentInChildren<SpriteRenderer>();
-        if (sourceRenderer == null)
-        {
-            spawnedRenderer.sortingOrder = sortingOrderOffset;
-            return;
-        }
-
-        spawnedRenderer.sortingLayerID = sourceRenderer.sortingLayerID;
-        spawnedRenderer.sortingOrder = sourceRenderer.sortingOrder + sortingOrderOffset;
+        VVELaneDepth.ApplyGameplayRenderer(spawnedRenderer);
     }
 
     Vector2 GetRandomizedLandingOffset()

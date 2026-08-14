@@ -24,7 +24,7 @@ public class VVEPickupCollectEffect : MonoBehaviour
         spriteRenderer.flipX = sourceRenderer.flipX;
         spriteRenderer.flipY = sourceRenderer.flipY;
         spriteRenderer.sortingLayerID = sourceRenderer.sortingLayerID;
-        spriteRenderer.sortingOrder = sourceRenderer.sortingOrder + 3;
+        spriteRenderer.sortingOrder = sourceRenderer.sortingOrder;
         spriteRenderer.color = tint;
 
         transform.position = sourceRenderer.transform.position;

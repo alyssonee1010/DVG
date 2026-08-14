@@ -1,15 +1,10 @@
 using UnityEngine;
-using UnityEngine.Rendering;
 
 [RequireComponent(typeof(VVEHealth))]
 public class VVEBoardCharacter : MonoBehaviour
 {
     [Header("Health")]
     [SerializeField] int maxHealth = 100;
-
-    [SerializeField] int sortingOrderBase = 1000;
-    [SerializeField] int sortingOrderPerRow = 120;
-    [SerializeField] int sortingOrderOffset;
 
     VVEHealth health;
     VVEWorldHealthBar healthBar;
@@ -38,17 +33,17 @@ public class VVEBoardCharacter : MonoBehaviour
     {
         Cell = cell;
         HasCell = true;
-        ApplyRowSorting(cell.y);
+        ApplyLaneDepth(cell.y);
     }
 
     public void ApplyRowSorting(int row)
     {
-        SortingGroup sortingGroup = GetComponent<SortingGroup>();
-        if (sortingGroup == null)
-        {
-            sortingGroup = gameObject.AddComponent<SortingGroup>();
-        }
+        ApplyLaneDepth(row);
+    }
 
-        sortingGroup.sortingOrder = sortingOrderBase - row * sortingOrderPerRow + sortingOrderOffset;
+    public void ApplyLaneDepth(int laneIndex)
+    {
+        transform.position = VVELaneDepth.WithLaneZ(transform.position, laneIndex);
+        VVELaneDepth.ApplyGameplaySortingGroup(gameObject);
     }
 }

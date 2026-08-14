@@ -259,6 +259,7 @@ public class PlantPlacementManager : MonoBehaviour
 
         Vector3 spawnPosition = placementTilemap.GetCellCenterWorld(cellPosition);
         spawnPosition += (Vector3)placementOffset;
+        spawnPosition = VVELaneDepth.WithLaneZ(spawnPosition, cellPosition.y);
         if (usableWallet != null && !usableWallet.TrySpendDiamonds(selectedCost))
         {
             Debug.Log("Not enough diamonds to place " + selectedPlantPrefab.name + ". Cost: " + selectedCost);
@@ -403,7 +404,7 @@ public class PlantPlacementManager : MonoBehaviour
         bool validCell = placementTilemap.HasTile(cellPosition) && !occupiedCells.ContainsKey(cellPosition);
 
         Vector3 previewPosition = validCell
-            ? placementTilemap.GetCellCenterWorld(cellPosition) + (Vector3)placementOffset
+            ? VVELaneDepth.WithLaneZ(placementTilemap.GetCellCenterWorld(cellPosition) + (Vector3)placementOffset, cellPosition.y)
             : mouseWorldPosition;
 
         placementPreview.transform.position = previewPosition;

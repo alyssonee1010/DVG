@@ -201,10 +201,10 @@ public class VVEEnemyLaneSpawner : MonoBehaviour
         float spawnOffset = edgePadding + tileWidth * spawnOutsideBoardTiles;
         float exitOffset = edgePadding + tileWidth * exitPastBoardTiles;
 
-        Vector3 leftSpawn = new Vector3(leftTile.x - spawnOffset, leftTile.y + laneYOffset, leftTile.z);
-        Vector3 rightSpawn = new Vector3(rightTile.x + spawnOffset, rightTile.y + laneYOffset, rightTile.z);
-        Vector3 leftExit = new Vector3(leftTile.x - exitOffset, leftTile.y + laneYOffset, leftTile.z);
-        Vector3 rightExit = new Vector3(rightTile.x + exitOffset, rightTile.y + laneYOffset, rightTile.z);
+        Vector3 leftSpawn = VVELaneDepth.WithLaneZ(new Vector3(leftTile.x - spawnOffset, leftTile.y + laneYOffset, leftTile.z), laneIndex);
+        Vector3 rightSpawn = VVELaneDepth.WithLaneZ(new Vector3(rightTile.x + spawnOffset, rightTile.y + laneYOffset, rightTile.z), laneIndex);
+        Vector3 leftExit = VVELaneDepth.WithLaneZ(new Vector3(leftTile.x - exitOffset, leftTile.y + laneYOffset, leftTile.z), laneIndex);
+        Vector3 rightExit = VVELaneDepth.WithLaneZ(new Vector3(rightTile.x + exitOffset, rightTile.y + laneYOffset, rightTile.z), laneIndex);
 
         lanes.Add(new Lane
         {

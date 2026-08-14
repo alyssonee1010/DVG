@@ -9,6 +9,7 @@ public class VVEDamageProjectile : MonoBehaviour
     [SerializeField] bool destroyOnHit = true;
     [SerializeField] bool useLaneBasedHit = true;
     [SerializeField] float hitPadding = 0.15f;
+    [SerializeField, Min(0f)] float depthTolerance = VVELaneDepth.DefaultDepthTolerance;
 
     Vector2 direction = Vector2.right;
     int laneIndex;
@@ -60,6 +61,7 @@ public class VVEDamageProjectile : MonoBehaviour
         direction = launchDirection.sqrMagnitude > 0f ? launchDirection.normalized : Vector2.right;
         laneIndex = targetLaneIndex;
         useLaneFilter = true;
+        transform.position = VVELaneDepth.WithLaneZ(transform.position, laneIndex);
         ApplyDirectionVisual();
     }
 
@@ -99,7 +101,7 @@ public class VVEDamageProjectile : MonoBehaviour
             return;
         }
 
-        if (useLaneFilter && enemy.LaneIndex != laneIndex)
+        if (!PassesDepthFilter(enemy))
         {
             return;
         }
@@ -127,7 +129,7 @@ public class VVEDamageProjectile : MonoBehaviour
                 continue;
             }
 
-            if (useLaneFilter && enemy.LaneIndex != laneIndex)
+            if (!PassesDepthFilter(enemy))
             {
                 continue;
             }
@@ -162,6 +164,22 @@ public class VVEDamageProjectile : MonoBehaviour
         {
             Finish();
         }
+    }
+
+    bool PassesDepthFilter(IVVEEnemyLaneWalker enemy)
+    {
+        if (!useLaneFilter)
+        {
+            return true;
+        }
+
+        if (enemy.LaneIndex != laneIndex)
+        {
+            return false;
+        }
+
+        return TryGetEnemyObject(enemy, out GameObject enemyObject)
+            && VVELaneDepth.IsSameDepth(transform, enemyObject.transform, depthTolerance);
     }
 
     void Finish()

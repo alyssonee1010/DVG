@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class VVEMinerMiningReward : MonoBehaviour
 {
@@ -22,7 +21,6 @@ public class VVEMinerMiningReward : MonoBehaviour
     [SerializeField] Vector3 flareScale = new Vector3(0.6f, 0.6f, 1f);
     [SerializeField] Vector3 blueGemScale = new Vector3(0.5f, 0.5f, 1f);
     [SerializeField] float flareLifetime = 0.05f;
-    [SerializeField] int sortingOrderOffset = 25;
 
     [Header("Throw")]
     [SerializeField] float blueGemThrowDuration = 0.32f;
@@ -160,23 +158,7 @@ public class VVEMinerMiningReward : MonoBehaviour
 
     void ApplySorting(SpriteRenderer spawnedRenderer)
     {
-        SortingGroup sortingGroup = GetComponent<SortingGroup>();
-        if (sortingGroup != null)
-        {
-            spawnedRenderer.sortingLayerID = sortingGroup.sortingLayerID;
-            spawnedRenderer.sortingOrder = sortingGroup.sortingOrder + sortingOrderOffset;
-            return;
-        }
-
-        SpriteRenderer sourceRenderer = GetComponentInChildren<SpriteRenderer>();
-        if (sourceRenderer == null)
-        {
-            spawnedRenderer.sortingOrder = sortingOrderOffset;
-            return;
-        }
-
-        spawnedRenderer.sortingLayerID = sourceRenderer.sortingLayerID;
-        spawnedRenderer.sortingOrder = sourceRenderer.sortingOrder + sortingOrderOffset;
+        VVELaneDepth.ApplyGameplayRenderer(spawnedRenderer);
     }
 
     Vector2 GetRandomizedLandingOffset()
