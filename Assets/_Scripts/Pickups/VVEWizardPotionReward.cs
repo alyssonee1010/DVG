@@ -17,6 +17,7 @@ public class VVEWizardPotionReward : MonoBehaviour
     [SerializeField] Vector2 potionStartOffset = new Vector2(0.28f, 0.25f);
     [SerializeField] Vector2 potionLandingOffset = new Vector2(0.22f, -0.36f);
     [SerializeField] Vector2 potionLandingRandomRange = new Vector2(0.16f, 0.08f);
+    [SerializeField] float potionDepthNudge = -0.1f;
 
     [Header("Visuals")]
     [SerializeField] Vector3 potionScale = new Vector3(1.4f, 1.4f, 1f);
@@ -118,6 +119,8 @@ public class VVEWizardPotionReward : MonoBehaviour
         Transform origin = spawnPoint != null ? spawnPoint : transform;
         Vector3 startPosition = origin.TransformPoint(potionStartOffset);
         Vector3 landingPosition = origin.TransformPoint(GetRandomizedLandingOffset());
+        startPosition.z += potionDepthNudge;
+        landingPosition.z += potionDepthNudge;
         GameObject potion = SpawnPotionObject(startPosition, sprite);
         if (potion == null)
         {

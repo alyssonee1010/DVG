@@ -63,6 +63,16 @@ public class PlantPlacementManager : MonoBehaviour
 
     private void HandlePrimaryClick()
     {
+        if (IsAimingHealingPotion())
+        {
+            if (TryUseHealingPotion())
+            {
+                ClearSelection();
+            }
+
+            return;
+        }
+
         if (TryCollectBoardPickup())
         {
             return;
@@ -86,6 +96,18 @@ public class PlantPlacementManager : MonoBehaviour
         }
 
         TryPlacePlant();
+    }
+
+    private bool IsAimingHealingPotion()
+    {
+        if (healingPotionUseController == null)
+        {
+            healingPotionUseController = VVEHealingPotionUseController.Instance != null
+                ? VVEHealingPotionUseController.Instance
+                : FindAnyObjectByType<VVEHealingPotionUseController>();
+        }
+
+        return healingPotionUseController != null && healingPotionUseController.IsAiming;
     }
 
     private bool IsRemoveToolActive()

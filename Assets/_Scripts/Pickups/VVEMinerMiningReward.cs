@@ -16,6 +16,7 @@ public class VVEMinerMiningReward : MonoBehaviour
     [SerializeField] Vector2 diamondStartOffset = new Vector2(0.35f, 0.25f);
     [SerializeField] Vector2 diamondLandingOffset = new Vector2(0.25f, -0.32f);
     [SerializeField] Vector2 diamondLandingRandomRange = new Vector2(0.2f, 0.08f);
+    [SerializeField] float diamondDepthNudge = -0.1f;
 
     [Header("Visuals")]
     [SerializeField] Vector3 flareScale = new Vector3(0.6f, 0.6f, 1f);
@@ -120,6 +121,8 @@ public class VVEMinerMiningReward : MonoBehaviour
         Transform origin = spawnPoint != null ? spawnPoint : transform;
         Vector3 startPosition = origin.TransformPoint(diamondStartOffset);
         Vector3 landingPosition = origin.TransformPoint(GetRandomizedLandingOffset());
+        startPosition.z += diamondDepthNudge;
+        landingPosition.z += diamondDepthNudge;
 
         GameObject diamond = Instantiate(diamondPickupPrefab, startPosition, Quaternion.identity);
         diamond.transform.localScale = diamondScale;
