@@ -1206,7 +1206,7 @@ Camera:
     x: 0
     y: 0
     width: 1
-    height: 1
+    height: 0.99973947
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
@@ -1258,7 +1258,7 @@ MonoBehaviour:
   m_AssetsPPU: 134
   m_RefResolutionX: 2560
   m_RefResolutionY: 1440
-  m_CropFrame: 0
+  m_CropFrame: 4
   m_GridSnapping: 0
   m_FilterMode: 0
   m_UpscaleRT: 0
@@ -6471,6 +6471,75 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!1001 &1094003491
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1000001, guid: 73bf6454c5a4493a8425f8b477bbd505, type: 3}
+      propertyPath: m_Name
+      value: Diamond
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000002, guid: 73bf6454c5a4493a8425f8b477bbd505, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 8.386341
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000002, guid: 73bf6454c5a4493a8425f8b477bbd505, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.8632872
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000002, guid: 73bf6454c5a4493a8425f8b477bbd505, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000002, guid: 73bf6454c5a4493a8425f8b477bbd505, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000002, guid: 73bf6454c5a4493a8425f8b477bbd505, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000002, guid: 73bf6454c5a4493a8425f8b477bbd505, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000002, guid: 73bf6454c5a4493a8425f8b477bbd505, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000002, guid: 73bf6454c5a4493a8425f8b477bbd505, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000002, guid: 73bf6454c5a4493a8425f8b477bbd505, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000002, guid: 73bf6454c5a4493a8425f8b477bbd505, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6267208489395276473, guid: 73bf6454c5a4493a8425f8b477bbd505, type: 3}
+      propertyPath: m_Color.b
+      value: 0.7568628
+      objectReference: {fileID: 0}
+    - target: {fileID: 6267208489395276473, guid: 73bf6454c5a4493a8425f8b477bbd505, type: 3}
+      propertyPath: m_Color.g
+      value: 0.7568628
+      objectReference: {fileID: 0}
+    - target: {fileID: 6267208489395276473, guid: 73bf6454c5a4493a8425f8b477bbd505, type: 3}
+      propertyPath: m_Color.r
+      value: 0.7568628
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 73bf6454c5a4493a8425f8b477bbd505, type: 3}
 --- !u!1 &1103699587
 GameObject:
   m_ObjectHideFlags: 0
@@ -11297,15 +11366,15 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1751054852626499912, guid: 85eeeea72e837e04ea2dc19465949b3b, type: 3}
-      propertyPath: blueGemValue
+      propertyPath: diamondValue
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1751054852626499912, guid: 85eeeea72e837e04ea2dc19465949b3b, type: 3}
-      propertyPath: blueGemScale.x
+      propertyPath: diamondScale.x
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1751054852626499912, guid: 85eeeea72e837e04ea2dc19465949b3b, type: 3}
-      propertyPath: blueGemScale.y
+      propertyPath: diamondScale.y
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1751054852626499912, guid: 85eeeea72e837e04ea2dc19465949b3b, type: 3}
@@ -11313,15 +11382,15 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1751054852626499912, guid: 85eeeea72e837e04ea2dc19465949b3b, type: 3}
-      propertyPath: blueGemThrowDuration
+      propertyPath: diamondThrowDuration
       value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 1751054852626499912, guid: 85eeeea72e837e04ea2dc19465949b3b, type: 3}
-      propertyPath: blueGemThrowArcHeight
+      propertyPath: diamondThrowArcHeight
       value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 1751054852626499912, guid: 85eeeea72e837e04ea2dc19465949b3b, type: 3}
-      propertyPath: blueGemLandingRandomRange.x
+      propertyPath: diamondLandingRandomRange.x
       value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2317973912582186211, guid: 85eeeea72e837e04ea2dc19465949b3b, type: 3}
@@ -11616,3 +11685,4 @@ SceneRoots:
   - {fileID: 1822400685}
   - {fileID: 865357834}
   - {fileID: 1595011911}
+  - {fileID: 1094003491}

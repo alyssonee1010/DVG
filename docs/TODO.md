@@ -40,3 +40,7 @@ Working list for upcoming Vikings vs Everyone improvements.
 
 - Add wizard sound effects.
 - Fix sound timing.
+
+## Improvements
+- [ ] Too many diamonds and too hard to click (I'm just clicking all the time)
+- [ ] 

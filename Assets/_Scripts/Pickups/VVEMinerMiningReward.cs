@@ -8,35 +8,33 @@ public class VVEMinerMiningReward : MonoBehaviour
 
     [Header("Spawn Assets")]
     [SerializeField] Sprite flareSprite;
-    [SerializeField] Sprite blueGemSprite;
+    [SerializeField] GameObject diamondPickupPrefab;
 
     [Header("Spawn Positions")]
     [SerializeField] Transform spawnPoint;
     [SerializeField] Vector2 flareOffset = new Vector2(0.45f, -0.1f);
-    [SerializeField] Vector2 blueGemStartOffset = new Vector2(0.35f, 0.25f);
-    [SerializeField] Vector2 blueGemLandingOffset = new Vector2(0.25f, -0.32f);
-    [SerializeField] Vector2 blueGemLandingRandomRange = new Vector2(0.2f, 0.08f);
+    [SerializeField] Vector2 diamondStartOffset = new Vector2(0.35f, 0.25f);
+    [SerializeField] Vector2 diamondLandingOffset = new Vector2(0.25f, -0.32f);
+    [SerializeField] Vector2 diamondLandingRandomRange = new Vector2(0.2f, 0.08f);
 
     [Header("Visuals")]
     [SerializeField] Vector3 flareScale = new Vector3(0.6f, 0.6f, 1f);
-    [SerializeField] Vector3 blueGemScale = new Vector3(0.5f, 0.5f, 1f);
+    [SerializeField] Vector3 diamondScale = new Vector3(0.55f, 0.55f, 1f);
     [SerializeField] float flareLifetime = 0.05f;
 
     [Header("Throw")]
-    [SerializeField] float blueGemThrowDuration = 0.32f;
-    [SerializeField] float blueGemThrowArcHeight = 0.45f;
+    [SerializeField] float diamondThrowDuration = 0.32f;
+    [SerializeField] float diamondThrowArcHeight = 0.45f;
 
     [Header("Collection")]
-    [SerializeField] int blueGemValue = 1;
-    [SerializeField] float blueGemColliderRadius = 0.28f;
+    [SerializeField] int diamondValue = 1;
 
     [Header("Audio")]
     [SerializeField] VVEAnimationSoundPlayer soundPlayer;
 
     [Header("Editor Preview")]
-    [SerializeField] bool showBlueGemPreview = true;
-    [SerializeField] Color blueGemVisualPreviewColor = new Color(0.1f, 0.55f, 1f, 0.9f);
-    [SerializeField] Color blueGemColliderPreviewColor = new Color(0.1f, 1f, 0.25f, 0.9f);
+    [SerializeField] bool showDiamondPreview = true;
+    [SerializeField] Color diamondPreviewColor = new Color(0.1f, 0.55f, 1f, 0.9f);
 
     int callsUntilGem;
 
@@ -73,7 +71,7 @@ public class VVEMinerMiningReward : MonoBehaviour
 
     void HandleMiningEvent()
     {
-        SpawnSprite(flareSprite, flareOffset, flareScale, "Mining Flare", flareLifetime, false);
+        SpawnFlare();
 
         callsUntilGem--;
         if (callsUntilGem > 0)
@@ -81,7 +79,7 @@ public class VVEMinerMiningReward : MonoBehaviour
             return;
         }
 
-        SpawnBlueGem();
+        SpawnDiamond();
         ResetCounter();
     }
 
@@ -90,82 +88,58 @@ public class VVEMinerMiningReward : MonoBehaviour
         callsUntilGem = Mathf.Max(1, eventCallsPerGem);
     }
 
-    void SpawnBlueGem()
+    void SpawnFlare()
     {
-        if (blueGemSprite == null)
+        if (flareSprite == null)
         {
             return;
         }
 
         Transform origin = spawnPoint != null ? spawnPoint : transform;
-        Vector3 startPosition = origin.TransformPoint(blueGemStartOffset);
-        Vector3 landingPosition = origin.TransformPoint(GetRandomizedLandingOffset());
+        Vector3 worldPosition = origin.TransformPoint(flareOffset);
 
-        GameObject gem = SpawnSpriteAtWorldPosition(blueGemSprite, startPosition, blueGemScale, "Blue Gem", 0f, true);
-        if (gem == null)
-        {
-            return;
-        }
-
-        VVEThrownPickup thrownPickup = gem.AddComponent<VVEThrownPickup>();
-        thrownPickup.Launch(startPosition, landingPosition, blueGemThrowArcHeight, blueGemThrowDuration);
-    }
-
-    void SpawnSprite(Sprite sprite, Vector2 localOffset, Vector3 scale, string objectName, float lifetime, bool collectable)
-    {
-        if (sprite == null)
-        {
-            return;
-        }
-
-        Transform origin = spawnPoint != null ? spawnPoint : transform;
-        SpawnSpriteAtWorldPosition(sprite, origin.TransformPoint(localOffset), scale, objectName, lifetime, collectable);
-    }
-
-    GameObject SpawnSpriteAtWorldPosition(Sprite sprite, Vector3 worldPosition, Vector3 scale, string objectName, float lifetime, bool collectable)
-    {
-        if (sprite == null)
-        {
-            return null;
-        }
-
-        GameObject spawned = new GameObject(objectName);
+        GameObject spawned = new GameObject("Mining Flare");
         spawned.transform.position = worldPosition;
         spawned.transform.rotation = Quaternion.identity;
-        spawned.transform.localScale = scale;
+        spawned.transform.localScale = flareScale;
 
         SpriteRenderer spriteRenderer = spawned.AddComponent<SpriteRenderer>();
-        spriteRenderer.sprite = sprite;
-        ApplySorting(spriteRenderer);
+        spriteRenderer.sprite = flareSprite;
+        VVELaneDepth.ApplyGameplayRenderer(spriteRenderer);
 
-        if (collectable)
-        {
-            CircleCollider2D collider = spawned.AddComponent<CircleCollider2D>();
-            collider.isTrigger = true;
-            collider.radius = blueGemColliderRadius;
-
-            VVEBoardPickup pickup = spawned.AddComponent<VVEBoardPickup>();
-            pickup.Initialize(blueGemValue, CacheSoundPlayer());
-        }
-
-        if (lifetime > 0f)
-        {
-            Destroy(spawned, lifetime);
-        }
-
-        return spawned;
+        Destroy(spawned, flareLifetime);
     }
 
-    void ApplySorting(SpriteRenderer spawnedRenderer)
+    void SpawnDiamond()
     {
-        VVELaneDepth.ApplyGameplayRenderer(spawnedRenderer);
+        if (diamondPickupPrefab == null)
+        {
+            return;
+        }
+
+        Transform origin = spawnPoint != null ? spawnPoint : transform;
+        Vector3 startPosition = origin.TransformPoint(diamondStartOffset);
+        Vector3 landingPosition = origin.TransformPoint(GetRandomizedLandingOffset());
+
+        GameObject diamond = Instantiate(diamondPickupPrefab, startPosition, Quaternion.identity);
+        diamond.transform.localScale = diamondScale;
+        VVELaneDepth.ApplyGameplaySortingGroup(diamond);
+
+        VVEBoardPickup pickup = diamond.GetComponent<VVEBoardPickup>();
+        if (pickup != null)
+        {
+            pickup.Initialize(diamondValue, CacheSoundPlayer());
+        }
+
+        VVEThrownPickup thrownPickup = diamond.AddComponent<VVEThrownPickup>();
+        thrownPickup.Launch(startPosition, landingPosition, diamondThrowArcHeight, diamondThrowDuration);
     }
 
     Vector2 GetRandomizedLandingOffset()
     {
-        float randomX = Random.Range(-blueGemLandingRandomRange.x, blueGemLandingRandomRange.x);
-        float randomY = Random.Range(-blueGemLandingRandomRange.y, blueGemLandingRandomRange.y);
-        return blueGemLandingOffset + new Vector2(randomX, randomY);
+        float randomX = Random.Range(-diamondLandingRandomRange.x, diamondLandingRandomRange.x);
+        float randomY = Random.Range(-diamondLandingRandomRange.y, diamondLandingRandomRange.y);
+        return diamondLandingOffset + new Vector2(randomX, randomY);
     }
 
     VVEAnimationSoundPlayer CacheSoundPlayer()
@@ -180,24 +154,18 @@ public class VVEMinerMiningReward : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        if (!showBlueGemPreview || blueGemSprite == null)
+        if (!showDiamondPreview || diamondPickupPrefab == null)
         {
             return;
         }
 
         Transform origin = spawnPoint != null ? spawnPoint : transform;
-        Vector3 startPosition = origin.TransformPoint(blueGemStartOffset);
-        Vector3 landingPosition = origin.TransformPoint(blueGemLandingOffset);
-        Vector3 visualSize = Vector3.Scale(blueGemSprite.bounds.size, blueGemScale);
-        float colliderPreviewRadius = blueGemColliderRadius * Mathf.Max(Mathf.Abs(blueGemScale.x), Mathf.Abs(blueGemScale.y));
+        Vector3 startPosition = origin.TransformPoint(diamondStartOffset);
+        Vector3 landingPosition = origin.TransformPoint(diamondLandingOffset);
 
-        Gizmos.color = blueGemVisualPreviewColor;
-        Gizmos.DrawWireCube(startPosition, visualSize);
-        Gizmos.DrawWireCube(landingPosition, visualSize);
+        Gizmos.color = diamondPreviewColor;
+        Gizmos.DrawWireSphere(startPosition, 0.2f);
+        Gizmos.DrawWireSphere(landingPosition, 0.2f);
         Gizmos.DrawLine(startPosition, landingPosition);
-
-        Gizmos.color = blueGemColliderPreviewColor;
-        Gizmos.DrawWireSphere(startPosition, colliderPreviewRadius);
-        Gizmos.DrawWireSphere(landingPosition, colliderPreviewRadius);
     }
 }
