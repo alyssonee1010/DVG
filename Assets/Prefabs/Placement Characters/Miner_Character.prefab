@@ -458,7 +458,6 @@ MonoBehaviour:
   flareScale: {x: 0.6, y: 0.6, z: 1}
   diamondScale: {x: 1.5, y: 1.5, z: 1}
   flareLifetime: 0.05
-  sortingOrderOffset: 25
   diamondThrowDuration: 0.32
   diamondThrowArcHeight: 0.45
   diamondValue: 6
@@ -492,9 +491,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VVEBoardCharacter
   maxHealth: 100
-  sortingOrderBase: 1000
-  sortingOrderPerRow: 120
-  sortingOrderOffset: 0
 --- !u!114 &1890146184494774012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -648,6 +644,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 5f89c3f707a1f5647b58f1dea9ddde90, type: 3}
   afterKillSounds: []
   pitchRange: {x: 0.95, y: 1.05}
+  collectPitchStart: 1
+  collectPitchMax: 1.5
+  collectPitchStep: 0.05
+  collectPitchResetInterval: 0.7
 --- !u!1 &6055198775274499732
 GameObject:
   m_ObjectHideFlags: 0

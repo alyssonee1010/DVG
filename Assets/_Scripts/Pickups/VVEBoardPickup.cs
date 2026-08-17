@@ -19,6 +19,13 @@ public class VVEBoardPickup : MonoBehaviour
     [SerializeField] Vector3 collectEffectDrift = new Vector3(0f, 0.2f, 0f);
     [SerializeField] Color collectEffectTint = new Color(0.55f, 0.9f, 1f, 1f);
 
+    [Header("Fly To Wallet")]
+    [SerializeField] bool flyToWalletOnCollect = true;
+    [SerializeField] float flyDuration = 0.45f;
+    [SerializeField] float flyArcHeight = 1.2f;
+    [SerializeField] float flyEndScale = 0.15f;
+    [SerializeField] AnimationCurve flyEase = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+
     static int lastCollectedFrame = -1;
     bool collected;
     Coroutine lifetimeRoutine;
@@ -70,6 +77,7 @@ public class VVEBoardPickup : MonoBehaviour
         collected = true;
         lastCollectedFrame = Time.frameCount;
         StopLifetimeTimer();
+        SetClickable(false);
 
         VVEUsableWallet wallet = VVEUsableWallet.Instance != null ? VVEUsableWallet.Instance : FindAnyObjectByType<VVEUsableWallet>();
         if (wallet != null)
@@ -90,8 +98,62 @@ public class VVEBoardPickup : MonoBehaviour
         }
 
         PlayCollectEffect();
-        Destroy(gameObject);
+
+        Transform flyTarget = flyToWalletOnCollect ? GetFlyTarget() : null;
+        if (flyTarget != null)
+        {
+            StartCoroutine(FlyToWalletThenDestroy(flyTarget));
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         return true;
+    }
+
+    Transform GetFlyTarget()
+    {
+        return resource == PickupResource.HealingPotions
+            ? VVEUsableCounterUI.HealingPotionTarget
+            : VVEUsableCounterUI.DiamondTarget;
+    }
+
+    void SetClickable(bool clickable)
+    {
+        foreach (Collider2D pickupCollider in GetComponentsInChildren<Collider2D>())
+        {
+            pickupCollider.enabled = clickable;
+        }
+    }
+
+    IEnumerator FlyToWalletThenDestroy(Transform target)
+    {
+        VVEThrownPickup thrownPickup = GetComponent<VVEThrownPickup>();
+        if (thrownPickup != null)
+        {
+            thrownPickup.enabled = false;
+        }
+
+        Vector3 startPosition = transform.position;
+        Vector3 startScale = transform.localScale;
+        float elapsed = 0f;
+
+        while (elapsed < flyDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / flyDuration);
+            float eased = flyEase.Evaluate(t);
+
+            Vector3 nextPosition = Vector3.Lerp(startPosition, target.position, eased);
+            nextPosition.y += Mathf.Sin(t * Mathf.PI) * flyArcHeight;
+            transform.position = nextPosition;
+            transform.localScale = Vector3.Lerp(startScale, startScale * flyEndScale, eased);
+
+            yield return null;
+        }
+
+        Destroy(gameObject);
     }
 
     void StartLifetimeTimer()

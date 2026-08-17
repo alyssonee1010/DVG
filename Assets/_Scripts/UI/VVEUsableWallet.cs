@@ -39,6 +39,14 @@ public class VVEUsableWallet : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
+            AddDiamonds(100);
+        }
+    }
+
     public bool CanAfford(int cost)
     {
         return Diamonds >= Mathf.Max(0, cost);
