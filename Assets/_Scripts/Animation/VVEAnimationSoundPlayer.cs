@@ -11,6 +11,22 @@ public class VVEAnimationSoundPlayer : MonoBehaviour
     [SerializeField] AudioClip[] afterKillSounds;
     [SerializeField] Vector2 pitchRange = new Vector2(0.95f, 1.05f);
 
+    [Header("Collect Pitch Ramp")]
+    [SerializeField] float collectPitchStart = 1f;
+    [SerializeField] float collectPitchMax = 2.5f;
+    [SerializeField] float collectPitchStep = 0.1f;
+    [SerializeField] float collectPitchResetInterval = 0.4f;
+
+    static float lastCollectTime = -Mathf.Infinity;
+    static float currentCollectPitch = -1f;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    static void ResetCollectPitchState()
+    {
+        lastCollectTime = -Mathf.Infinity;
+        currentCollectPitch = -1f;
+    }
+
     void Awake()
     {
         EnsureAudioSource();
@@ -43,7 +59,32 @@ public class VVEAnimationSoundPlayer : MonoBehaviour
 
     public void PlayCollectSounds()
     {
-        PlayRandom(collectSounds);
+        if (collectSounds == null || collectSounds.Length == 0)
+        {
+            return;
+        }
+
+        EnsureAudioSource();
+        if (audioSource == null)
+        {
+            return;
+        }
+
+        AudioClip clip = collectSounds[Random.Range(0, collectSounds.Length)];
+        if (clip == null)
+        {
+            return;
+        }
+
+        float timeSinceLastCollect = Time.unscaledTime - lastCollectTime;
+        bool didReset = timeSinceLastCollect >= collectPitchResetInterval;
+        currentCollectPitch = didReset
+            ? collectPitchStart
+            : Mathf.Min(currentCollectPitch + collectPitchStep, collectPitchMax);
+        lastCollectTime = Time.unscaledTime;
+
+        audioSource.pitch = currentCollectPitch;
+        audioSource.PlayOneShot(clip);
     }
 
     bool PlayRandom(AudioClip[] clips)

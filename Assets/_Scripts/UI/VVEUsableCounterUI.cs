@@ -10,6 +10,9 @@ public class VVEUsableCounterUI : MonoBehaviour
     [SerializeField] TMP_Text diamondText;
     [SerializeField] string prefix = "";
 
+    public static Transform DiamondTarget { get; private set; }
+    public static Transform HealingPotionTarget { get; private set; }
+
     void Awake()
     {
         if (IsPlacementSlotPrice())
@@ -48,11 +51,13 @@ public class VVEUsableCounterUI : MonoBehaviour
             {
                 wallet.HealingPotionsChanged += UpdateCounter;
                 UpdateCounter(wallet.HealingPotions);
+                HealingPotionTarget = transform;
             }
             else
             {
                 wallet.DiamondsChanged += UpdateCounter;
                 UpdateCounter(wallet.Diamonds);
+                DiamondTarget = transform;
             }
         }
     }
@@ -63,6 +68,16 @@ public class VVEUsableCounterUI : MonoBehaviour
         {
             wallet.DiamondsChanged -= UpdateCounter;
             wallet.HealingPotionsChanged -= UpdateCounter;
+        }
+
+        if (DiamondTarget == transform)
+        {
+            DiamondTarget = null;
+        }
+
+        if (HealingPotionTarget == transform)
+        {
+            HealingPotionTarget = null;
         }
     }
 

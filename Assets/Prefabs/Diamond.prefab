@@ -104,6 +104,34 @@ MonoBehaviour:
   collectEffectScaleMultiplier: 1.55
   collectEffectDrift: {x: 0, y: 0.2, z: 0}
   collectEffectTint: {r: 0.55, g: 0.9, b: 1, a: 1}
+  flyToWalletOnCollect: 1
+  flyDuration: 0.45
+  flyArcHeight: 0
+  flyEndScale: 0.2
+  flyEase:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!95 &5253881155338737676
 Animator:
   serializedVersion: 7
