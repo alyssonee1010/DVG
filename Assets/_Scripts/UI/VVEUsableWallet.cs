@@ -76,6 +76,12 @@ public class VVEUsableWallet : MonoBehaviour
         DiamondsChanged?.Invoke(Diamonds);
     }
 
+    public void SetDiamonds(int amount)
+    {
+        Diamonds = Mathf.Max(0, amount);
+        DiamondsChanged?.Invoke(Diamonds);
+    }
+
     public bool CanUseHealingPotion(int cost = 1)
     {
         return HealingPotions >= Mathf.Max(1, cost);

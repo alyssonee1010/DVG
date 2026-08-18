@@ -1,0 +1,102 @@
+id: 01-02
+name: "Reinforcements"
+
+stage: 1
+level: 2
+
+# General level settings
+settings:
+  lanes: 6
+  starting_currency: 110
+
+# Units that can appear in this level
+available_units:
+  - viking
+  - naked_viking
+
+# Wave schedule (never more than a 10s gap between waves)
+waves:
+
+  - time: 0
+    type: normal
+
+    spawns:
+      - unit: viking
+        count: 3
+        interval: 2.3
+        lane: random
+
+  - time: 13
+    type: normal
+
+    spawns:
+      - unit: viking
+        count: 4
+        interval: 2.1
+        lane: random
+      - unit: naked_viking
+        count: 2
+        interval: 2.7
+        lane: random
+
+  - time: 27
+    type: normal
+
+    spawns:
+      - unit: naked_viking
+        count: 4
+        interval: 1.7
+        lane: random
+
+  - time: 40
+    type: flag
+
+    spawns:
+      - unit: viking
+        count: 7
+        interval: 1.4
+        lane: random
+
+  - time: 56
+    type: normal
+
+    spawns:
+      - unit: viking
+        count: 5
+        interval: 1.7
+        lane: random
+      - unit: naked_viking
+        count: 3
+        interval: 2.1
+        lane: random
+
+  - time: 71
+    type: flag
+
+    spawns:
+      - unit: naked_viking
+        count: 8
+        interval: 1.2
+        lane: random
+
+  - time: 87
+    type: normal
+
+    spawns:
+      - unit: viking
+        count: 6
+        interval: 1.4
+        lane: random
+
+  - time: 102
+    type: final
+
+    spawns:
+      - unit: viking
+        count: 8
+        interval: 1
+        lane: random
+      - unit: naked_viking
+        count: 6
+        interval: 1
+        lane: random

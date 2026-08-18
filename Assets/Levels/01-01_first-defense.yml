@@ -1,0 +1,80 @@
+id: 01-01
+name: "First Defense"
+
+stage: 1
+level: 1
+
+# General level settings
+settings:
+  lanes: 6
+  starting_currency: 100
+
+# Units that can appear in this level
+available_units:
+  - viking
+
+# Wave schedule (never more than a 10s gap between waves)
+waves:
+
+  - time: 0
+    type: normal
+
+    spawns:
+      - unit: viking
+        count: 2
+        interval: 2.6
+        lane: random
+
+  - time: 11
+    type: normal
+
+    spawns:
+      - unit: viking
+        count: 3
+        interval: 2.6
+        lane: random
+
+  - time: 24
+    type: normal
+
+    spawns:
+      - unit: viking
+        count: 4
+        interval: 2.1
+        lane: random
+
+  - time: 38
+    type: flag
+
+    spawns:
+      - unit: viking
+        count: 6
+        interval: 1.7
+        lane: random
+
+  - time: 55
+    type: normal
+
+    spawns:
+      - unit: viking
+        count: 5
+        interval: 2.1
+        lane: random
+
+  - time: 71
+    type: flag
+
+    spawns:
+      - unit: viking
+        count: 8
+        interval: 1.3
+        lane: random
+
+  - time: 88
+    type: final
+
+    spawns:
+      - unit: viking
+        count: 10
+        interval: 1
+        lane: random
