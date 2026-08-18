@@ -137,14 +137,39 @@ public static class VVELevelLoader
             }
         }
 
+        ResolveWaveTimings(level);
+
         return level;
+    }
+
+    // A wave's start time is either an explicit "time" (legacy, absolute seconds from level
+    // start) or a "time_offset" (seconds after the previous wave ends, chained). A wave's
+    // duration is implied by its latest spawn's end offset, not authored directly.
+    static void ResolveWaveTimings(VVELevelDefinition level)
+    {
+        float cursor = 0f;
+        foreach (VVEWaveDefinition wave in level.Waves)
+        {
+            wave.Time = wave.UsesTimeOffset ? cursor + wave.TimeOffset : wave.Time;
+            cursor = wave.Time + wave.Duration;
+        }
     }
 
     static VVEWaveDefinition ParseWave(Dictionary<string, object> waveMap)
     {
         VVEWaveDefinition wave = new VVEWaveDefinition();
-        wave.Time = GetFloat(waveMap, "time", 0f);
-        wave.Type = ParseWaveType(GetString(waveMap, "type", "normal"));
+        wave.Type = ParseWaveType(GetString(waveMap, "tier", GetString(waveMap, "type", "normal")));
+
+        if (waveMap.ContainsKey("time"))
+        {
+            wave.Time = GetFloat(waveMap, "time", 0f);
+            wave.UsesTimeOffset = false;
+        }
+        else
+        {
+            wave.TimeOffset = GetFloat(waveMap, "time_offset", 0f);
+            wave.UsesTimeOffset = true;
+        }
 
         object spawnsObject;
         if (waveMap.TryGetValue("spawns", out spawnsObject))
@@ -157,18 +182,39 @@ public static class VVELevelLoader
                     Dictionary<string, object> spawnMap = spawnObject as Dictionary<string, object>;
                     if (spawnMap != null)
                     {
-                        VVESpawnDefinition spawn = new VVESpawnDefinition();
-                        spawn.Unit = GetString(spawnMap, "unit", "");
-                        spawn.Count = GetInt(spawnMap, "count", 1);
-                        spawn.Interval = GetFloat(spawnMap, "interval", 1f);
-                        spawn.Lane = GetString(spawnMap, "lane", "random");
-                        wave.Spawns.Add(spawn);
+                        wave.Spawns.Add(ParseSpawn(spawnMap));
                     }
                 }
             }
         }
 
+        float duration = 0f;
+        foreach (VVESpawnDefinition spawn in wave.Spawns)
+        {
+            duration = Mathf.Max(duration, spawn.EndOffset());
+        }
+
+        wave.Duration = duration;
         return wave;
+    }
+
+    static VVESpawnDefinition ParseSpawn(Dictionary<string, object> spawnMap)
+    {
+        VVESpawnDefinition spawn = new VVESpawnDefinition();
+        spawn.Unit = GetString(spawnMap, "unit", "");
+        spawn.Count = GetInt(spawnMap, "count", 1);
+        spawn.Lane = GetString(spawnMap, "lane", "random");
+        spawn.Interval = GetFloat(spawnMap, "interval", 1f);
+        spawn.TimeOffset = GetFloat(spawnMap, "time_offset", 0f);
+        spawn.Duration = GetFloat(spawnMap, "duration", 0f);
+        spawn.Spacing = ParseSpacing(GetString(spawnMap, "spacing", "random"));
+        return spawn;
+    }
+
+    static VVESpawnSpacing ParseSpacing(string text)
+    {
+        string normalized = text.Trim().ToLowerInvariant();
+        return normalized == "even" ? VVESpawnSpacing.Even : VVESpawnSpacing.Random;
     }
 
     static VVEWaveType ParseWaveType(string text)
