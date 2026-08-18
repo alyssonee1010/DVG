@@ -27,6 +27,20 @@ public class PlantPlacementManager : MonoBehaviour
     public GameObject SelectedPlantPrefab => selectedPlantPrefab;
     public bool IsRemoveToolSelected => removeToolSelected;
 
+    public void ResetBoard()
+    {
+        foreach (KeyValuePair<Vector3Int, VVEBoardCharacter> occupiedCell in occupiedCells)
+        {
+            if (occupiedCell.Value != null)
+            {
+                Destroy(occupiedCell.Value.gameObject);
+            }
+        }
+
+        occupiedCells.Clear();
+        ClearSelection();
+    }
+
     private void Awake()
     {
         if (usableWallet == null)
