@@ -7,7 +7,11 @@ level: 3
 # General level settings
 settings:
   lanes: 6
+<<<<<<< HEAD
   starting_currency: 20
+=======
+  starting_currency: 15
+>>>>>>> bd0c43d9ea7b93a0254e03a958507fb6951b3816
 
 # Units that can appear in this level
 available_units:
@@ -17,6 +21,7 @@ available_units:
 # Wave schedule
 waves:
   - time_offset: 5
+<<<<<<< HEAD
     spawns:
       - unit: viking
         count: 1
@@ -91,3 +96,87 @@ waves:
         time_offset: 5 
         duration: 5
   
+=======
+    tier: normal
+    spawns:
+      - unit: viking
+        count: 5
+        spacing: random
+        time_offset: 0
+        duration: 25
+      - unit: naked_viking
+        count: 3
+        spacing: even
+        time_offset: 10
+        duration: 20
+
+  - time_offset: 5
+    tier: normal
+    spawns:
+      - unit: viking
+        count: 6
+        spacing: random
+        time_offset: 0
+        duration: 25
+      - unit: naked_viking
+        count: 5
+        spacing: even
+        time_offset: 10
+        duration: 20
+
+  - time_offset: 5
+    tier: flag
+    spawns:
+      - unit: viking
+        count: 8
+        spacing: random
+        time_offset: 0
+        duration: 30
+      - unit: naked_viking
+        count: 6
+        spacing: even
+        time_offset: 10
+        duration: 25
+
+  - time_offset: 5
+    tier: flag
+    spawns:
+      - unit: viking
+        count: 9
+        spacing: random
+        time_offset: 0
+        duration: 30
+      - unit: naked_viking
+        count: 8
+        spacing: even
+        time_offset: 10
+        duration: 25
+
+  - time_offset: 5
+    tier: flag
+    spawns:
+      - unit: viking
+        count: 10
+        spacing: random
+        time_offset: 0
+        duration: 30
+      - unit: naked_viking
+        count: 9
+        spacing: even
+        time_offset: 10
+        duration: 25
+
+  - time_offset: 5
+    tier: final
+    spawns:
+      - unit: viking
+        count: 10
+        spacing: random
+        time_offset: 0
+        duration: 30
+      - unit: naked_viking
+        count: 10
+        spacing: even
+        time_offset: 10
+        duration: 25
+>>>>>>> bd0c43d9ea7b93a0254e03a958507fb6951b3816

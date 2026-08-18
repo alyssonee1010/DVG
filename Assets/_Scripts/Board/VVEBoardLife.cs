@@ -20,6 +20,18 @@ public class VVEBoardLife : MonoBehaviour
     public static VVEBoardLife Instance { get; private set; }
     public bool IsGameOver => isGameOver;
 
+    public void ResetLife()
+    {
+        isGameOver = false;
+        SetGameOverTextVisible(false);
+        Time.timeScale = 1f;
+
+        if (health != null)
+        {
+            health.SetMaxHealth(startingLife);
+        }
+    }
+
     void Awake()
     {
         if (Instance == null)

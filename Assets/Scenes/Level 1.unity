@@ -11234,10 +11234,10 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3141592654}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8c48f39debda32a4192d06c3535be944, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::VVEEnemyLaneSpawner
   board: {fileID: 0}
   tilemapBoard: {fileID: 405667221}
@@ -11603,6 +11603,114 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2317973912582186211, guid: 85eeeea72e837e04ea2dc19465949b3b, type: 3}
   m_PrefabInstance: {fileID: 2731077514544270452}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &999000001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 999000002}
+  - component: {fileID: 999000003}
+  - component: {fileID: 999000004}
+  - component: {fileID: 999000005}
+  m_Layer: 0
+  m_Name: Level System
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &999000002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 999000001}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &999000003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 999000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f3a8c2e914b4d6a9f0c7e2b6a1d4f38, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::VVEWaveDirector
+  tilemapBoard: {fileID: 405667221}
+  walkDirection: 0
+  edgePadding: 0
+  laneYOffset: -0.7
+  spawnOutsideBoardTiles: 2
+  exitPastBoardTiles: 0
+  units:
+  - unitId: viking
+    prefab: {fileID: 5244383168775246441, guid: 773db57a899a75d4da40c47d671cde51, type: 3}
+    maxHealth: 140
+    moveSpeed: 0.9
+  - unitId: naked_viking
+    prefab: {fileID: 6627431872690101012, guid: 5b721ba916b85f94e8f3cb7bf4ccd288, type: 3}
+    maxHealth: 140
+    moveSpeed: 0.9
+  flagWaveMessage: ELITE WAVE INCOMING
+  finalWaveMessage: FINAL WAVE
+  bannerWorldOffset: {x: 0, y: 4.2, z: 0}
+  bannerDuration: 3
+--- !u!114 &999000004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 999000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7e2f4a693c04d1eae5f8b3c92d6f1a0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::VVELevelSelectUI
+  placementManager: {fileID: 2096327530}
+  waveDirector: {fileID: 999000003}
+  cardSize: {x: 2.2, y: 1}
+  cardSpacing: {x: 2.5, y: 1.3}
+  cardsPerRow: 3
+  cardColor: {r: 0.12, g: 0.16, b: 0.24, a: 0.95}
+  cardTextColor: {r: 1, g: 1, b: 1, a: 1}
+  cameraPlaneDistance: 5
+--- !u!114 &999000005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 999000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c48d1a7f5e6b4c9a8d2f0e3b7c6a5d19, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::VVELevelProgressUI
+  waveDirector: {fileID: 999000003}
+  screenAnchorOffset: {x: 0, y: 0.6, z: 0}
+  cameraPlaneDistance: 5
+  barSize: {x: 6, y: 0.35}
+  backgroundColor: {r: 0.08, g: 0.08, b: 0.1, a: 0.9}
+  fillColor: {r: 0.85, g: 0.7, b: 0.15, a: 1}
+  iconSize: 0.32
+  flagIconColor: {r: 1, g: 0.85, b: 0.1, a: 1}
+  finalIconColor: {r: 0.9, g: 0.15, b: 0.15, a: 1}
+  progressMarkerSize: 0.28
+  progressMarkerColor: {r: 0.95, g: 0.95, b: 0.95, a: 1}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -11616,3 +11724,4 @@ SceneRoots:
   - {fileID: 1822400685}
   - {fileID: 865357834}
   - {fileID: 1595011911}
+  - {fileID: 999000002}
