@@ -236,14 +236,61 @@ public class VVEWaveDirector : MonoBehaviour
 
     IEnumerator RunSpawn(VVESpawnDefinition spawn)
     {
+        if (spawn.Count <= 0)
+        {
+            yield break;
+        }
+
+        if (spawn.TimeOffset > 0f)
+        {
+            yield return new WaitForSeconds(spawn.TimeOffset);
+        }
+
+        float[] spawnOffsets = BuildSpawnOffsets(spawn);
+        float elapsed = 0f;
+        for (int i = 0; i < spawnOffsets.Length; i++)
+        {
+            float waitSeconds = spawnOffsets[i] - elapsed;
+            if (waitSeconds > 0f)
+            {
+                yield return new WaitForSeconds(waitSeconds);
+                elapsed += waitSeconds;
+            }
+
+            SpawnUnit(spawn.Unit, spawn.Lane);
+        }
+    }
+
+    // Offsets are relative to the spawn's own start (after TimeOffset has already elapsed).
+    float[] BuildSpawnOffsets(VVESpawnDefinition spawn)
+    {
+        float[] offsets = new float[spawn.Count];
+        if (spawn.Count == 1)
+        {
+            offsets[0] = 0f;
+            return offsets;
+        }
+
+        float duration = spawn.Duration > 0f ? spawn.Duration : (spawn.Count - 1) * Mathf.Max(0.01f, spawn.Interval);
+
+        if (spawn.Spacing == VVESpawnSpacing.Random)
+        {
+            offsets[0] = 0f;
+            for (int i = 1; i < spawn.Count; i++)
+            {
+                offsets[i] = Random.Range(0f, duration);
+            }
+
+            System.Array.Sort(offsets);
+            return offsets;
+        }
+
         for (int i = 0; i < spawn.Count; i++)
         {
-            SpawnUnit(spawn.Unit, spawn.Lane);
-            if (i < spawn.Count - 1)
-            {
-                yield return new WaitForSeconds(Mathf.Max(0.01f, spawn.Interval));
-            }
+            offsets[i] = duration * i / (spawn.Count - 1);
         }
+
+        return offsets;
     }
 
     void SpawnUnit(string unitId, string laneSpec)

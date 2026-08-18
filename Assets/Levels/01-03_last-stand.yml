@@ -7,100 +7,95 @@ level: 3
 # General level settings
 settings:
   lanes: 6
-  starting_currency: 120
+  starting_currency: 15
 
 # Units that can appear in this level
 available_units:
   - viking
   - naked_viking
 
-# Wave schedule (never more than a 10s gap between waves)
+# Wave schedule
 waves:
-
-  - time: 0
-    type: normal
-
-    spawns:
-      - unit: viking
-        count: 4
-        interval: 2.1
-        lane: random
-      - unit: naked_viking
-        count: 2
-        interval: 2.7
-        lane: random
-
-  - time: 14
-    type: normal
-
-    spawns:
-      - unit: naked_viking
-        count: 5
-        interval: 1.4
-        lane: random
-
-  - time: 28
-    type: flag
-
-    spawns:
-      - unit: viking
-        count: 8
-        interval: 1.2
-        lane: random
-
-  - time: 44
-    type: normal
-
+  - time_offset: 5
+    tier: normal
     spawns:
       - unit: viking
         count: 5
-        interval: 1.3
-        lane: random
+        spacing: random
+        time_offset: 0
+        duration: 25
       - unit: naked_viking
-        count: 5
-        interval: 1.3
-        lane: random
+        count: 3
+        spacing: even
+        time_offset: 10
+        duration: 20
 
-  - time: 57
-    type: flag
-
-    spawns:
-      - unit: naked_viking
-        count: 10
-        interval: 1
-        lane: random
-
-  - time: 74
-    type: normal
-
-    spawns:
-      - unit: viking
-        count: 8
-        interval: 1.2
-        lane: random
-
-  - time: 90
-    type: flag
-
+  - time_offset: 5
+    tier: normal
     spawns:
       - unit: viking
         count: 6
-        interval: 1
-        lane: random
+        spacing: random
+        time_offset: 0
+        duration: 25
+      - unit: naked_viking
+        count: 5
+        spacing: even
+        time_offset: 10
+        duration: 20
+
+  - time_offset: 5
+    tier: flag
+    spawns:
+      - unit: viking
+        count: 8
+        spacing: random
+        time_offset: 0
+        duration: 30
       - unit: naked_viking
         count: 6
-        interval: 1
-        lane: random
+        spacing: even
+        time_offset: 10
+        duration: 25
 
-  - time: 103
-    type: final
+  - time_offset: 5
+    tier: flag
+    spawns:
+      - unit: viking
+        count: 9
+        spacing: random
+        time_offset: 0
+        duration: 30
+      - unit: naked_viking
+        count: 8
+        spacing: even
+        time_offset: 10
+        duration: 25
 
+  - time_offset: 5
+    tier: flag
     spawns:
       - unit: viking
         count: 10
-        interval: 0.9
-        lane: random
+        spacing: random
+        time_offset: 0
+        duration: 30
+      - unit: naked_viking
+        count: 9
+        spacing: even
+        time_offset: 10
+        duration: 25
+
+  - time_offset: 5
+    tier: final
+    spawns:
+      - unit: viking
+        count: 10
+        spacing: random
+        time_offset: 0
+        duration: 30
       - unit: naked_viking
         count: 10
-        interval: 0.9
-        lane: random
+        spacing: even
+        time_offset: 10
+        duration: 25
