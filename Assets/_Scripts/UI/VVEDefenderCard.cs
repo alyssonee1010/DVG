@@ -7,16 +7,40 @@ public class VVEDefenderCard : MonoBehaviour
     public GameObject defenderType;
     public Transform previewContainer;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] PlantPlacementManager placementManager;
+    [SerializeField] float selectedScaleMultiplier = 1.2f;
+
+    Vector3 baseScale;
+    bool hasBaseScale;
+
+    public GameObject CharacterPrefab => defenderType;
+    public int Cost => defenderType.GetComponent<VVEDefender>().cost;
+
+    void Awake()
     {
-        var visualization = Instantiate(defenderType, previewContainer, false);
-        visualization.transform.localScale *= 0.67f;
+        var preview = Instantiate(defenderType, previewContainer, false);
+        preview.transform.localScale *= 0.67f;
+        priceTag.text = Cost.ToString();
+
+        CaptureBaseScale();
+        SetSelected(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetSelected(bool selected)
     {
-        
+        CaptureBaseScale();
+        transform.localScale = selected ? baseScale * selectedScaleMultiplier : baseScale;
     }
+
+    void CaptureBaseScale()
+    {
+        if (hasBaseScale)
+        {
+            return;
+        }
+
+        baseScale = transform.localScale;
+        hasBaseScale = true;
+    }
+
 }

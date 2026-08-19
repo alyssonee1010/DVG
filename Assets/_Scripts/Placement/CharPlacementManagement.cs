@@ -19,7 +19,7 @@ public class PlantPlacementManager : MonoBehaviour
 
     private Dictionary<Vector3Int, VVEDefender> occupiedCells = new Dictionary<Vector3Int, VVEDefender>();
     private GameObject selectedPlantPrefab;
-    private VVEPlacementCharacterSlot selectedSlot;
+    private VVEDefenderCard selectedCard;
     private GameObject placementPreview;
     private SpriteRenderer[] previewRenderers;
     private bool removeToolSelected;
@@ -235,10 +235,10 @@ public class PlantPlacementManager : MonoBehaviour
         Collider2D[] hits = Physics2D.OverlapPointAll(mouseWorldPosition);
         foreach (Collider2D hit in hits)
         {
-            VVEPlacementCharacterSlot slot = hit.GetComponentInParent<VVEPlacementCharacterSlot>();
+            VVEDefenderCard slot = hit.GetComponentInParent<VVEDefenderCard>();
             if (slot == null)
             {
-                slot = hit.GetComponentInChildren<VVEPlacementCharacterSlot>();
+                slot = hit.GetComponentInChildren<VVEDefenderCard>();
             }
 
             if (slot == null)
@@ -246,12 +246,12 @@ public class PlantPlacementManager : MonoBehaviour
                 continue;
             }
 
-            if (slot.CharacterPrefab == null)
+            if (slot.defenderType == null)
             {
                 continue;
             }
 
-            if (slot == selectedSlot)
+            if (slot == selectedCard)
             {
                 ClearSelection();
             }
@@ -294,7 +294,7 @@ public class PlantPlacementManager : MonoBehaviour
             return;
         }
 
-        int selectedCost = selectedSlot != null ? selectedSlot.Cost : 0;
+        int selectedCost = selectedCard != null ? selectedCard.Cost : 0;
         if (usableWallet != null && !usableWallet.CanAfford(selectedCost))
         {
             Debug.Log("Not enough diamonds to place " + selectedPlantPrefab.name + ". Cost: " + selectedCost);
@@ -324,16 +324,16 @@ public class PlantPlacementManager : MonoBehaviour
         Debug.Log("Placed " + spawnedPlant.name + " at cell " + cellPosition);
     }
 
-    public void SelectCharacter(VVEPlacementCharacterSlot slot)
+    public void SelectCharacter(VVEDefenderCard slot)
     {
         if (slot == null || slot.CharacterPrefab == null)
         {
             return;
         }
 
-        if (selectedSlot != null)
+        if (selectedCard != null)
         {
-            selectedSlot.SetSelected(false);
+            selectedCard.SetSelected(false);
         }
 
         if (healingPotionUseController == null)
@@ -348,10 +348,10 @@ public class PlantPlacementManager : MonoBehaviour
             healingPotionUseController.CancelAiming();
         }
 
-        selectedSlot = slot;
+        selectedCard = slot;
         selectedPlantPrefab = slot.CharacterPrefab;
         removeToolSelected = false;
-        selectedSlot.SetSelected(true);
+        selectedCard.SetSelected(true);
         RebuildPlacementPreview();
         Debug.Log("Selected " + selectedPlantPrefab.name);
     }
@@ -387,12 +387,12 @@ public class PlantPlacementManager : MonoBehaviour
 
     private void ClearSelection()
     {
-        if (selectedSlot != null)
+        if (selectedCard != null)
         {
-            selectedSlot.SetSelected(false);
+            selectedCard.SetSelected(false);
         }
 
-        selectedSlot = null;
+        selectedCard = null;
         selectedPlantPrefab = null;
         previewRenderers = null;
         removeToolSelected = false;
