@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 80439412539074089}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.148, y: -0.427, z: 0}
+  m_LocalPosition: {x: -0.12400003, y: -0.427, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -118,7 +118,7 @@ Transform:
   m_GameObject: {fileID: 426009036374841960}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.07, y: 0.639, z: 0}
+  m_LocalPosition: {x: -0.046, y: 0.639, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -210,7 +210,7 @@ Transform:
   m_GameObject: {fileID: 1780734203609175949}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.562, y: 0.046, z: 0}
+  m_LocalPosition: {x: 0.58599997, y: 0.046, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -302,7 +302,7 @@ Transform:
   m_GameObject: {fileID: 1904848933647737974}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.036, y: -0.5389999, z: 0}
+  m_LocalPosition: {x: 0.05999999, y: -0.5389999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -393,7 +393,7 @@ Transform:
   m_GameObject: {fileID: 2263465405253680333}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.713, y: 0.218, z: 0}
+  m_LocalPosition: {x: 0.737, y: 0.218, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -425,7 +425,7 @@ Transform:
   m_GameObject: {fileID: 2758900935959877171}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.055, y: -0.023, z: 0}
+  m_LocalPosition: {x: -0.03100003, y: -0.023, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -517,7 +517,7 @@ Transform:
   m_GameObject: {fileID: 3348832258245821976}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.232, y: -0.404, z: 0}
+  m_LocalPosition: {x: 0.25599998, y: -0.404, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -641,10 +641,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2872673eaef36cd45842ab6b3292e6ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VVEBoardCharacter
+  cost: 12
   maxHealth: 100
-  sortingOrderBase: 1000
-  sortingOrderPerRow: 120
-  sortingOrderOffset: 0
 --- !u!61 &-3986734287907090963
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -750,13 +748,10 @@ MonoBehaviour:
   maxPooledProjectiles: 24
   sightRange: 12
   minimumFireDistance: 0.2
-  laneTolerance: 0.45
+  depthTolerance: 0.45
   playShootAnimation: 1
   waitForShootAnimationEvent: 1
   shootTriggerName: Attack
-  projectileSortingOrderBase: 1000
-  projectileSortingOrderPerRow: 120
-  projectileSortingOrderOffset: 50
 --- !u!114 &2499249932209925423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -907,3 +902,7 @@ MonoBehaviour:
   collectSounds: []
   afterKillSounds: []
   pitchRange: {x: 0.95, y: 1.05}
+  collectPitchStart: 1
+  collectPitchMax: 2.5
+  collectPitchStep: 0.1
+  collectPitchResetInterval: 0.4

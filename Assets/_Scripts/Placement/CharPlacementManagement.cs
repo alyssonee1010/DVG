@@ -17,7 +17,7 @@ public class PlantPlacementManager : MonoBehaviour
     [SerializeField] private KeyCode toggleRemoveToolKey = KeyCode.X;
     [SerializeField] private KeyCode holdRemoveToolKey = KeyCode.LeftShift;
 
-    private Dictionary<Vector3Int, VVEBoardCharacter> occupiedCells = new Dictionary<Vector3Int, VVEBoardCharacter>();
+    private Dictionary<Vector3Int, VVEDefender> occupiedCells = new Dictionary<Vector3Int, VVEDefender>();
     private GameObject selectedPlantPrefab;
     private VVEPlacementCharacterSlot selectedSlot;
     private GameObject placementPreview;
@@ -29,7 +29,7 @@ public class PlantPlacementManager : MonoBehaviour
 
     public void ResetBoard()
     {
-        foreach (KeyValuePair<Vector3Int, VVEBoardCharacter> occupiedCell in occupiedCells)
+        foreach (KeyValuePair<Vector3Int, VVEDefender> occupiedCell in occupiedCells)
         {
             if (occupiedCell.Value != null)
             {
@@ -133,7 +133,7 @@ public class PlantPlacementManager : MonoBehaviour
     private bool TryRemovePlacedCharacter()
     {
         CleanupOccupiedCells();
-        if (!TryGetPlacedCharacterAt(GetMouseWorldPosition(), out Vector3Int cellPosition, out VVEBoardCharacter character))
+        if (!TryGetPlacedCharacterAt(GetMouseWorldPosition(), out Vector3Int cellPosition, out VVEDefender character))
         {
             Debug.Log("No placed character to remove here.");
             return false;
@@ -153,7 +153,7 @@ public class PlantPlacementManager : MonoBehaviour
         return true;
     }
 
-    private bool TryGetPlacedCharacterAt(Vector3 worldPosition, out Vector3Int cellPosition, out VVEBoardCharacter character)
+    private bool TryGetPlacedCharacterAt(Vector3 worldPosition, out Vector3Int cellPosition, out VVEDefender character)
     {
         cellPosition = placementTilemap.WorldToCell(worldPosition);
         if (occupiedCells.TryGetValue(cellPosition, out character) && character != null)
@@ -164,14 +164,14 @@ public class PlantPlacementManager : MonoBehaviour
         Collider2D[] hits = Physics2D.OverlapPointAll(worldPosition);
         foreach (Collider2D hit in hits)
         {
-            VVEBoardCharacter hitCharacter = hit.GetComponentInParent<VVEBoardCharacter>();
+            VVEDefender hitCharacter = hit.GetComponentInParent<VVEDefender>();
             if (hitCharacter == null)
             {
                 continue;
             }
 
             if (hitCharacter.HasCell
-                && occupiedCells.TryGetValue(hitCharacter.Cell, out VVEBoardCharacter occupiedCharacter)
+                && occupiedCells.TryGetValue(hitCharacter.Cell, out VVEDefender occupiedCharacter)
                 && occupiedCharacter == hitCharacter)
             {
                 cellPosition = hitCharacter.Cell;
@@ -179,7 +179,7 @@ public class PlantPlacementManager : MonoBehaviour
                 return true;
             }
 
-            foreach (KeyValuePair<Vector3Int, VVEBoardCharacter> occupiedCell in occupiedCells)
+            foreach (KeyValuePair<Vector3Int, VVEDefender> occupiedCell in occupiedCells)
             {
                 if (occupiedCell.Value == hitCharacter)
                 {
@@ -251,7 +251,15 @@ public class PlantPlacementManager : MonoBehaviour
                 continue;
             }
 
-            SelectCharacter(slot);
+            if (slot == selectedSlot)
+            {
+                ClearSelection();
+            }
+            else
+            {
+                SelectCharacter(slot);
+            }
+
             return true;
         }
 
@@ -303,10 +311,10 @@ public class PlantPlacementManager : MonoBehaviour
         }
 
         GameObject spawnedPlant = Instantiate(selectedPlantPrefab, spawnPosition, Quaternion.identity);
-        VVEBoardCharacter boardCharacter = spawnedPlant.GetComponent<VVEBoardCharacter>();
+        VVEDefender boardCharacter = spawnedPlant.GetComponent<VVEDefender>();
         if (boardCharacter == null)
         {
-            boardCharacter = spawnedPlant.AddComponent<VVEBoardCharacter>();
+            boardCharacter = spawnedPlant.AddComponent<VVEDefender>();
         }
 
         boardCharacter.SetCell(cellPosition);
@@ -494,9 +502,9 @@ public class PlantPlacementManager : MonoBehaviour
     private void CleanupOccupiedCells()
     {
         List<Vector3Int> clearedCells = new List<Vector3Int>();
-        foreach (KeyValuePair<Vector3Int, VVEBoardCharacter> occupiedCell in occupiedCells)
+        foreach (KeyValuePair<Vector3Int, VVEDefender> occupiedCell in occupiedCells)
         {
-            VVEBoardCharacter character = occupiedCell.Value;
+            VVEDefender character = occupiedCell.Value;
             if (character == null || character.Health == null || !character.Health.IsAlive)
             {
                 clearedCells.Add(occupiedCell.Key);

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-[RequireComponent(typeof(VVEBoardCharacter))]
+[RequireComponent(typeof(VVEDefender))]
 public class VVEBoardMeleeAttacker : MonoBehaviour
 {
     [SerializeField] float attackRange = 1.1f;
@@ -13,7 +13,7 @@ public class VVEBoardMeleeAttacker : MonoBehaviour
     [SerializeField, Min(0f)] float depthTolerance = VVELaneDepth.DefaultDepthTolerance;
     [SerializeField] string attackTriggerName = "Attack";
 
-    VVEBoardCharacter boardCharacter;
+    VVEDefender boardCharacter;
     VVEHitRecoil stunProfile;
     Animator animator;
     IVVEEnemyLaneWalker attackTarget;
@@ -21,7 +21,7 @@ public class VVEBoardMeleeAttacker : MonoBehaviour
 
     void Awake()
     {
-        boardCharacter = GetComponent<VVEBoardCharacter>();
+        boardCharacter = GetComponent<VVEDefender>();
         stunProfile = GetComponent<VVEHitRecoil>();
         animator = GetComponent<Animator>();
     }

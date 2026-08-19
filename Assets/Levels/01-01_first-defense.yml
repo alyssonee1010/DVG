@@ -71,10 +71,9 @@ waves:
         duration: 8
       - unit: naked_viking
         count: 2
-        time_offset: 5 
+        time_offset: 5
         duration: 5
-<<<<<<< HEAD
-  
-=======
-  
->>>>>>> bd0c43d9ea7b93a0254e03a958507fb6951b3816
+
+# Defenders unlocked after clearing this level
+unlocks:
+  - cave_man

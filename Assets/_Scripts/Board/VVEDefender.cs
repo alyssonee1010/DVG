@@ -1,9 +1,10 @@
 using UnityEngine;
 
 [RequireComponent(typeof(VVEHealth))]
-public class VVEBoardCharacter : MonoBehaviour
+public class VVEDefender : MonoBehaviour
 {
-    [Header("Health")]
+    [Header("Character Stats")]
+    [SerializeField] public int cost = 12;
     [SerializeField] int maxHealth = 100;
 
     VVEHealth health;

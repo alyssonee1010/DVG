@@ -120,6 +120,22 @@ public static class VVELevelLoader
             }
         }
 
+        object unlocksObject;
+        if (root.TryGetValue("unlocks", out unlocksObject))
+        {
+            List<object> unlocks = unlocksObject as List<object>;
+            if (unlocks != null)
+            {
+                foreach (object unlock in unlocks)
+                {
+                    if (unlock != null)
+                    {
+                        level.Unlocks.Add(Convert.ToString(unlock, CultureInfo.InvariantCulture));
+                    }
+                }
+            }
+        }
+
         object wavesObject;
         if (root.TryGetValue("waves", out wavesObject))
         {

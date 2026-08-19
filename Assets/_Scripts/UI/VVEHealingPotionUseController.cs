@@ -28,7 +28,7 @@ public class VVEHealingPotionUseController : MonoBehaviour
     Transform scenePotionTransform;
     SpriteRenderer potionGhostRenderer;
     SpriteRenderer potionCursorGhostRenderer;
-    VVEBoardCharacter hoveredTargetCharacter;
+    VVEDefender hoveredTargetCharacter;
     bool isAiming;
 
     public static VVEHealingPotionUseController Instance { get; private set; }
@@ -117,7 +117,7 @@ public class VVEHealingPotionUseController : MonoBehaviour
             return false;
         }
 
-        VVEBoardCharacter target = FindDamagedCharacterAt(worldPosition);
+        VVEDefender target = FindDamagedCharacterAt(worldPosition);
         if (target != null && wallet != null && wallet.TrySpendHealingPotion())
         {
             ClearTargetTint();
@@ -207,7 +207,7 @@ public class VVEHealingPotionUseController : MonoBehaviour
         return false;
     }
 
-    VVEBoardCharacter FindDamagedCharacterAt(Vector3 worldPosition)
+    VVEDefender FindDamagedCharacterAt(Vector3 worldPosition)
     {
         Collider2D[] hits = Physics2D.OverlapPointAll(worldPosition);
         foreach (Collider2D hit in hits)
@@ -217,17 +217,17 @@ public class VVEHealingPotionUseController : MonoBehaviour
                 continue;
             }
 
-            VVEBoardCharacter character = hit.GetComponentInParent<VVEBoardCharacter>();
+            VVEDefender character = hit.GetComponentInParent<VVEDefender>();
             if (IsDamagedCharacter(character))
             {
                 return character;
             }
         }
 
-        VVEBoardCharacter bestCharacter = null;
+        VVEDefender bestCharacter = null;
         float bestDistance = clickSearchRadius;
-        VVEBoardCharacter[] characters = FindObjectsByType<VVEBoardCharacter>(FindObjectsInactive.Exclude);
-        foreach (VVEBoardCharacter character in characters)
+        VVEDefender[] characters = FindObjectsByType<VVEDefender>(FindObjectsInactive.Exclude);
+        foreach (VVEDefender character in characters)
         {
             if (!IsDamagedCharacter(character))
             {
@@ -247,8 +247,8 @@ public class VVEHealingPotionUseController : MonoBehaviour
 
     bool HasDamagedCharacter()
     {
-        VVEBoardCharacter[] characters = FindObjectsByType<VVEBoardCharacter>(FindObjectsInactive.Exclude);
-        foreach (VVEBoardCharacter character in characters)
+        VVEDefender[] characters = FindObjectsByType<VVEDefender>(FindObjectsInactive.Exclude);
+        foreach (VVEDefender character in characters)
         {
             if (IsDamagedCharacter(character))
             {
@@ -259,7 +259,7 @@ public class VVEHealingPotionUseController : MonoBehaviour
         return false;
     }
 
-    bool IsDamagedCharacter(VVEBoardCharacter character)
+    bool IsDamagedCharacter(VVEDefender character)
     {
         return character != null
             && character.isActiveAndEnabled
@@ -270,7 +270,7 @@ public class VVEHealingPotionUseController : MonoBehaviour
 
     void UpdateTargetTint()
     {
-        VVEBoardCharacter hoveredCharacter = FindDamagedCharacterAt(GetMouseWorldPosition());
+        VVEDefender hoveredCharacter = FindDamagedCharacterAt(GetMouseWorldPosition());
         if (hoveredCharacter != hoveredTargetCharacter)
         {
             ClearTargetTint();
@@ -415,7 +415,7 @@ public class VVEHealingPotionUseController : MonoBehaviour
         originalColors.Remove(renderer);
     }
 
-    void RestoreCharacterTint(VVEBoardCharacter character)
+    void RestoreCharacterTint(VVEDefender character)
     {
         if (character == null)
         {
@@ -564,7 +564,7 @@ public class VVEHealingPotionUseController : MonoBehaviour
         return null;
     }
 
-    void PlayHealFlash(VVEBoardCharacter target)
+    void PlayHealFlash(VVEDefender target)
     {
         if (target != null && target.gameObject.activeInHierarchy)
         {
@@ -572,7 +572,7 @@ public class VVEHealingPotionUseController : MonoBehaviour
         }
     }
 
-    IEnumerator HealFlashRoutine(VVEBoardCharacter target)
+    IEnumerator HealFlashRoutine(VVEDefender target)
     {
         SpriteRenderer[] renderers = target.GetComponentsInChildren<SpriteRenderer>(true);
         Dictionary<SpriteRenderer, Color> flashOriginals = new Dictionary<SpriteRenderer, Color>();
@@ -629,7 +629,7 @@ public class VVEHealingPotionUseController : MonoBehaviour
         return renderer != null && renderer.gameObject.name == "Healing Target Ghost Effect";
     }
 
-    void RefreshHealthBar(VVEBoardCharacter character)
+    void RefreshHealthBar(VVEDefender character)
     {
         if (character == null)
         {

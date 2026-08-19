@@ -6,6 +6,8 @@ public class VVELevelSelectUI : MonoBehaviour
 {
     [SerializeField] PlantPlacementManager placementManager;
     [SerializeField] VVEWaveDirector waveDirector;
+    [SerializeField] VVEDefenderLoadoutUI loadoutUI;
+    [SerializeField] VVEPlacementSlotBinder slotBinder;
     [SerializeField] Vector2 cardSize = new Vector2(2.2f, 1f);
     [SerializeField] Vector2 cardSpacing = new Vector2(2.5f, 1.3f);
     [SerializeField] int cardsPerRow = 3;
@@ -25,6 +27,16 @@ public class VVELevelSelectUI : MonoBehaviour
         if (waveDirector == null)
         {
             waveDirector = FindAnyObjectByType<VVEWaveDirector>();
+        }
+
+        if (loadoutUI == null)
+        {
+            loadoutUI = FindAnyObjectByType<VVEDefenderLoadoutUI>();
+        }
+
+        if (slotBinder == null)
+        {
+            slotBinder = FindAnyObjectByType<VVEPlacementSlotBinder>();
         }
 
         if (waveDirector != null)
@@ -58,6 +70,11 @@ public class VVELevelSelectUI : MonoBehaviour
             VVEBoardLife.Instance.ResetLife();
         }
 
+        if (level != null && level.Unlocks.Count > 0)
+        {
+            VVEDefenderUnlocks.UnlockAll(level.Unlocks);
+        }
+
         OpenMenu();
     }
 
@@ -79,6 +96,11 @@ public class VVELevelSelectUI : MonoBehaviour
         if (placementManager != null)
         {
             placementManager.enabled = false;
+        }
+
+        if (loadoutUI != null)
+        {
+            loadoutUI.SetVisible(true);
         }
 
         BuildMenu();
@@ -108,6 +130,11 @@ public class VVELevelSelectUI : MonoBehaviour
 
         CloseMenu();
 
+        if (slotBinder != null)
+        {
+            slotBinder.Rebind();
+        }
+
         if (waveDirector != null)
         {
             waveDirector.StartLevel(level);
@@ -120,6 +147,11 @@ public class VVELevelSelectUI : MonoBehaviour
         {
             Destroy(root);
             root = null;
+        }
+
+        if (loadoutUI != null)
+        {
+            loadoutUI.SetVisible(false);
         }
 
         if (placementManager != null)

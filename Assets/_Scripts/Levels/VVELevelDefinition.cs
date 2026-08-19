@@ -71,6 +71,7 @@ public class VVELevelDefinition
     public int Lanes = 6;
     public int StartingCurrency = 100;
     public List<string> AvailableUnits = new List<string>();
+    public List<string> Unlocks = new List<string>();
     public List<VVEWaveDefinition> Waves = new List<VVEWaveDefinition>();
     public string SourcePath = "";
 }

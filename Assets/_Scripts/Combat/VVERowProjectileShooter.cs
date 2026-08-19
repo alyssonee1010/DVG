@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-[RequireComponent(typeof(VVEBoardCharacter))]
+[RequireComponent(typeof(VVEDefender))]
 public class VVERowProjectileShooter : MonoBehaviour
 {
     [Header("Projectile")]
@@ -38,7 +38,7 @@ public class VVERowProjectileShooter : MonoBehaviour
     [SerializeField] bool waitForShootAnimationEvent;
     [SerializeField] string shootTriggerName = "Attack";
 
-    VVEBoardCharacter boardCharacter;
+    VVEDefender boardCharacter;
     VVEHitRecoil stunProfile;
     Animator animator;
     IVVEEnemyLaneWalker currentTarget;
@@ -48,7 +48,7 @@ public class VVERowProjectileShooter : MonoBehaviour
 
     void Awake()
     {
-        boardCharacter = GetComponent<VVEBoardCharacter>();
+        boardCharacter = GetComponent<VVEDefender>();
         stunProfile = GetComponent<VVEHitRecoil>();
         animator = GetComponent<Animator>();
         PreloadProjectiles();

@@ -37,7 +37,7 @@ public class VVEEnemyVikingWalker : MonoBehaviour, IVVEEnemyLaneWalker
     VVEHitRecoil stunProfile;
     Animator animator;
     Vector3 targetPosition;
-    VVEBoardCharacter attackTarget;
+    VVEDefender attackTarget;
     bool hasTarget;
     bool hasAttackTarget;
     int lastHealth;
@@ -183,8 +183,8 @@ public class VVEEnemyVikingWalker : MonoBehaviour, IVVEEnemyLaneWalker
 
     bool TryFindAttackTarget()
     {
-        VVEBoardCharacter[] characters = FindObjectsByType<VVEBoardCharacter>(FindObjectsInactive.Exclude);
-        foreach (VVEBoardCharacter character in characters)
+        VVEDefender[] characters = FindObjectsByType<VVEDefender>(FindObjectsInactive.Exclude);
+        foreach (VVEDefender character in characters)
         {
             if (character == null || !character.isActiveAndEnabled)
             {
@@ -330,7 +330,7 @@ public class VVEEnemyVikingWalker : MonoBehaviour, IVVEEnemyLaneWalker
         return false;
     }
 
-    float GetForwardDistanceTo(VVEBoardCharacter character)
+    float GetForwardDistanceTo(VVEDefender character)
     {
         Bounds selfBounds = GetBounds(GetComponent<Collider2D>(), transform.position);
         Bounds targetBounds = GetBounds(character.GetComponent<Collider2D>(), character.transform.position);
@@ -350,7 +350,7 @@ public class VVEEnemyVikingWalker : MonoBehaviour, IVVEEnemyLaneWalker
         return new Bounds(fallbackPosition, Vector3.one * 0.5f);
     }
 
-    bool IsInSameLaneDepth(VVEBoardCharacter character)
+    bool IsInSameLaneDepth(VVEDefender character)
     {
         if (character == null)
         {
