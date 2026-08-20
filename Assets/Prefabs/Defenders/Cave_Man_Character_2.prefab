@@ -469,9 +469,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8450975528663998641}
+  - component: {fileID: 3014573128971601006}
   - component: {fileID: 611986551926976646}
   - component: {fileID: 3220152733693393349}
-  - component: {fileID: 3014573128971601006}
   - component: {fileID: 6587178015064576824}
   - component: {fileID: 1922743843835358041}
   - component: {fileID: 1915457825855981097}
@@ -504,6 +504,20 @@ Transform:
   - {fileID: 6879021694887494639}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3014573128971601006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6013597141670104860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2872673eaef36cd45842ab6b3292e6ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VVEBoardCharacter
+  cost: 8
+  maxHealth: 100
 --- !u!95 &611986551926976646
 Animator:
   serializedVersion: 7
@@ -540,22 +554,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::VVEHealth
   maxHealth: 150
   destroyWhenDead: 1
---- !u!114 &3014573128971601006
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6013597141670104860}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2872673eaef36cd45842ab6b3292e6ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::VVEBoardCharacter
-  maxHealth: 100
-  sortingOrderBase: 1000
-  sortingOrderPerRow: 120
-  sortingOrderOffset: 0
 --- !u!114 &6587178015064576824
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -601,7 +599,7 @@ MonoBehaviour:
   attackDamage: 25
   recoilMultiplier: 0
   attackDirection: {x: 1, y: 0}
-  laneTolerance: 0.45
+  depthTolerance: 0.45
   attackTriggerName: Attack
 --- !u!82 &1915457825855981097
 AudioSource:
@@ -730,6 +728,10 @@ MonoBehaviour:
   collectSounds: []
   afterKillSounds: []
   pitchRange: {x: 0.95, y: 1.05}
+  collectPitchStart: 1
+  collectPitchMax: 2.5
+  collectPitchStep: 0.1
+  collectPitchResetInterval: 0.4
 --- !u!1 &9187876815937939843
 GameObject:
   m_ObjectHideFlags: 0

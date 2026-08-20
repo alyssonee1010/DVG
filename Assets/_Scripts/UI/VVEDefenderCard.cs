@@ -4,7 +4,7 @@ using UnityEngine;
 public class VVEDefenderCard : MonoBehaviour
 {
     public TextMeshPro priceTag;
-    public GameObject defenderType;
+    public VVEDefender defenderType;
     public Transform previewContainer;
 
     [SerializeField] PlantPlacementManager placementManager;
@@ -13,10 +13,10 @@ public class VVEDefenderCard : MonoBehaviour
     Vector3 baseScale;
     bool hasBaseScale;
 
-    public GameObject CharacterPrefab => defenderType;
+    public GameObject CharacterPrefab => defenderType.gameObject;
     public int Cost => defenderType.GetComponent<VVEDefender>().cost;
 
-    void Awake()
+    void Start()
     {
         var preview = Instantiate(defenderType, previewContainer, false);
         preview.transform.localScale *= 0.67f;

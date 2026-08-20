@@ -11,6 +11,7 @@ using UnityEngine;
 public class VVEDefenderLoadoutUI : MonoBehaviour
 {
     [SerializeField] VVELevelSelectUI levelSelectUI;
+    [SerializeField] VVEDefenderSelectBar selectBar;
 
     [Header("Grid")]
     [SerializeField] Vector2 gridCardSize = new Vector2(1.1f, 1.1f);
@@ -143,6 +144,7 @@ public class VVEDefenderLoadoutUI : MonoBehaviour
         BuildTray();
         SyncTrayTokens(animate: false);
         RefreshVisuals();
+        PushSelectedDefendersToManager();
     }
 
     void BuildGrid()
@@ -227,6 +229,28 @@ public class VVEDefenderLoadoutUI : MonoBehaviour
     {
         SyncTrayTokens(animate: true);
         RefreshVisuals();
+        PushSelectedDefendersToManager();
+    }
+
+    void PushSelectedDefendersToManager()
+    {
+        if (VVEManager.Instance == null || VVEDefenderCatalog.Instance == null)
+        {
+            return;
+        }
+
+        List<VVEDefender> defenders = new List<VVEDefender>();
+        foreach (string id in VVEDefenderUnlocks.GetLoadout())
+        {
+            VVEDefenderCatalog.Entry entry = VVEDefenderCatalog.Instance.FindById(id);
+            VVEDefender defender = entry != null && entry.prefab != null ? entry.prefab.GetComponent<VVEDefender>() : null;
+            if (defender != null)
+            {
+                defenders.Add(defender);
+            }
+        }
+
+        VVEManager.Instance.SetSelectedDefenders(defenders);
     }
 
     // Reconciles trayTokens against the authoritative loadout order: removes tokens for
