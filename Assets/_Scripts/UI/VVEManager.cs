@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class VVEManager : MonoBehaviour
 {
-    // 1. Static variable to hold the single instance
     public static VVEManager Instance { get; private set; }
 
     // GLOBAL GAME VARIABLES
@@ -13,7 +12,30 @@ public class VVEManager : MonoBehaviour
     public const int MaxDefenderTypes = 6;
 
 
+    [SerializeField] VVEWaveDirector waveDirector;
+
     public bool MenuIsOpen = false;
+
+    void OnEnable() {
+        waveDirector.LevelStarted += LevelStartedHandler;
+        waveDirector.LevelCompleted += LevelCompletedHandler;
+    }
+
+    void OnDisable()
+    {
+        waveDirector.LevelStarted -= LevelStartedHandler;
+        waveDirector.LevelCompleted -= LevelCompletedHandler;
+    }
+
+    private void LevelCompletedHandler(object evArgs)
+    {
+        SetMenuIsOpen(true);
+    }
+
+    private void LevelStartedHandler(object evArgs)
+    {
+        SetMenuIsOpen(false);
+    }
 
     private void Awake()
     {
@@ -29,6 +51,12 @@ public class VVEManager : MonoBehaviour
 
         // 4. Optional: Keep this object alive when changing scenes
         DontDestroyOnLoad(gameObject);
+    }
+
+    void Start()
+    {
+        if (!MenuIsOpen)
+            ToggleMenu();
     }
 
     public void SetSelectedDefenders(IEnumerable<VVEDefender> defenders)
@@ -49,7 +77,12 @@ public class VVEManager : MonoBehaviour
 
     public void ToggleMenu()
     {
-        MenuIsOpen = !MenuIsOpen;
-        OnToggleMenu.Invoke(MenuIsOpen);
+        SetMenuIsOpen(!MenuIsOpen);
+    }
+
+    public void SetMenuIsOpen(bool isOpen)
+    {
+        MenuIsOpen = isOpen;
+        OnToggleMenu.Invoke(isOpen);
     }
 }

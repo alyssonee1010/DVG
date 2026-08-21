@@ -190,6 +190,8 @@ public class VVEWaveDirector : MonoBehaviour
 
         yield return StartCoroutine(WaitForBoardClear());
 
+        yield return new WaitForSeconds(5);
+
         ShowBanner(levelCompleteMessage);
         runningLevelRoutine = null;
         LevelCompleted?.Invoke(level);
