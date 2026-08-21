@@ -390,7 +390,7 @@ public class VVEDefenderLoadoutUI : MonoBehaviour
             iconAnchor.transform.SetParent(parent, false);
             iconAnchor.transform.localPosition = new Vector3(0f, 0f, -0.01f);
 
-            GameObject preview = InstantiateInertPreview(entry.prefab, iconAnchor.transform);
+            GameObject preview = InstantiateInertPreview(entry.prefab.gameObject, iconAnchor.transform);
             ApplyUiSortingRecursively(preview, 20001);
 
             float largestExtent = Mathf.Max(GetWorldExtent(preview), 0.01f);

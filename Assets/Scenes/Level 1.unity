@@ -211,6 +211,69 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!1 &46159585
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 46159586}
+  - component: {fileID: 46159587}
+  - component: {fileID: 46159588}
+  m_Layer: 0
+  m_Name: DefenderSelectBar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &46159586
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 46159585}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children:
+  - {fileID: 1706110384}
+  - {fileID: 374955896}
+  m_Father: {fileID: 1230309228}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &46159587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 46159585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4eeffd38f35e5d04688a8672b4ca7161, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  cardsContainer: {fileID: 374955896}
+  slotWidth: 1.4
+  cardPrefab: {fileID: 3742570028879435695, guid: 88741cddbf6bb3e47be3bdca0253836f, type: 3}
+--- !u!210 &46159588
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 46159585}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 220
+  m_SortAtRoot: 0
+  m_Sort3DAs2D: 0
 --- !u!1 &96479657
 GameObject:
   m_ObjectHideFlags: 0
@@ -828,6 +891,68 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!1 &196064826
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 196064827}
+  - component: {fileID: 196064828}
+  - component: {fileID: 196064829}
+  m_Layer: 0
+  m_Name: DefenderSelectionUi
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &196064827
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 196064826}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.09, y: -0.14, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1041379300}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!210 &196064828
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 196064826}
+  m_Enabled: 1
+  m_SortingLayerID: 101995665
+  m_SortingLayer: 5
+  m_SortingOrder: 220
+  m_SortAtRoot: 0
+  m_Sort3DAs2D: 0
+--- !u!114 &196064829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 196064826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f557db3e0fffdba488512ff032316a77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VVEDefenderSelectionUi
+  Cols: 3
+  Rows: 3
+  Gap: 0.2
+  cardPrefab: {fileID: 3742570028879435695, guid: 88741cddbf6bb3e47be3bdca0253836f, type: 3}
 --- !u!1 &207359206
 GameObject:
   m_ObjectHideFlags: 0
@@ -840,6 +965,7 @@ GameObject:
   - component: {fileID: 207359209}
   - component: {fileID: 207359208}
   - component: {fileID: 207359207}
+  - component: {fileID: 207359211}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -965,6 +1091,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &207359211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 207359206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56666c5a40171f54783dd416a44f42bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.Physics2DRaycaster
+  m_EventMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_MaxRayIntersections: 0
 --- !u!1 &245113704
 GameObject:
   m_ObjectHideFlags: 0
@@ -1801,7 +1943,7 @@ GameObject:
   m_Component:
   - component: {fileID: 374955896}
   m_Layer: 0
-  m_Name: Cards
+  m_Name: CardsContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1816,11 +1958,11 @@ Transform:
   m_GameObject: {fileID: 374955895}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10.97, y: -0.08, z: 0}
+  m_LocalPosition: {x: -5.027454, y: 1.760706, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 1706110384}
+  m_Father: {fileID: 46159586}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &386360409
 GameObject:
@@ -2705,8 +2847,8 @@ Transform:
   m_GameObject: {fileID: 405667218}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.75, y: 1.82, z: 0}
-  m_LocalScale: {x: 1.4678717, y: 1.3252014, z: 1}
+  m_LocalPosition: {x: 6.9, y: 1.28, z: 0}
+  m_LocalScale: {x: 1.4885685, y: 1.222937, z: 1.0141}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 386360412}
@@ -4649,9 +4791,7 @@ GameObject:
   - component: {fileID: 999000003}
   - component: {fileID: 999000004}
   - component: {fileID: 999000005}
-  - component: {fileID: 999000006}
   - component: {fileID: 999000007}
-  - component: {fileID: 999000008}
   m_Layer: 0
   m_Name: Level System
   m_TagString: Untagged
@@ -4721,7 +4861,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::VVELevelSelectUI
   placementManager: {fileID: 2096327530}
   waveDirector: {fileID: 999000003}
-  loadoutUI: {fileID: 999000008}
+  loadoutUI: {fileID: 0}
   slotBinder: {fileID: 999000007}
   cardSize: {x: 2.2, y: 1}
   cardSpacing: {x: 2.5, y: 1.3}
@@ -4752,44 +4892,6 @@ MonoBehaviour:
   finalIconColor: {r: 0.9, g: 0.15, b: 0.15, a: 1}
   progressMarkerSize: 0.28
   progressMarkerColor: {r: 0.95, g: 0.95, b: 0.95, a: 1}
---- !u!114 &999000006
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 999000001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70dc510bcc64411e8e02e5bc04effe6e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::VVEDefenderCatalog
-  entries:
-  - id: miner
-    displayName: Miner
-    prefab: {fileID: 4238644571018987754, guid: 85eeeea72e837e04ea2dc19465949b3b, type: 3}
-    cost: 8
-    unlockedByDefault: 1
-  - id: archer
-    displayName: Archer
-    prefab: {fileID: 7992456318929058983, guid: 1b49ac1e5afbcc24ea1e19b84b6e8f91, type: 3}
-    cost: 12
-    unlockedByDefault: 0
-  - id: cave_man
-    displayName: Cave Man
-    prefab: {fileID: 6013597141670104860, guid: 50eadb4a5a894e64eabc7ab18c47e03e, type: 3}
-    cost: 12
-    unlockedByDefault: 0
-  - id: wizard
-    displayName: Wizard
-    prefab: {fileID: 7717818581488313511, guid: b2a5f8995a977be44b74ccb6a24e0368, type: 3}
-    cost: 18
-    unlockedByDefault: 0
-  - id: potion_maker
-    displayName: Potion Maker
-    prefab: {fileID: 2912663917150313109, guid: 31605c3f50d21834685a49adc791bce8, type: 3}
-    cost: 30
-    unlockedByDefault: 0
 --- !u!114 &999000007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4808,38 +4910,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
---- !u!114 &999000008
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 999000001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3750ed5931ad4546a3192a88fa3042ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::VVEDefenderLoadoutUI
-  levelSelectUI: {fileID: 999000004}
-  selectBar: {fileID: 0}
-  gridCardSize: {x: 1.1, y: 1.1}
-  gridCardSpacing: {x: 1.35, y: 1.35}
-  cardsPerRow: 6
-  gridScreenAnchorOffset: {x: 0, y: -2, z: 0}
-  traySlotSize: {x: 1, y: 1}
-  traySlotSpacing: {x: 1.25, y: 0}
-  traySlotCount: 6
-  trayScreenAnchorOffset: {x: 0, y: -4, z: 0}
-  traySlotEmptyColor: {r: 1, g: 1, b: 1, a: 0.12}
-  unlockedColor: {r: 0.16, g: 0.22, b: 0.3, a: 0.95}
-  selectedColor: {r: 0.2, g: 0.55, b: 0.25, a: 0.95}
-  lockedColor: {r: 0.08, g: 0.08, b: 0.08, a: 0.85}
-  textColor: {r: 1, g: 1, b: 1, a: 1}
-  lockedTextColor: {r: 1, g: 1, b: 1, a: 0.4}
-  costPrefix: 
-  moveDuration: 0.35
-  moveArcHeight: 0.6
-  cameraPlaneDistance: 5
 --- !u!1 &1041379298
 GameObject:
   m_ObjectHideFlags: 0
@@ -4850,6 +4920,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1041379300}
   - component: {fileID: 1041379299}
+  - component: {fileID: 1041379301}
+  - component: {fileID: 1041379302}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -4869,10 +4941,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef263a4f3f88c0b42baf29b4c37155ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  defenderSelectBar: {fileID: 1706110386}
-  selectedDefenders:
-  - {fileID: 3406160727016397128, guid: 85eeeea72e837e04ea2dc19465949b3b, type: 3}
-  - {fileID: 4595654302153356969, guid: 1b49ac1e5afbcc24ea1e19b84b6e8f91, type: 3}
+  SelectedDefenders: []
+  MenuIsOpen: 0
 --- !u!4 &1041379300
 Transform:
   m_ObjectHideFlags: 0
@@ -4886,9 +4956,62 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1591577505}
+  - {fileID: 1230309228}
+  - {fileID: 196064827}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1041379301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1041379298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70dc510bcc64411e8e02e5bc04effe6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VVEDefenderCatalog
+  entries:
+  - id: miner
+    displayName: Miner
+    prefab: {fileID: 3406160727016397128, guid: 85eeeea72e837e04ea2dc19465949b3b, type: 3}
+    cost: 8
+    unlockedByDefault: 1
+  - id: archer
+    displayName: Archer
+    prefab: {fileID: 4595654302153356969, guid: 1b49ac1e5afbcc24ea1e19b84b6e8f91, type: 3}
+    cost: 12
+    unlockedByDefault: 0
+  - id: cave_man
+    displayName: Cave Man
+    prefab: {fileID: 3014573128971601006, guid: 50eadb4a5a894e64eabc7ab18c47e03e, type: 3}
+    cost: 12
+    unlockedByDefault: 0
+  - id: wizard
+    displayName: Wizard
+    prefab: {fileID: 2584130504248286778, guid: b2a5f8995a977be44b74ccb6a24e0368, type: 3}
+    cost: 18
+    unlockedByDefault: 0
+  - id: potion_maker
+    displayName: Potion Maker
+    prefab: {fileID: 6624339901220010003, guid: 31605c3f50d21834685a49adc791bce8, type: 3}
+    cost: 30
+    unlockedByDefault: 0
+--- !u!114 &1041379302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1041379298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24fb40d0a22f15246b017f7d4c9c2fcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  <defenderSelectionTopBar>k__BackingField: {fileID: 46159587}
+  <defenderSelectionUi>k__BackingField: {fileID: 196064829}
 --- !u!1 &1083874425
 GameObject:
   m_ObjectHideFlags: 0
@@ -5305,6 +5428,53 @@ MonoBehaviour:
   speed: 1.5
   resetXPosition: 18
   startXPosition: -12
+--- !u!1 &1230309227
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1230309228}
+  - component: {fileID: 1230309229}
+  m_Layer: 5
+  m_Name: InGameUi
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1230309228
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1230309227}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.38, y: 2.52, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children:
+  - {fileID: 46159586}
+  - {fileID: 1942365789}
+  m_Father: {fileID: 1041379300}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!210 &1230309229
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1230309227}
+  m_Enabled: 1
+  m_SortingLayerID: 101995665
+  m_SortingLayer: 5
+  m_SortingOrder: 200
+  m_SortAtRoot: 0
+  m_Sort3DAs2D: 0
 --- !u!1 &1246601820
 GameObject:
   m_ObjectHideFlags: 0
@@ -5948,6 +6118,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1473661587}
   - component: {fileID: 1473661588}
+  - component: {fileID: 1473661589}
   m_Layer: 0
   m_Name: DiamondCounter
   m_TagString: Untagged
@@ -5964,9 +6135,9 @@ Transform:
   m_GameObject: {fileID: 1473661586}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.88336, y: 3.8745701, z: 0}
-  m_LocalScale: {x: 0.34172013, y: 0.2814934, z: 0.30356237}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 4.215, z: 0}
+  m_LocalScale: {x: 0.41006413, y: 0.33779207, z: 0.36427483}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1516144172}
   - {fileID: 1459158635}
@@ -6032,6 +6203,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!210 &1473661589
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1473661586}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
+  m_Sort3DAs2D: 0
 --- !u!1 &1516144169
 GameObject:
   m_ObjectHideFlags: 0
@@ -6322,53 +6506,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
---- !u!1 &1591577503
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1591577505}
-  - component: {fileID: 1591577504}
-  m_Layer: 0
-  m_Name: InGameUi
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!210 &1591577504
-SortingGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1591577503}
-  m_Enabled: 1
-  m_SortingLayerID: 101995665
-  m_SortingLayer: 5
-  m_SortingOrder: 200
-  m_SortAtRoot: 0
-  m_Sort3DAs2D: 0
---- !u!4 &1591577505
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1591577503}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.5301001, y: 1.7967501, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1706110384}
-  - {fileID: 1942365789}
-  m_Father: {fileID: 1041379300}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1595011908
 GameObject:
   m_ObjectHideFlags: 0
@@ -6642,9 +6779,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1706110384}
   - component: {fileID: 1706110385}
-  - component: {fileID: 1706110386}
   m_Layer: 0
-  m_Name: DefenderSelectBar
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6659,12 +6795,11 @@ Transform:
   m_GameObject: {fileID: 1706110383}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.9498801, y: 2.6495302, z: 0}
-  m_LocalScale: {x: 0.27434373, y: 0.28693095, z: 0.28693095}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 374955896}
-  m_Father: {fileID: 1591577505}
+  m_LocalPosition: {x: -1.4, y: 1.78, z: 0}
+  m_LocalScale: {x: 0.32921243, y: 0.34431708, z: 0.34431708}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 46159586}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1706110385
 SpriteRenderer:
@@ -6726,21 +6861,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
---- !u!114 &1706110386
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1706110383}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4eeffd38f35e5d04688a8672b4ca7161, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  cardsContainer: {fileID: 374955896}
-  slotWidth: 1.2
-  cardPrefab: {fileID: 3742570028879435695, guid: 88741cddbf6bb3e47be3bdca0253836f, type: 3}
 --- !u!1 &1726853360
 GameObject:
   m_ObjectHideFlags: 0
@@ -7319,13 +7439,13 @@ Transform:
   m_GameObject: {fileID: 1942365788}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.40336, y: -0.72457004, z: 0}
+  m_LocalPosition: {x: 3.96, y: -1.84, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1473661587}
   - {fileID: 2008908222}
-  m_Father: {fileID: 1591577505}
+  m_Father: {fileID: 1230309228}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1942365790
 MonoBehaviour:
@@ -7663,6 +7783,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2008908222}
   - component: {fileID: 2008908223}
+  - component: {fileID: 2008908224}
   m_Layer: 0
   m_Name: PotionCounter
   m_TagString: Untagged
@@ -7679,9 +7800,9 @@ Transform:
   m_GameObject: {fileID: 2008908221}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.89336, y: 2.8845701, z: 0}
-  m_LocalScale: {x: 0.34172013, y: 0.2814934, z: 0.30356237}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 3.011, z: 0}
+  m_LocalScale: {x: 0.41006413, y: 0.33779207, z: 0.36427483}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 328345237}
   - {fileID: 2026929222}
@@ -7747,6 +7868,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!210 &2008908224
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2008908221}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
+  m_Sort3DAs2D: 0
 --- !u!1 &2026929221
 GameObject:
   m_ObjectHideFlags: 0

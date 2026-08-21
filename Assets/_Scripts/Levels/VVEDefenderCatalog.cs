@@ -11,7 +11,7 @@ public class VVEDefenderCatalog : MonoBehaviour
     {
         public string id = "";
         public string displayName = "";
-        public GameObject prefab;
+        public VVEDefender prefab;
         public int cost = 1;
         [Tooltip("If true, this defender is unlocked from the start without needing a level unlock.")]
         public bool unlockedByDefault;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,10 +7,13 @@ public class VVEManager : MonoBehaviour
     // 1. Static variable to hold the single instance
     public static VVEManager Instance { get; private set; }
 
-    public VVEDefenderSelectBar defenderSelectBar;
-
     // GLOBAL GAME VARIABLES
-    public List<VVEDefender> selectedDefenders = new();
+    public List<VVEDefender> SelectedDefenders = new();
+
+    public const int MaxDefenderTypes = 6;
+
+
+    public bool MenuIsOpen = false;
 
     private void Awake()
     {
@@ -29,8 +33,23 @@ public class VVEManager : MonoBehaviour
 
     public void SetSelectedDefenders(IEnumerable<VVEDefender> defenders)
     {
-        selectedDefenders.Clear();
-        selectedDefenders.AddRange(defenders);
-        defenderSelectBar.SetupCards();
+        SelectedDefenders.Clear();
+        SelectedDefenders.AddRange(defenders);
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            ToggleMenu();
+        }
+    } 
+
+    public static event Action<bool> OnToggleMenu;
+
+    public void ToggleMenu()
+    {
+        MenuIsOpen = !MenuIsOpen;
+        OnToggleMenu.Invoke(MenuIsOpen);
     }
 }

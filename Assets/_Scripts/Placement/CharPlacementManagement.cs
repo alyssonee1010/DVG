@@ -326,6 +326,9 @@ public class PlantPlacementManager : MonoBehaviour
 
     public void SelectCharacter(VVEDefenderCard slot)
     {
+        if (VVEManager.Instance.MenuIsOpen)
+            return;
+
         if (slot == null || slot.CharacterPrefab == null)
         {
             return;

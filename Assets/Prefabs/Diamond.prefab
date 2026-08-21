@@ -154,7 +154,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1000
   m_SortAtRoot: 0
   m_Sort3DAs2D: 0
 --- !u!1 &1000010

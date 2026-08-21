@@ -1,10 +1,11 @@
+using System.Linq;
 using UnityEngine;
 
 public class VVEDefenderSelectBar : MonoBehaviour
 {
 
     public Transform cardsContainer;
-    public float slotWidth = 1;
+    public float slotWidth = 1f;
     public VVEDefenderCard cardPrefab;
 
     public Vector3 GetCardPosition(int slot)
@@ -19,19 +20,28 @@ public class VVEDefenderSelectBar : MonoBehaviour
         SetupCards();
     }
 
+    public void CloseGaps()
+    {
+        foreach (VVEDefenderCard card in GetComponentsInChildren<VVEDefenderCard>())
+        {
+            var index = VVEManager.Instance.SelectedDefenders.TakeWhile(it => it != card.defenderType).Count();
+            card.transform.TweenTo(GetCardPosition(index));
+        }
+    }
+
     public void SetupCards()
     {
         ClearSlots();
 
         int i = 0;
-        foreach (var slot in VVEManager.Instance.selectedDefenders)
+        foreach (var slot in VVEManager.Instance.SelectedDefenders)
         {
             if (i >= 6)
                 break;
 
             var card = Instantiate(cardPrefab, cardsContainer);
             card.transform.position = GetCardPosition(i);
-            card.defenderType = VVEManager.Instance.selectedDefenders[i];
+            card.defenderType = VVEManager.Instance.SelectedDefenders[i];
 
             i += 1;
         }
