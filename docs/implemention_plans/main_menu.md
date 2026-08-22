@@ -26,6 +26,26 @@ Implemented so far (this pass):
 - [x] Panel transitions use a plain coroutine alpha cross-fade (no PrimeTween) — see
       **Note on animation** below.
 
+- [x] Continuous in-level flow: entering "Level 1" with a pending level (from Main Menu
+      Stage Select) no longer starts the level immediately — it now opens
+      `VVELevelSelectUI`'s existing loadout screen (`VVEDefenderLoadoutUI`) together
+      with a single "Continue" prompt card for that level (wave director stays
+      inactive, progress bar stays hidden, both automatically — see
+      `VVELevelProgressUI.Awake`/`OnLevelStarted`). Pressing Continue starts the level.
+      On `VVEWaveDirector.LevelCompleted`, the flow returns to the same loadout +
+      Continue prompt for the *next* level in `VVELevelLoader.DiscoverLevels()` order
+      (not the full stage-select grid) — so a full run has no stage-select in between
+      levels. `VVELevelSelectUI.OpenMenu(VVELevelDefinition onlyLevel = null)` now
+      takes an optional single-level override; the full grid is still built when
+      `onlyLevel` is `null` (used for standalone testing and once there's no next
+      level after the last one — no "run complete" screen exists yet, falls back to
+      the grid).
+
+- [x] `PlantPlacementManager.ResetBoard()` (in `CharPlacementManagement.cs`) now also
+      destroys any un-collected `VVEBoardPickup` instances (diamonds/potions) still
+      lying on the board, alongside the defenders it already removed — both run on
+      every level completion via `VVELevelSelectUI.OnLevelCompleted`.
+
 Deferred / needs a manual Editor pass (not done in this session):
 
 - [ ] Assign a `VVEDefender` prefab to `defenderPrefab` on the `MainMenuController`

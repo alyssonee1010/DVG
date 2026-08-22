@@ -39,6 +39,21 @@ public class PlantPlacementManager : MonoBehaviour
 
         occupiedCells.Clear();
         ClearSelection();
+        ClearRemainingPickups();
+    }
+
+    // Diamonds/potions dropped during the level (and never clicked) shouldn't carry over into
+    // the next one lying on the board.
+    void ClearRemainingPickups()
+    {
+        VVEBoardPickup[] pickups = FindObjectsByType<VVEBoardPickup>(FindObjectsSortMode.None);
+        foreach (VVEBoardPickup pickup in pickups)
+        {
+            if (pickup != null)
+            {
+                Destroy(pickup.gameObject);
+            }
+        }
     }
 
     private void Awake()
@@ -61,6 +76,15 @@ public class PlantPlacementManager : MonoBehaviour
         if (enableRemoveTool && toggleRemoveToolKey != KeyCode.None && Input.GetKeyDown(toggleRemoveToolKey))
         {
             ToggleRemoveTool();
+        }
+
+        for (int i = 0; i < 6; i++)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+            {
+                SelectDefenderHotkey(i);
+                break;
+            }
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -322,6 +346,32 @@ public class PlantPlacementManager : MonoBehaviour
         occupiedCells[cellPosition] = boardCharacter;
 
         Debug.Log("Placed " + spawnedPlant.name + " at cell " + cellPosition);
+    }
+
+    // Pressing "1".."6" selects the defender at that index in VVEManager.Instance.SelectedDefenders
+    // (key "1" -> index 0), same as clicking its card in the top bar - VVEDefenderSelectBar
+    // instantiates that bar's cards in SelectedDefenders order, so the child index lines up
+    // directly. Routed through SelectCharacter so the existing selected-card scale-up
+    // (VVEDefenderCard.SetSelected) and placement-preview rebuild happen exactly as they do for
+    // a mouse click, instead of duplicating that logic here.
+    void SelectDefenderHotkey(int index)
+    {
+        if (VVEManager.Instance == null || index >= VVEManager.Instance.SelectedDefenders.Count)
+        {
+            return;
+        }
+
+        VVEDefenderSelectBar selectBar = VVEUiWidgetRefs.Instance != null ? VVEUiWidgetRefs.Instance.defenderSelectionTopBar : null;
+        if (selectBar == null || selectBar.cardsContainer == null || index >= selectBar.cardsContainer.childCount)
+        {
+            return;
+        }
+
+        VVEDefenderCard card = selectBar.cardsContainer.GetChild(index).GetComponent<VVEDefenderCard>();
+        if (card != null)
+        {
+            SelectCharacter(card);
+        }
     }
 
     public void SelectCharacter(VVEDefenderCard slot)

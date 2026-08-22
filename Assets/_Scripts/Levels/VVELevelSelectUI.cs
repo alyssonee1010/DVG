@@ -63,7 +63,11 @@ public class VVELevelSelectUI : MonoBehaviour
                 .FirstOrDefault(level => level.Id == pendingLevelId);
             if (pendingLevel != null)
             {
-                SelectLevel(pendingLevel);
+                // Show defender selection + a single "Continue" prompt rather than starting the
+                // level immediately, so the player can adjust their loadout first. The wave
+                // director stays inactive (and the progress bar hidden, see
+                // VVELevelProgressUI.Awake) until Continue is actually pressed.
+                OpenMenu(pendingLevel);
                 return;
             }
         }
@@ -88,7 +92,29 @@ public class VVELevelSelectUI : MonoBehaviour
             VVEDefenderUnlocks.UnlockAll(level.Unlocks);
         }
 
-        OpenMenu();
+        // Continuous flow: go back to defender selection with a "Continue" prompt for the next
+        // level in sequence rather than the full stage-select grid. Falls back to the full grid
+        // once there is no next level (last level completed).
+        OpenMenu(FindNextLevel(level));
+    }
+
+    // Levels are already sorted by (Stage, Level) via VVELevelLoader.DiscoverLevels(), so "next"
+    // is simply the following entry in that discovery order.
+    VVELevelDefinition FindNextLevel(VVELevelDefinition current)
+    {
+        if (current == null)
+        {
+            return null;
+        }
+
+        List<VVELevelDefinition> levels = VVELevelLoader.DiscoverLevels();
+        int index = levels.FindIndex(candidate => candidate.Id == current.Id);
+        if (index < 0 || index + 1 >= levels.Count)
+        {
+            return null;
+        }
+
+        return levels[index + 1];
     }
 
     void Update()
@@ -104,7 +130,10 @@ public class VVELevelSelectUI : MonoBehaviour
         }
     }
 
-    public void OpenMenu()
+    // With no argument, builds the full stage-select grid (standalone/testing fallback). With
+    // onlyLevel set, builds a single "Continue" prompt for that level instead — the continuous
+    // in-scene flow used after Main Menu hand-off and after level completion.
+    public void OpenMenu(VVELevelDefinition onlyLevel = null)
     {
         if (placementManager != null)
         {
@@ -116,7 +145,7 @@ public class VVELevelSelectUI : MonoBehaviour
             loadoutUI.SetVisible(true);
         }
 
-        BuildMenu();
+        BuildMenu(onlyLevel);
     }
 
     void HandleClick()
@@ -173,19 +202,27 @@ public class VVELevelSelectUI : MonoBehaviour
         }
     }
 
-    void BuildMenu()
+    void BuildMenu(VVELevelDefinition onlyLevel = null)
     {
         if (root != null)
         {
             Destroy(root);
         }
 
-        root = new GameObject("Level Select Menu");
-
-        List<VVELevelDefinition> levels = VVELevelLoader.DiscoverLevels();
-        if (levels.Count == 0)
+        List<VVELevelDefinition> levels;
+        if (onlyLevel != null)
         {
-            Debug.LogWarning("No level files found in Assets/Levels.");
+            root = new GameObject("Continue Prompt");
+            levels = new List<VVELevelDefinition> { onlyLevel };
+        }
+        else
+        {
+            root = new GameObject("Level Select Menu");
+            levels = VVELevelLoader.DiscoverLevels();
+            if (levels.Count == 0)
+            {
+                Debug.LogWarning("No level files found in Assets/Levels.");
+            }
         }
 
         for (int i = 0; i < levels.Count; i++)
@@ -193,7 +230,7 @@ public class VVELevelSelectUI : MonoBehaviour
             int column = i % cardsPerRow;
             int row = i / cardsPerRow;
             Vector3 localPosition = new Vector3(column * cardSpacing.x, -row * cardSpacing.y, 0f);
-            BuildCard(levels[i], localPosition);
+            BuildCard(levels[i], localPosition, isContinuePrompt: onlyLevel != null);
         }
 
         CenterMenu(levels.Count);
@@ -230,7 +267,7 @@ public class VVELevelSelectUI : MonoBehaviour
         return worldCenter;
     }
 
-    void BuildCard(VVELevelDefinition level, Vector3 localPosition)
+    void BuildCard(VVELevelDefinition level, Vector3 localPosition, bool isContinuePrompt = false)
     {
         GameObject card = new GameObject("Level " + level.Id);
         card.transform.SetParent(root.transform, false);
@@ -257,7 +294,9 @@ public class VVELevelSelectUI : MonoBehaviour
         textObject.transform.localPosition = new Vector3(0f, 0f, -0.01f);
 
         TextMeshPro text = textObject.AddComponent<TextMeshPro>();
-        text.text = level.Stage + "-" + level.Level.ToString("00") + "\n" + level.Name;
+        text.text = isContinuePrompt
+            ? "CONTINUE\n" + level.Stage + "-" + level.Level.ToString("00")
+            : level.Stage + "-" + level.Level.ToString("00") + "\n" + level.Name;
         text.alignment = TextAlignmentOptions.Center;
         text.fontSize = 2.4f;
         text.color = cardTextColor;
