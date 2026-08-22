@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -55,6 +56,18 @@ public class VVELevelSelectUI : MonoBehaviour
 
     void Start()
     {
+        string pendingLevelId = VVEPendingLevelSelection.Consume();
+        if (!string.IsNullOrEmpty(pendingLevelId))
+        {
+            VVELevelDefinition pendingLevel = VVELevelLoader.DiscoverLevels()
+                .FirstOrDefault(level => level.Id == pendingLevelId);
+            if (pendingLevel != null)
+            {
+                SelectLevel(pendingLevel);
+                return;
+            }
+        }
+
         OpenMenu();
     }
 

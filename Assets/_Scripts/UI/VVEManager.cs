@@ -17,7 +17,7 @@ public class VVEManager : MonoBehaviour
     public bool MenuIsOpen = false;
 
     void OnEnable() {
-        waveDirector.LevelStarted += LevelStartedHandler;
+         waveDirector.LevelStarted += LevelStartedHandler;
         waveDirector.LevelCompleted += LevelCompletedHandler;
     }
 

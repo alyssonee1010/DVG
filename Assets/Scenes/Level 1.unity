@@ -4942,6 +4942,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   SelectedDefenders: []
+  waveDirector: {fileID: 999000003}
   MenuIsOpen: 0
 --- !u!4 &1041379300
 Transform:
