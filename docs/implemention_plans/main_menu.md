@@ -76,6 +76,16 @@ Implemented so far (this pass):
     still only has a Camera + the controller object; nothing populates its new `[SerializeField]`
     slots automatically. See "Deferred" below for exactly what to build.
 
+- [x] Hand-authored the full `MainMenu.unity` Canvas hierarchy (Canvas, Background, MainPanel
+      with title+4 buttons, StageSelectPanel with a scrollable list, SettingsPanel with a volume
+      slider, DefenderSpawnPoint) and two prefabs (`Assets/Prefabs/UI/StageSelectListItem.prefab`,
+      `StageSelectHeading.prefab`), all wired to the controller's fields — recreating the previous
+      code-built menu's functionality as scene/prefab content you can now edit by hand in the
+      Editor. Used verified GUIDs pulled from the installed `com.unity.ugui` package cache (not
+      memory) for Image/Button/Slider/CanvasScaler/etc., and a script cross-checked every
+      parent/child and GameObject/component link in the file for consistency. **Still unverified
+      by Unity itself** — open the scene and confirm it loads/compiles before relying on it.
+
 Deferred / needs a manual Editor pass (not done in this session):
 
 - [ ] **Build the `MainMenu.unity` Canvas hierarchy in the Editor** and wire it to the

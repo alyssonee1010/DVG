@@ -9,12 +9,29 @@ public class VVERemoveToolCursor : MonoBehaviour
 {
     bool removeToolIsActive;
     Vector3 originalPosition;
+    bool hasOriginalPosition;
     SpriteRenderer spriteRenderer;
 
     void Awake()
     {
-        originalPosition = transform.position;
+        CaptureOriginalPosition();
         spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    // Awake() order between this and PlantPlacementManager (which calls FollowCursor from its own
+    // Awake) isn't guaranteed, so capturing originalPosition only in Awake risked reading this
+    // transform's position AFTER FollowCursor(false) had already moved it to (0,0,0) - snapping
+    // the icon to the world origin and permanently baking that in as its "home" position. Capture
+    // lazily instead so whichever caller runs first gets the real starting position.
+    void CaptureOriginalPosition()
+    {
+        if (hasOriginalPosition)
+        {
+            return;
+        }
+
+        originalPosition = transform.position;
+        hasOriginalPosition = true;
     }
 
     // Used to detect a click on the icon while it's sitting at its home position (i.e. not
@@ -42,6 +59,8 @@ public class VVERemoveToolCursor : MonoBehaviour
 
     public void FollowCursor(bool isOn)
     {
+        CaptureOriginalPosition();
+
         if (isOn)
             MoveToMouse();
         else
