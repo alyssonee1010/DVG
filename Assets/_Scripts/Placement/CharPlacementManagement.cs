@@ -16,6 +16,7 @@ public class PlantPlacementManager : MonoBehaviour
     [SerializeField] private bool enableRemoveTool = true;
     [SerializeField] private KeyCode toggleRemoveToolKey = KeyCode.X;
     [SerializeField] private KeyCode holdRemoveToolKey = KeyCode.LeftShift;
+    [SerializeField] private VVERemoveToolCursor removeTool;
 
     private Dictionary<Vector3Int, VVEDefender> occupiedCells = new Dictionary<Vector3Int, VVEDefender>();
     private GameObject selectedPlantPrefab;
@@ -23,6 +24,7 @@ public class PlantPlacementManager : MonoBehaviour
     private GameObject placementPreview;
     private SpriteRenderer[] previewRenderers;
     private bool removeToolSelected;
+    private bool cursorShowingRemoveTool;
 
     public GameObject SelectedPlantPrefab => selectedPlantPrefab;
     public bool IsRemoveToolSelected => removeToolSelected;
@@ -69,6 +71,11 @@ public class PlantPlacementManager : MonoBehaviour
                 ? VVEHealingPotionUseController.Instance
                 : FindAnyObjectByType<VVEHealingPotionUseController>();
         }
+
+        if (removeTool != null)
+        {
+            removeTool.FollowCursor(false);
+        }
     }
 
     private void Update()
@@ -86,6 +93,8 @@ public class PlantPlacementManager : MonoBehaviour
                 break;
             }
         }
+
+        UpdateRemoveToolCursor();
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -112,6 +121,11 @@ public class PlantPlacementManager : MonoBehaviour
         }
 
         if (TryCollectBoardPickup())
+        {
+            return;
+        }
+
+        if (TryClickRemoveToolIcon())
         {
             return;
         }
@@ -152,6 +166,25 @@ public class PlantPlacementManager : MonoBehaviour
     {
         return enableRemoveTool
             && (removeToolSelected || (holdRemoveToolKey != KeyCode.None && Input.GetKey(holdRemoveToolKey)));
+    }
+
+    // Clicking the remove-tool icon does the same thing as pressing toggleRemoveToolKey. Only
+    // checked while the tool isn't already active, since once active the icon itself is sitting
+    // right under the mouse (it's following the cursor), so a click there is meant for the board.
+    private bool TryClickRemoveToolIcon()
+    {
+        if (removeTool == null || IsRemoveToolActive())
+        {
+            return false;
+        }
+
+        if (!removeTool.ContainsPoint(GetMouseWorldPosition()))
+        {
+            return false;
+        }
+
+        ToggleRemoveTool();
+        return true;
     }
 
     private bool TryRemovePlacedCharacter()
@@ -409,16 +442,23 @@ public class PlantPlacementManager : MonoBehaviour
         Debug.Log("Selected " + selectedPlantPrefab.name);
     }
 
-    public void SelectRemoveTool()
+    public void SelectRemoveTool(bool isSelected)
     {
-        if (!enableRemoveTool)
+        ClearSelection(); 
+        if (removeTool != null)
         {
-            return;
+            removeTool.FollowCursor(isSelected);
         }
 
-        ClearSelection();
-        removeToolSelected = true;
-        Debug.Log("Selected remove tool.");
+        if (isSelected){
+            if (!enableRemoveTool)
+            {
+                return;
+            }
+
+            removeToolSelected = true;
+            Debug.Log("Selected remove tool.");
+        }
     }
 
     public void ToggleRemoveTool()
@@ -430,12 +470,41 @@ public class PlantPlacementManager : MonoBehaviour
 
         if (removeToolSelected)
         {
-            ClearSelection();
+            SelectRemoveTool(false);
         }
         else
         {
-            SelectRemoveTool();
+            SelectRemoveTool(true);
         }
+    }
+
+    // Makes the remove-tool icon (VVERemoveToolCursor) follow the mouse whenever the tool is
+    // active (toggled via X, clicked, or held via Shift, see IsRemoveToolActive), and sends it
+    // back to its home position otherwise, only on an actual state change rather than every frame.
+    private void UpdateRemoveToolCursor()
+    {
+        bool removeActive = IsRemoveToolActive();
+        if (removeActive == cursorShowingRemoveTool)
+        {
+            return;
+        }
+
+        cursorShowingRemoveTool = removeActive;
+
+        if (removeTool != null)
+        {
+            removeTool.FollowCursor(removeActive);
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (cursorShowingRemoveTool && removeTool != null)
+        {
+            removeTool.FollowCursor(false);
+        }
+
+        cursorShowingRemoveTool = false;
     }
 
     private void ClearSelection()

@@ -46,6 +46,16 @@ Implemented so far (this pass):
       lying on the board, alongside the defenders it already removed — both run on
       every level completion via `VVELevelSelectUI.OnLevelCompleted`.
 
+- [x] Wired the user-supplied `Assets/Art/UI/title_image.png` (full scenic background) and
+      `Assets/Art/UI/main_menu_buttons.png` (title logo + Play/Stage Select/Settings/Quit,
+      already sliced by Unity's importer into 5 sub-sprites) into `VVEMainMenuController`,
+      replacing the flat-color/text placeholders on the Main panel. Background covers the whole
+      Canvas (all three panels) via `AspectRatioFitter.EnvelopeParent` so it crops instead of
+      stretching at other aspect ratios; the four nav buttons are the sprites themselves (no
+      separate text label needed, the art already has it baked in). Falls back to the original
+      placeholder look if a sprite field is left unassigned. "Play" and "Stage Select" currently
+      do the exact same thing (open Stage Select) since there's no separate resume flow yet.
+
 Deferred / needs a manual Editor pass (not done in this session):
 
 - [ ] Assign a `VVEDefender` prefab to `defenderPrefab` on the `MainMenuController`

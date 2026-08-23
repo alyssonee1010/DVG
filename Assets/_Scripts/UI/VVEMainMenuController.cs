@@ -27,6 +27,14 @@ public class VVEMainMenuController : MonoBehaviour
     [SerializeField] Vector2 referenceResolution = new Vector2(1920f, 1080f);
     [SerializeField] float panelFadeDuration = 0.2f;
 
+    [Header("Art")]
+    [SerializeField] Sprite backgroundSprite;
+    [SerializeField] Sprite titleLogoSprite;
+    [SerializeField] Sprite playButtonSprite;
+    [SerializeField] Sprite stageSelectButtonSprite;
+    [SerializeField] Sprite settingsButtonSprite;
+    [SerializeField] Sprite quitButtonSprite;
+
     CanvasGroup mainPanel;
     CanvasGroup stageSelectPanel;
     CanvasGroup settingsPanel;
@@ -215,7 +223,37 @@ public class VVEMainMenuController : MonoBehaviour
         scaler.matchWidthOrHeight = 0.5f;
 
         canvasObject.AddComponent<GraphicRaycaster>();
+
+        if (backgroundSprite != null)
+        {
+            BuildBackgroundImage(canvasObject.transform);
+        }
+
         return canvas;
+    }
+
+    // Full-bleed background behind every panel (Main/Stage Select/Settings share it). Uses
+    // AspectRatioFitter.EnvelopeParent so the art always fully covers the screen - cropping
+    // overflow - rather than stretching/distorting to fit an arbitrary aspect ratio.
+    void BuildBackgroundImage(Transform canvasTransform)
+    {
+        GameObject backgroundObject = new GameObject("Background");
+        backgroundObject.transform.SetParent(canvasTransform, false);
+        backgroundObject.transform.SetAsFirstSibling();
+
+        RectTransform rect = backgroundObject.AddComponent<RectTransform>();
+        rect.anchorMin = new Vector2(0.5f, 0.5f);
+        rect.anchorMax = new Vector2(0.5f, 0.5f);
+        rect.pivot = new Vector2(0.5f, 0.5f);
+        rect.anchoredPosition = Vector2.zero;
+
+        Image image = backgroundObject.AddComponent<Image>();
+        image.sprite = backgroundSprite;
+        image.raycastTarget = false;
+
+        AspectRatioFitter fitter = backgroundObject.AddComponent<AspectRatioFitter>();
+        fitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
+        fitter.aspectRatio = backgroundSprite.rect.width / backgroundSprite.rect.height;
     }
 
     CanvasGroup BuildPanel(Transform parent, string name)
@@ -241,13 +279,51 @@ public class VVEMainMenuController : MonoBehaviour
     {
         CanvasGroup panel = BuildPanel(canvasTransform, "MainPanel");
 
-        CreateLabel(panel.transform, "Title", "VIKINGS VS EVERYONE", 64f, new Vector2(0.5f, 0.85f), new Vector2(900f, 120f));
+        GameObject stackObject = new GameObject("MenuArt");
+        stackObject.transform.SetParent(panel.transform, false);
 
-        CreateButton(panel.transform, "PlayButton", "Play", new Vector2(0.5f, 0.55f), OnPlayClicked);
-        CreateButton(panel.transform, "SettingsButton", "Settings", new Vector2(0.5f, 0.4f), OnSettingsClicked);
-        CreateButton(panel.transform, "QuitButton", "Quit", new Vector2(0.5f, 0.25f), OnQuitClicked);
+        RectTransform stackRect = stackObject.AddComponent<RectTransform>();
+        stackRect.anchorMin = new Vector2(0.5f, 0.5f);
+        stackRect.anchorMax = new Vector2(0.5f, 0.5f);
+        stackRect.pivot = new Vector2(0.5f, 0.5f);
+        stackRect.anchoredPosition = Vector2.zero;
+
+        VerticalLayoutGroup layout = stackObject.AddComponent<VerticalLayoutGroup>();
+        layout.childAlignment = TextAnchor.UpperCenter;
+        layout.childControlWidth = true;
+        layout.childControlHeight = true;
+        layout.childForceExpandWidth = false;
+        layout.childForceExpandHeight = false;
+        layout.spacing = 10f;
+
+        stackObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+        if (titleLogoSprite != null)
+        {
+            CreateSpriteImage(stackObject.transform, "TitleLogo", titleLogoSprite);
+        }
+        else
+        {
+            CreateLabel(stackObject.transform, "Title", "VIKINGS VS EVERYONE", 64f, Vector2.zero, new Vector2(900f, 120f));
+        }
+
+        // "Play" and "Stage Select" both open Stage Select for now - there is no separate
+        // resume/continue flow yet, so the two buttons are intentionally the same action.
+        CreateMenuButton(stackObject.transform, "PlayButton", playButtonSprite, "Play", OnPlayClicked);
+        CreateMenuButton(stackObject.transform, "StageSelectButton", stageSelectButtonSprite, "Stage Select", OnPlayClicked);
+        CreateMenuButton(stackObject.transform, "SettingsButton", settingsButtonSprite, "Settings", OnSettingsClicked);
+        CreateMenuButton(stackObject.transform, "QuitButton", quitButtonSprite, "Quit", OnQuitClicked);
 
         return panel;
+    }
+
+    // Uses the sprite if art is assigned, otherwise falls back to a plain flat-color/text button
+    // (the original placeholder) so the menu still works before art is wired up.
+    Button CreateMenuButton(Transform parent, string name, Sprite sprite, string fallbackLabel, UnityEngine.Events.UnityAction onClick)
+    {
+        return sprite != null
+            ? CreateSpriteButton(parent, name, sprite, onClick)
+            : CreateButton(parent, name, fallbackLabel, Vector2.zero, onClick, new Vector2(320f, 80f));
     }
 
     CanvasGroup BuildStageSelectPanel(Transform canvasTransform)
@@ -384,6 +460,46 @@ public class VVEMainMenuController : MonoBehaviour
         heading.fontSize = 26f;
         heading.alignment = TextAlignmentOptions.Left;
         heading.color = new Color(1f, 0.85f, 0.3f, 1f);
+    }
+
+    // Non-interactive sprite sized to that sprite's native pixel rect via LayoutElement, so it
+    // drops straight into a VerticalLayoutGroup at the art's own proportions.
+    Image CreateSpriteImage(Transform parent, string name, Sprite sprite)
+    {
+        GameObject imageObject = new GameObject(name);
+        imageObject.transform.SetParent(parent, false);
+
+        LayoutElement layoutElement = imageObject.AddComponent<LayoutElement>();
+        layoutElement.preferredWidth = sprite.rect.width;
+        layoutElement.preferredHeight = sprite.rect.height;
+
+        Image image = imageObject.AddComponent<Image>();
+        image.sprite = sprite;
+        image.preserveAspect = true;
+
+        return image;
+    }
+
+    // Same idea as CreateSpriteImage, but clickable - the sprite itself is the button's visual,
+    // no separate background/label needed since the art already has the button text baked in.
+    Button CreateSpriteButton(Transform parent, string name, Sprite sprite, UnityEngine.Events.UnityAction onClick)
+    {
+        GameObject buttonObject = new GameObject(name);
+        buttonObject.transform.SetParent(parent, false);
+
+        LayoutElement layoutElement = buttonObject.AddComponent<LayoutElement>();
+        layoutElement.preferredWidth = sprite.rect.width;
+        layoutElement.preferredHeight = sprite.rect.height;
+
+        Image image = buttonObject.AddComponent<Image>();
+        image.sprite = sprite;
+        image.preserveAspect = true;
+
+        Button button = buttonObject.AddComponent<Button>();
+        button.targetGraphic = image;
+        button.onClick.AddListener(onClick);
+
+        return button;
     }
 
     Button CreateButton(Transform parent, string name, string label, Vector2 anchor, UnityEngine.Events.UnityAction onClick, Vector2? size = null)

@@ -308,3 +308,9 @@ MonoBehaviour:
   idleBobDuration: 1.4
   referenceResolution: {x: 1920, y: 1080}
   panelFadeDuration: 0.2
+  backgroundSprite: {fileID: 283353008818665176, guid: bc835688ce156074da6dc9b72f1e75df, type: 3}
+  titleLogoSprite: {fileID: 7123555635638104132, guid: f8ac9c846aa42e148a2ce95f34edf00e, type: 3}
+  playButtonSprite: {fileID: -636852394315532248, guid: f8ac9c846aa42e148a2ce95f34edf00e, type: 3}
+  stageSelectButtonSprite: {fileID: 4249619713337270939, guid: f8ac9c846aa42e148a2ce95f34edf00e, type: 3}
+  settingsButtonSprite: {fileID: 642152856892938797, guid: f8ac9c846aa42e148a2ce95f34edf00e, type: 3}
+  quitButtonSprite: {fileID: -1981660684872097837, guid: f8ac9c846aa42e148a2ce95f34edf00e, type: 3}
