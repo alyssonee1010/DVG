@@ -4999,6 +4999,11 @@ MonoBehaviour:
     prefab: {fileID: 6624339901220010003, guid: 31605c3f50d21834685a49adc791bce8, type: 3}
     cost: 30
     unlockedByDefault: 0
+  - id: girl
+    displayName: Girl
+    prefab: {fileID: 3014573128971601006, guid: 1c03f77efb632b340b5f576ca3bd2361, type: 3}
+    cost: 25
+    unlockedByDefault: 0
 --- !u!114 &1041379302
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -56,8 +56,47 @@ Implemented so far (this pass):
       placeholder look if a sprite field is left unassigned. "Play" and "Stage Select" currently
       do the exact same thing (open Stage Select) since there's no separate resume flow yet.
 
+- [x] **Architecture change**: `VVEMainMenuController` was rewritten from "builds the whole
+      Canvas/panels/buttons in code at runtime" to a thin controller over a **scene-authored**
+      Canvas — it now only wires behavior (panel navigation/fade, button `onClick`, Stage Select
+      list population, volume slider, Defender showcase) onto `[SerializeField]` references you
+      assign in the Inspector. This intentionally reverses the earlier "build UI procedurally"
+      convention *for the Main Menu specifically*, so panels/buttons/art can be placed and scaled
+      directly in the Editor instead of via C#/hand-edited scene YAML. Added
+      `VVEStageSelectListItem.cs`, a small prefab-companion component (`Bind(text, onClick)`) for
+      the dynamically-instantiated per-level buttons in Stage Select, since level data is
+      inherently runtime-driven regardless of this change.
+  - All the old procedural building methods (`BuildCanvas`, `BuildPanel`, `BuildMainPanel`,
+    `BuildStageSelectPanel`, `BuildSettingsPanel`, `BuildBackgroundImage`, `CreateLabel`,
+    `CreateButton`, `CreateSpriteButton`, `CreateSpriteImage`, `CreateSlider`, `CreateListButton`,
+    `CreateStageHeading`) and the sprite/layout fields that only existed to drive them
+    (`backgroundSprite`, `titleLogoSprite`, `*ButtonSprite`, `referenceResolution`, `menuCamera`)
+    are gone.
+  - **`MainMenu.unity` now needs Editor work before the menu is functional again** — the scene
+    still only has a Camera + the controller object; nothing populates its new `[SerializeField]`
+    slots automatically. See "Deferred" below for exactly what to build.
+
 Deferred / needs a manual Editor pass (not done in this session):
 
+- [ ] **Build the `MainMenu.unity` Canvas hierarchy in the Editor** and wire it to the
+      `MainMenuController` object's `VVEMainMenuController` fields. Concretely, under a Canvas
+      (Screen Space - Camera, `Render Camera` = the scene's Main Camera):
+      - Three panels, each a `CanvasGroup` (`MainPanel`, `StageSelectPanel`, `SettingsPanel`) →
+        assign to `mainPanel`/`stageSelectPanel`/`settingsPanel`.
+      - `MainPanel`: title `Image` using `main_menu_buttons_0`, and four `Button`s using
+        `main_menu_buttons_1..4` (`Play`, `Stage Select`, `Settings`, `Quit` sprites) → assign to
+        `playButton`/`stageSelectButton`/`settingsButton`/`quitButton`.
+      - `StageSelectPanel`: a `Button` → `stageSelectBackButton`; a content `Transform` (ideally
+        inside a `ScrollRect` with a `VerticalLayoutGroup`, since the list can be long) →
+        `stageListContent`; a small prefab with `VVEStageSelectListItem` (a `Button` + child
+        `TextMeshProUGUI`) → `stageListItemPrefab` (`stageHeadingPrefab` optional, same component
+        without a `Button` assigned, for non-clickable "STAGE N" separators).
+      - `SettingsPanel`: a `Button` → `settingsBackButton`; a `Slider` → `volumeSlider`.
+      - A background `Image` using `title_image_0`, sized/anchored to cover the screen (an
+        `AspectRatioFitter` in `EnvelopeParent` mode reproduces the old crop-to-fill behavior).
+      - A `Transform` positioned where the Defender showcase should stand → `defenderSpawnPoint`.
+      This is intentionally left to you per this session's request — the point of the rewrite was
+      to make this an Editor task instead of a code one.
 - [ ] Assign a `VVEDefender` prefab to `defenderPrefab` on the `MainMenuController`
       object (Inspector). Left `null` for now — the showcase silently no-ops until set.
 - [ ] Placeholder/real background art and decorations — none added yet.

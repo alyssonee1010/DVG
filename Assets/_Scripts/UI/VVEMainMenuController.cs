@@ -1,68 +1,108 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-// Builds the Main Menu's Canvas and its three panels (Main / Stage Select / Settings) entirely in
-// code at runtime, the same way VVELevelSelectUI/VVEDefenderLoadoutUI build their menus, so the
-// scene itself only needs a Camera and this component. Only one panel is ever
-// interactable/visible at a time.
+// Thin controller over a scene-authored Canvas. The Canvas, panels, buttons, art, and layout are
+// built and tuned directly in the Unity Editor (drag in sprites, position/scale RectTransforms,
+// etc.) instead of in code, so visual changes don't require touching this script or recompiling.
+// This class only wires behavior: panel navigation, button click handlers, populating the dynamic
+// Stage Select list from level data, and spawning the Defender showcase. See the class fields for
+// exactly which scene objects need to be assigned in the Inspector for the menu to work.
 public class VVEMainMenuController : MonoBehaviour
 {
-    [Header("Scene References")]
-    [SerializeField] Camera menuCamera;
+    [Header("Panels")]
+    [SerializeField] CanvasGroup mainPanel;
+    [SerializeField] CanvasGroup stageSelectPanel;
+    [SerializeField] CanvasGroup settingsPanel;
+    [SerializeField] float panelFadeDuration = 0.2f;
+
+    [Header("Main Panel Buttons")]
+    [SerializeField] Button playButton;
+    [SerializeField] Button stageSelectButton;
+    [SerializeField] Button settingsButton;
+    [SerializeField] Button quitButton;
+
+    [Header("Stage Select")]
+    [SerializeField] Button stageSelectBackButton;
+    [SerializeField] Transform stageListContent;
+    [SerializeField] VVEStageSelectListItem stageListItemPrefab;
+    [Tooltip("Optional. If assigned, one is instantiated as a non-clickable heading before each stage's levels.")]
+    [SerializeField] VVEStageSelectListItem stageHeadingPrefab;
+
+    [Header("Settings")]
+    [SerializeField] Button settingsBackButton;
+    [SerializeField] Slider volumeSlider;
+
+    [Header("Gameplay Hand-off")]
     [SerializeField] string gameplaySceneName = "Level 1";
 
     [Header("Defender Showcase")]
     [SerializeField] VVEDefender defenderPrefab;
-    [SerializeField] Vector3 defenderPosition = new Vector3(-4f, -1f, 0f);
+    [SerializeField] Transform defenderSpawnPoint;
     [SerializeField] float idleBobHeight = 0.15f;
     [SerializeField] float idleBobDuration = 1.4f;
 
-    [Header("Layout")]
-    [SerializeField] Vector2 referenceResolution = new Vector2(1920f, 1080f);
-    [SerializeField] float panelFadeDuration = 0.2f;
-
-    [Header("Art")]
-    [SerializeField] Sprite backgroundSprite;
-    [SerializeField] Sprite titleLogoSprite;
-    [SerializeField] Sprite playButtonSprite;
-    [SerializeField] Sprite stageSelectButtonSprite;
-    [SerializeField] Sprite settingsButtonSprite;
-    [SerializeField] Sprite quitButtonSprite;
-
-    CanvasGroup mainPanel;
-    CanvasGroup stageSelectPanel;
-    CanvasGroup settingsPanel;
-    RectTransform stageSelectListParent;
-    Slider volumeSlider;
     Coroutine activeFade;
 
     void Awake()
     {
-        if (menuCamera == null)
-        {
-            menuCamera = Camera.main;
-        }
-
-        VVEAudioSettings.ApplySavedVolume();
         EnsureEventSystem();
-
-        Canvas canvas = BuildCanvas();
-        mainPanel = BuildMainPanel(canvas.transform);
-        stageSelectPanel = BuildStageSelectPanel(canvas.transform);
-        settingsPanel = BuildSettingsPanel(canvas.transform);
-
+        VVEAudioSettings.ApplySavedVolume();
+        WireButtons();
+        PopulateStageSelect();
         SetActivePanel(mainPanel, instant: true);
     }
 
     void Start()
     {
         SpawnDefenderShowcase();
+    }
+
+    void WireButtons()
+    {
+        // "Play" and "Stage Select" both open Stage Select for now - there is no separate
+        // resume/continue flow yet, so the two buttons are intentionally the same action.
+        if (playButton != null)
+        {
+            playButton.onClick.AddListener(ShowStageSelect);
+        }
+
+        if (stageSelectButton != null)
+        {
+            stageSelectButton.onClick.AddListener(ShowStageSelect);
+        }
+
+        if (settingsButton != null)
+        {
+            settingsButton.onClick.AddListener(ShowSettings);
+        }
+
+        if (quitButton != null)
+        {
+            quitButton.onClick.AddListener(OnQuitClicked);
+        }
+
+        if (stageSelectBackButton != null)
+        {
+            stageSelectBackButton.onClick.AddListener(ShowMainPanel);
+        }
+
+        if (settingsBackButton != null)
+        {
+            settingsBackButton.onClick.AddListener(ShowMainPanel);
+        }
+
+        if (volumeSlider != null)
+        {
+            volumeSlider.minValue = 0f;
+            volumeSlider.maxValue = 1f;
+            volumeSlider.SetValueWithoutNotify(VVEAudioSettings.MasterVolume);
+            volumeSlider.onValueChanged.AddListener(VVEAudioSettings.SetMasterVolume);
+        }
     }
 
     // ---- Navigation -----------------------------------------------------
@@ -158,22 +198,7 @@ public class VVEMainMenuController : MonoBehaviour
         activeFade = null;
     }
 
-    // ---- Button/slider handlers -------------------------------------------
-
-    void OnPlayClicked()
-    {
-        ShowStageSelect();
-    }
-
-    void OnSettingsClicked()
-    {
-        ShowSettings();
-    }
-
-    void OnBackToMainClicked()
-    {
-        ShowMainPanel();
-    }
+    // ---- Handlers ----------------------------------------------------
 
     void OnQuitClicked()
     {
@@ -189,13 +214,6 @@ public class VVEMainMenuController : MonoBehaviour
         SceneManager.LoadScene(gameplaySceneName);
     }
 
-    void OnVolumeChanged(float value)
-    {
-        VVEAudioSettings.SetMasterVolume(value);
-    }
-
-    // ---- Construction ------------------------------------------------
-
     void EnsureEventSystem()
     {
         if (FindAnyObjectByType<EventSystem>() != null)
@@ -208,166 +226,19 @@ public class VVEMainMenuController : MonoBehaviour
         eventSystemObject.AddComponent<StandaloneInputModule>();
     }
 
-    Canvas BuildCanvas()
-    {
-        GameObject canvasObject = new GameObject("Canvas");
-        canvasObject.transform.SetParent(transform, false);
-
-        Canvas canvas = canvasObject.AddComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        canvas.worldCamera = menuCamera;
-
-        CanvasScaler scaler = canvasObject.AddComponent<CanvasScaler>();
-        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-        scaler.referenceResolution = referenceResolution;
-        scaler.matchWidthOrHeight = 0.5f;
-
-        canvasObject.AddComponent<GraphicRaycaster>();
-
-        if (backgroundSprite != null)
-        {
-            BuildBackgroundImage(canvasObject.transform);
-        }
-
-        return canvas;
-    }
-
-    // Full-bleed background behind every panel (Main/Stage Select/Settings share it). Uses
-    // AspectRatioFitter.EnvelopeParent so the art always fully covers the screen - cropping
-    // overflow - rather than stretching/distorting to fit an arbitrary aspect ratio.
-    void BuildBackgroundImage(Transform canvasTransform)
-    {
-        GameObject backgroundObject = new GameObject("Background");
-        backgroundObject.transform.SetParent(canvasTransform, false);
-        backgroundObject.transform.SetAsFirstSibling();
-
-        RectTransform rect = backgroundObject.AddComponent<RectTransform>();
-        rect.anchorMin = new Vector2(0.5f, 0.5f);
-        rect.anchorMax = new Vector2(0.5f, 0.5f);
-        rect.pivot = new Vector2(0.5f, 0.5f);
-        rect.anchoredPosition = Vector2.zero;
-
-        Image image = backgroundObject.AddComponent<Image>();
-        image.sprite = backgroundSprite;
-        image.raycastTarget = false;
-
-        AspectRatioFitter fitter = backgroundObject.AddComponent<AspectRatioFitter>();
-        fitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
-        fitter.aspectRatio = backgroundSprite.rect.width / backgroundSprite.rect.height;
-    }
-
-    CanvasGroup BuildPanel(Transform parent, string name)
-    {
-        GameObject panelObject = new GameObject(name);
-        panelObject.transform.SetParent(parent, false);
-
-        RectTransform rect = panelObject.AddComponent<RectTransform>();
-        rect.anchorMin = Vector2.zero;
-        rect.anchorMax = Vector2.one;
-        rect.offsetMin = Vector2.zero;
-        rect.offsetMax = Vector2.zero;
-
-        CanvasGroup canvasGroup = panelObject.AddComponent<CanvasGroup>();
-        canvasGroup.alpha = 0f;
-        canvasGroup.interactable = false;
-        canvasGroup.blocksRaycasts = false;
-
-        return canvasGroup;
-    }
-
-    CanvasGroup BuildMainPanel(Transform canvasTransform)
-    {
-        CanvasGroup panel = BuildPanel(canvasTransform, "MainPanel");
-
-        GameObject stackObject = new GameObject("MenuArt");
-        stackObject.transform.SetParent(panel.transform, false);
-
-        RectTransform stackRect = stackObject.AddComponent<RectTransform>();
-        stackRect.anchorMin = new Vector2(0.5f, 0.5f);
-        stackRect.anchorMax = new Vector2(0.5f, 0.5f);
-        stackRect.pivot = new Vector2(0.5f, 0.5f);
-        stackRect.anchoredPosition = Vector2.zero;
-
-        VerticalLayoutGroup layout = stackObject.AddComponent<VerticalLayoutGroup>();
-        layout.childAlignment = TextAnchor.UpperCenter;
-        layout.childControlWidth = true;
-        layout.childControlHeight = true;
-        layout.childForceExpandWidth = false;
-        layout.childForceExpandHeight = false;
-        layout.spacing = 10f;
-
-        stackObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-
-        if (titleLogoSprite != null)
-        {
-            CreateSpriteImage(stackObject.transform, "TitleLogo", titleLogoSprite);
-        }
-        else
-        {
-            CreateLabel(stackObject.transform, "Title", "VIKINGS VS EVERYONE", 64f, Vector2.zero, new Vector2(900f, 120f));
-        }
-
-        // "Play" and "Stage Select" both open Stage Select for now - there is no separate
-        // resume/continue flow yet, so the two buttons are intentionally the same action.
-        CreateMenuButton(stackObject.transform, "PlayButton", playButtonSprite, "Play", OnPlayClicked);
-        CreateMenuButton(stackObject.transform, "StageSelectButton", stageSelectButtonSprite, "Stage Select", OnPlayClicked);
-        CreateMenuButton(stackObject.transform, "SettingsButton", settingsButtonSprite, "Settings", OnSettingsClicked);
-        CreateMenuButton(stackObject.transform, "QuitButton", quitButtonSprite, "Quit", OnQuitClicked);
-
-        return panel;
-    }
-
-    // Uses the sprite if art is assigned, otherwise falls back to a plain flat-color/text button
-    // (the original placeholder) so the menu still works before art is wired up.
-    Button CreateMenuButton(Transform parent, string name, Sprite sprite, string fallbackLabel, UnityEngine.Events.UnityAction onClick)
-    {
-        return sprite != null
-            ? CreateSpriteButton(parent, name, sprite, onClick)
-            : CreateButton(parent, name, fallbackLabel, Vector2.zero, onClick, new Vector2(320f, 80f));
-    }
-
-    CanvasGroup BuildStageSelectPanel(Transform canvasTransform)
-    {
-        CanvasGroup panel = BuildPanel(canvasTransform, "StageSelectPanel");
-
-        CreateLabel(panel.transform, "Title", "SELECT STAGE", 48f, new Vector2(0.5f, 0.9f), new Vector2(800f, 100f));
-        CreateButton(panel.transform, "BackButton", "Back", new Vector2(0.12f, 0.9f), OnBackToMainClicked, new Vector2(200f, 60f));
-
-        GameObject listObject = new GameObject("StageList");
-        listObject.transform.SetParent(panel.transform, false);
-
-        RectTransform listRect = listObject.AddComponent<RectTransform>();
-        listRect.anchorMin = new Vector2(0.5f, 0f);
-        listRect.anchorMax = new Vector2(0.5f, 0.8f);
-        listRect.pivot = new Vector2(0.5f, 1f);
-        listRect.anchoredPosition = Vector2.zero;
-        listRect.sizeDelta = new Vector2(700f, 0f);
-
-        VerticalLayoutGroup layout = listObject.AddComponent<VerticalLayoutGroup>();
-        layout.childAlignment = TextAnchor.UpperCenter;
-        layout.childControlHeight = true;
-        layout.childControlWidth = true;
-        layout.childForceExpandHeight = false;
-        layout.childForceExpandWidth = true;
-        layout.spacing = 12f;
-
-        ContentSizeFitter fitter = listObject.AddComponent<ContentSizeFitter>();
-        fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-
-        stageSelectListParent = listRect;
-        PopulateStageSelect();
-
-        return panel;
-    }
-
     // Groups by VVELevelDefinition.Stage (the level YAML's own "stage" int field) rather than
     // parsing the filename, so this stays correct for however many stages exist without a second
     // hard-coded notion of "stage" living in the Main Menu.
     void PopulateStageSelect()
     {
-        if (stageSelectListParent == null)
+        if (stageListContent == null || stageListItemPrefab == null)
         {
             return;
+        }
+
+        foreach (Transform child in stageListContent)
+        {
+            Destroy(child.gameObject);
         }
 
         List<VVELevelDefinition> levels = VVELevelLoader.DiscoverLevels();
@@ -380,39 +251,31 @@ public class VVEMainMenuController : MonoBehaviour
 
         foreach (var stageGroup in groupedByStage)
         {
-            CreateStageHeading(stageSelectListParent, "STAGE " + stageGroup.Key);
+            if (stageHeadingPrefab != null)
+            {
+                VVEStageSelectListItem heading = Instantiate(stageHeadingPrefab, stageListContent);
+                heading.Bind("STAGE " + stageGroup.Key, null);
+            }
 
             foreach (VVELevelDefinition level in stageGroup.OrderBy(l => l.Level))
             {
                 string label = level.Stage + "-" + level.Level.ToString("00") + (string.IsNullOrEmpty(level.Name) ? "" : "  " + level.Name);
                 VVELevelDefinition capturedLevel = level;
-                CreateListButton(stageSelectListParent, label, () => OnLevelSelected(capturedLevel));
+                VVEStageSelectListItem item = Instantiate(stageListItemPrefab, stageListContent);
+                item.Bind(label, () => OnLevelSelected(capturedLevel));
             }
         }
     }
 
-    CanvasGroup BuildSettingsPanel(Transform canvasTransform)
-    {
-        CanvasGroup panel = BuildPanel(canvasTransform, "SettingsPanel");
-
-        CreateLabel(panel.transform, "Title", "SETTINGS", 48f, new Vector2(0.5f, 0.9f), new Vector2(800f, 100f));
-        CreateButton(panel.transform, "BackButton", "Back", new Vector2(0.12f, 0.9f), OnBackToMainClicked, new Vector2(200f, 60f));
-
-        CreateLabel(panel.transform, "VolumeLabel", "Master Volume", 28f, new Vector2(0.5f, 0.55f), new Vector2(500f, 50f));
-        volumeSlider = CreateSlider(panel.transform, new Vector2(0.5f, 0.45f), new Vector2(500f, 40f), VVEAudioSettings.MasterVolume, OnVolumeChanged);
-
-        return panel;
-    }
-
     void SpawnDefenderShowcase()
     {
-        if (defenderPrefab == null)
+        if (defenderPrefab == null || defenderSpawnPoint == null)
         {
             return;
         }
 
-        VVEDefender instance = Instantiate(defenderPrefab, defenderPosition, Quaternion.identity, transform);
-        StartCoroutine(IdleBob(instance.transform, defenderPosition));
+        VVEDefender instance = Instantiate(defenderPrefab, defenderSpawnPoint.position, Quaternion.identity);
+        StartCoroutine(IdleBob(instance.transform, defenderSpawnPoint.position));
     }
 
     IEnumerator IdleBob(Transform target, Vector3 basePosition)
@@ -423,205 +286,5 @@ public class VVEMainMenuController : MonoBehaviour
             target.position = basePosition + new Vector3(0f, offset, 0f);
             yield return null;
         }
-    }
-
-    // ---- UI element helpers -------------------------------------------
-
-    TextMeshProUGUI CreateLabel(Transform parent, string name, string text, float fontSize, Vector2 anchor, Vector2 size, TextAlignmentOptions alignment = TextAlignmentOptions.Center)
-    {
-        GameObject textObject = new GameObject(name);
-        textObject.transform.SetParent(parent, false);
-
-        RectTransform rect = textObject.AddComponent<RectTransform>();
-        rect.anchorMin = anchor;
-        rect.anchorMax = anchor;
-        rect.sizeDelta = size;
-        rect.anchoredPosition = Vector2.zero;
-
-        TextMeshProUGUI label = textObject.AddComponent<TextMeshProUGUI>();
-        label.text = text;
-        label.fontSize = fontSize;
-        label.alignment = alignment;
-        label.color = Color.white;
-
-        return label;
-    }
-
-    void CreateStageHeading(Transform parent, string text)
-    {
-        GameObject headingObject = new GameObject("Heading_" + text);
-        headingObject.transform.SetParent(parent, false);
-
-        LayoutElement layoutElement = headingObject.AddComponent<LayoutElement>();
-        layoutElement.preferredHeight = 36f;
-
-        TextMeshProUGUI heading = headingObject.AddComponent<TextMeshProUGUI>();
-        heading.text = text;
-        heading.fontSize = 26f;
-        heading.alignment = TextAlignmentOptions.Left;
-        heading.color = new Color(1f, 0.85f, 0.3f, 1f);
-    }
-
-    // Non-interactive sprite sized to that sprite's native pixel rect via LayoutElement, so it
-    // drops straight into a VerticalLayoutGroup at the art's own proportions.
-    Image CreateSpriteImage(Transform parent, string name, Sprite sprite)
-    {
-        GameObject imageObject = new GameObject(name);
-        imageObject.transform.SetParent(parent, false);
-
-        LayoutElement layoutElement = imageObject.AddComponent<LayoutElement>();
-        layoutElement.preferredWidth = sprite.rect.width;
-        layoutElement.preferredHeight = sprite.rect.height;
-
-        Image image = imageObject.AddComponent<Image>();
-        image.sprite = sprite;
-        image.preserveAspect = true;
-
-        return image;
-    }
-
-    // Same idea as CreateSpriteImage, but clickable - the sprite itself is the button's visual,
-    // no separate background/label needed since the art already has the button text baked in.
-    Button CreateSpriteButton(Transform parent, string name, Sprite sprite, UnityEngine.Events.UnityAction onClick)
-    {
-        GameObject buttonObject = new GameObject(name);
-        buttonObject.transform.SetParent(parent, false);
-
-        LayoutElement layoutElement = buttonObject.AddComponent<LayoutElement>();
-        layoutElement.preferredWidth = sprite.rect.width;
-        layoutElement.preferredHeight = sprite.rect.height;
-
-        Image image = buttonObject.AddComponent<Image>();
-        image.sprite = sprite;
-        image.preserveAspect = true;
-
-        Button button = buttonObject.AddComponent<Button>();
-        button.targetGraphic = image;
-        button.onClick.AddListener(onClick);
-
-        return button;
-    }
-
-    Button CreateButton(Transform parent, string name, string label, Vector2 anchor, UnityEngine.Events.UnityAction onClick, Vector2? size = null)
-    {
-        GameObject buttonObject = new GameObject(name);
-        buttonObject.transform.SetParent(parent, false);
-
-        RectTransform rect = buttonObject.AddComponent<RectTransform>();
-        rect.anchorMin = anchor;
-        rect.anchorMax = anchor;
-        rect.sizeDelta = size ?? new Vector2(320f, 80f);
-        rect.anchoredPosition = Vector2.zero;
-
-        Image background = buttonObject.AddComponent<Image>();
-        background.color = new Color(0.15f, 0.18f, 0.24f, 0.95f);
-
-        Button button = buttonObject.AddComponent<Button>();
-        button.targetGraphic = background;
-        button.onClick.AddListener(onClick);
-
-        CreateLabel(buttonObject.transform, "Label", label, 32f, new Vector2(0.5f, 0.5f), rect.sizeDelta);
-
-        return button;
-    }
-
-    Button CreateListButton(Transform parent, string label, UnityEngine.Events.UnityAction onClick)
-    {
-        GameObject buttonObject = new GameObject("Level_" + label);
-        buttonObject.transform.SetParent(parent, false);
-
-        LayoutElement layoutElement = buttonObject.AddComponent<LayoutElement>();
-        layoutElement.preferredHeight = 56f;
-
-        Image background = buttonObject.AddComponent<Image>();
-        background.color = new Color(0.15f, 0.18f, 0.24f, 0.95f);
-
-        Button button = buttonObject.AddComponent<Button>();
-        button.targetGraphic = background;
-        button.onClick.AddListener(onClick);
-
-        GameObject textObject = new GameObject("Label");
-        textObject.transform.SetParent(buttonObject.transform, false);
-
-        RectTransform textRect = textObject.AddComponent<RectTransform>();
-        textRect.anchorMin = Vector2.zero;
-        textRect.anchorMax = Vector2.one;
-        textRect.offsetMin = new Vector2(16f, 0f);
-        textRect.offsetMax = Vector2.zero;
-
-        TextMeshProUGUI text = textObject.AddComponent<TextMeshProUGUI>();
-        text.text = label;
-        text.fontSize = 26f;
-        text.alignment = TextAlignmentOptions.Left;
-        text.color = Color.white;
-
-        return button;
-    }
-
-    Slider CreateSlider(Transform parent, Vector2 anchor, Vector2 size, float initialValue, UnityEngine.Events.UnityAction<float> onChanged)
-    {
-        GameObject sliderObject = new GameObject("MasterVolumeSlider");
-        sliderObject.transform.SetParent(parent, false);
-
-        RectTransform rect = sliderObject.AddComponent<RectTransform>();
-        rect.anchorMin = anchor;
-        rect.anchorMax = anchor;
-        rect.sizeDelta = size;
-        rect.anchoredPosition = Vector2.zero;
-
-        Slider slider = sliderObject.AddComponent<Slider>();
-        slider.minValue = 0f;
-        slider.maxValue = 1f;
-
-        GameObject backgroundObject = new GameObject("Background");
-        backgroundObject.transform.SetParent(sliderObject.transform, false);
-        RectTransform backgroundRect = backgroundObject.AddComponent<RectTransform>();
-        backgroundRect.anchorMin = new Vector2(0f, 0.25f);
-        backgroundRect.anchorMax = new Vector2(1f, 0.75f);
-        backgroundRect.offsetMin = Vector2.zero;
-        backgroundRect.offsetMax = Vector2.zero;
-        Image backgroundImage = backgroundObject.AddComponent<Image>();
-        backgroundImage.color = new Color(0.1f, 0.1f, 0.12f, 0.8f);
-
-        GameObject fillAreaObject = new GameObject("Fill Area");
-        fillAreaObject.transform.SetParent(sliderObject.transform, false);
-        RectTransform fillAreaRect = fillAreaObject.AddComponent<RectTransform>();
-        fillAreaRect.anchorMin = new Vector2(0f, 0.25f);
-        fillAreaRect.anchorMax = new Vector2(1f, 0.75f);
-        fillAreaRect.offsetMin = new Vector2(5f, 0f);
-        fillAreaRect.offsetMax = new Vector2(-5f, 0f);
-
-        GameObject fillObject = new GameObject("Fill");
-        fillObject.transform.SetParent(fillAreaObject.transform, false);
-        RectTransform fillRect = fillObject.AddComponent<RectTransform>();
-        fillRect.anchorMin = new Vector2(0f, 0f);
-        fillRect.anchorMax = new Vector2(0f, 1f);
-        fillRect.sizeDelta = new Vector2(10f, 0f);
-        Image fillImage = fillObject.AddComponent<Image>();
-        fillImage.color = new Color(0.3f, 0.6f, 0.35f, 1f);
-
-        GameObject handleAreaObject = new GameObject("Handle Slide Area");
-        handleAreaObject.transform.SetParent(sliderObject.transform, false);
-        RectTransform handleAreaRect = handleAreaObject.AddComponent<RectTransform>();
-        handleAreaRect.anchorMin = Vector2.zero;
-        handleAreaRect.anchorMax = Vector2.one;
-        handleAreaRect.offsetMin = new Vector2(10f, 0f);
-        handleAreaRect.offsetMax = new Vector2(-10f, 0f);
-
-        GameObject handleObject = new GameObject("Handle");
-        handleObject.transform.SetParent(handleAreaObject.transform, false);
-        RectTransform handleRect = handleObject.AddComponent<RectTransform>();
-        handleRect.sizeDelta = new Vector2(20f, size.y);
-        Image handleImage = handleObject.AddComponent<Image>();
-        handleImage.color = Color.white;
-
-        slider.targetGraphic = handleImage;
-        slider.fillRect = fillRect;
-        slider.handleRect = handleRect;
-        slider.direction = Slider.Direction.LeftToRight;
-        slider.SetValueWithoutNotify(initialValue);
-        slider.onValueChanged.AddListener(onChanged);
-
-        return slider;
     }
 }
