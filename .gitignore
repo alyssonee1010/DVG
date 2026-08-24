@@ -101,3 +101,7 @@ InitTestScene*.unity*
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
 .env
+
+# Local media-processing tools and intermediate working files
+/_tools/
+/_audio_work/
