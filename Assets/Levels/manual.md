@@ -1,18 +1,52 @@
-# Levels
+# Level Files
 
-## Format
+Level definitions live in Assets/Levels and are loaded by VVELevelLoader.
 
-Each yaml file in this folder is a level that can be played in game.
-In each yaml file the waves are specified.
-Waves have the following parameters:
+## File Naming
 
-## Parameters
+Use NN-NN.yml or NN-NN_name.yml. Other YAML filenames are ignored.
 
-- **time_offset:** the pause between the last waves end and the start of this one.
-- **tier:** options: flag/final, this indicates that the wave is special and should be shown in the level progress bar.
-- **spawns:** each item in this list is a spawn group.
-    - time_offset: the delayed after a waves start, before this group is spawned
-    - spacing: this determines the spacing algorith (the timing the units are spawned), (options: random/even)
-    - unit: the type of enemy unit
-    - count: the number of units that are spawned
-    - duration: the duration during which this spawn groups unit should be spawned.
+Levels are displayed in stage/level order using their stage and level fields.
+
+## Top-Level Fields
+
+| Field | Purpose |
+| --- | --- |
+| id | Stable level identifier used during scene hand-off |
+| name | Player-facing level name |
+| stage | Numeric stage grouping |
+| level | Numeric order inside the stage |
+| settings.lanes | Parsed lane count |
+| settings.starting_currency | Diamond wallet value applied when the level starts |
+| available_units | Parsed unit-id list; currently not enforced |
+| waves | Ordered wave definitions |
+| unlocks | Defender ids unlocked after completion |
+
+Unlock ids must exist in VVEDefenderCatalog.
+
+## Wave Fields
+
+| Field | Purpose |
+| --- | --- |
+| time | Legacy absolute start time from level start |
+| time_offset | Delay after the previous wave ends |
+| tier | normal, flag, or final |
+| spawns | One or more spawn groups |
+
+Use either time or time_offset for a wave. Relative time_offset scheduling is preferred for maintainable sequences.
+
+## Spawn Fields
+
+| Field | Purpose |
+| --- | --- |
+| unit | Unit id configured on VVEWaveDirector |
+| count | Number of enemies in the group |
+| lane | Lane selector; random is the default |
+| time_offset | Delay after this wave starts |
+| duration | Window across which the group is distributed |
+| spacing | even or random distribution inside duration |
+| interval | Legacy fixed spacing used when duration is not positive |
+
+A wave ends at the latest end time of its spawn groups. A relative next-wave offset starts after that point.
+
+After editing a level, verify discovery, unit-id resolution, lane selection, wave timing, completion, unlocks, and next-level order in Play Mode.

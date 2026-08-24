@@ -14,7 +14,7 @@ public class VVEDefender : MonoBehaviour
     public bool HasCell { get; private set; }
     public VVEHealth Health => health;
 
-    void Start()
+    void Awake()
     {
         health = GetComponent<VVEHealth>();
         if (health == null)
