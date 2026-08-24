@@ -1,178 +1,93 @@
 # Development Guide
 
-This guide covers common changes in the current Vikings vs Everyone prototype.
+## Setup
 
-## Project Setup
+Use Unity 6000.5.0f1 or a compatible Unity 6 editor. MainMenu.unity is the entry scene; Level 1.unity is the shared gameplay scene used by all level definitions.
 
-Use Unity `6000.5.0f1` when possible. Package versions are locked through `Packages/manifest.json` and `Packages/packages-lock.json`.
+For a quick C# verification outside Unity, run:
 
-Recommended local flow:
+    dotnet build DVG.slnx
 
-1. Open the repo folder in Unity.
-2. Let Unity import packages and assets.
-3. Open `Assets/Scenes/Level 1.unity`.
-4. Press Play and test the board-defense flow.
+Unity remains the source of truth for scene serialization, asset imports, animation events, and Play Mode behavior.
 
-## Main Scene To Edit
+## Code Design
 
-For current gameplay work, edit:
+- Keep fixes small, simple, and easy to understand.
+- Put shared mechanics in focused reusable modules instead of duplicating them.
+- Generalize for existing behavior or confirmed future features, not speculative possibilities.
+- Keep feature-specific rules in the owning feature.
+- Reuse an existing utility before creating another implementation.
 
-`Assets/Scenes/Level 1.unity`
+Example: VVEWorldPointer owns mouse conversion and generic world hit-testing. Healing decides what counts as a valid healing target.
 
-The recovered play-mode scene is kept as a backup, but current gameplay work should happen in `Level 1`.
+## Adding A Level
 
-## Adding A Placeable Character
+1. Add an NN-NN.yml or NN-NN_name.yml file under Assets/Levels.
+2. Follow Assets/Levels/manual.md.
+3. Use unit ids configured on VVEWaveDirector.
+4. Use defender ids configured in VVEDefenderCatalog for unlocks.
+5. Confirm the level appears in MainMenu stage selection.
+6. Test wave timing, completion, reset, unlocks, and next-level flow.
 
-1. Create or duplicate a prefab under `Assets/Prefabs/Placement Characters`.
-2. Add `VVEBoardCharacter`.
-3. Add `VVEHealth` or let `VVEBoardCharacter` require/find it.
-4. Add one or more role components:
-   - `VVERowProjectileShooter` for ranged lane attacks.
-   - `VVEBoardMeleeAttacker` for melee lane attacks.
-   - `VVEMinerMiningReward` for diamond generation.
-   - `VVEWizardPotionReward` for healing potion generation.
-5. Add an `Animator` if attacks/rewards depend on animation events.
-6. Add colliders so clicks, targeting, and enemy attack ranges can find the character.
-7. Add or update a `VVEPlacementCharacterSlot` in the scene.
-8. Assign the prefab and set its diamond cost on the slot.
-9. Test placement, row sorting, enemy targeting, damage, and removal.
+The available_units field is currently parsed but not enforced by the runtime. Do not rely on it to restrict the defender loadout without implementing that behavior.
 
-## Adding A Ranged Character
+## Adding A Defender
 
-Use `VVERowProjectileShooter`.
+1. Create the prefab under Assets/Prefabs/Defenders.
+2. Add VVEDefender and VVEHealth.
+3. Add the relevant focused role component:
+   - VVERowProjectileShooter for ranged combat
+   - VVEBoardMeleeAttacker for melee combat
+   - VVEMinerMiningReward for diamond generation
+   - VVEWizardPotionReward for potion generation
+4. Add colliders and SpriteRenderers needed for combat and pointer interaction.
+5. Register a stable id, prefab, display name, cost, and default-unlock state in VVEDefenderCatalog.
+6. Test loadout display, placement, lane sorting, damage, health-bar behavior, potion targeting, and removal.
 
-Checklist:
-
-- Assign `projectilePrefab`.
-- Assign `firePoint` or tune `firePointOffset`.
-- Set `projectileDirection`, usually `(1, 0)` for shooting right.
-- Set `projectileDamage`; this overrides the damage value on each projectile instance fired by this shooter.
-- Tune `fireInterval`, `sightRange`, and `minimumFireDistance`.
-- If animation should control the shot timing, enable `waitForShootAnimationEvent` and call `ShootProjectileAnimationEvent` from the attack animation.
-- Confirm the projectile prefab has or receives `VVEDamageProjectile`.
-
-## Adding A Melee Character
-
-Use `VVEBoardMeleeAttacker`.
-
-Checklist:
-
-- Tune `attackRange`, `attackCooldown`, and `attackDamage`.
-- Set `attackDirection` to match the side enemies approach from.
-- Add/verify attack animation events if damage should land on a specific frame.
-- Test against a Viking walker in the same lane.
-
-## Adding A Resource Character
-
-For diamonds, use `VVEMinerMiningReward`.
-
-For healing potions, use `VVEWizardPotionReward`.
-
-Checklist:
-
-- Assign reward sprites.
-- Tune event count per pickup.
-- Tune start offset, landing offset, arc height, and collider radius.
-- Confirm spawned pickups include `VVEBoardPickup`.
-- Confirm the pickup resource is correct: `Diamonds` or `HealingPotions`.
-- Test that pickups can be clicked and expire after their lifetime.
+Do not create a separate health or pointer system for one defender.
 
 ## Adding An Enemy
 
-1. Create a prefab under `Assets/Prefabs/Vikings` or another enemy folder.
-2. Add `VVEHealth`.
-3. Add a script that implements `IVVEEnemyLaneWalker`, or reuse `VVEEnemyVikingWalker`.
-4. Add a collider for projectile/melee targeting.
-5. Add an animator with compatible triggers if using the existing walker behavior:
-   - `Attack`
-   - `AfterKill`
-6. Add the enemy prefab to the `VVEEnemyLaneSpawner` enemy list.
-7. Set max health, move speed, and weight on the spawner option.
-8. Test that the enemy spawns, walks, attacks placed characters, dies cleanly, and damages board life on exit.
+1. Create the prefab under Assets/Prefabs/Vikings or another enemy folder.
+2. Add VVEHealth.
+3. Implement IVVEEnemyLaneWalker or reuse VVEEnemyVikingWalker.
+4. Add the collider, renderers, animator, and required animation events.
+5. Register a stable unit id and prefab in VVEWaveDirector's unit options.
+6. Reference that id from level YAML.
+7. Test spawning, lane movement, defender attacks, death, director tracking, and base damage on exit.
 
-## Tuning Enemy Waves
+## Adding A Potion
 
-Wave tuning lives on `VVEEnemyLaneSpawner`.
+Keep potion effects feature-specific while reusing shared infrastructure:
 
-Important fields:
+1. Represent collectible potion resources through VVEBoardPickup or a focused extension of it.
+2. Store inventory in the appropriate wallet/resource system.
+3. Use VVEWorldPointer for world target selection.
+4. Supply a target type and validity filter specific to the potion.
+5. Keep aiming, spending, effect application, and feedback in a focused potion controller.
+6. Test invalid targets, cancellation, inventory spending, edge-of-board targets, and interaction priority.
 
-| Field | Meaning |
-| --- | --- |
-| `initialDelay` | Time before the first regular spawn |
-| `spawnInterval` | Starting interval between spawn attempts |
-| `maxAliveEnemies` | Starting alive enemy cap |
-| `rampDifficultyOverTime` | Enables the time-based ramp |
-| `timeToMaxDifficulty` | Time until the ramp reaches full strength |
-| `minimumSpawnInterval` | Fastest interval after ramping |
-| `maxAliveEnemiesAtFullDifficulty` | Alive enemy cap at full ramp |
-| `difficultyCurveExponent` | Ramp shape; lower values start ramping sooner, higher values keep the early game calmer |
-| enemy option `weight` | Relative spawn chance for that option |
-| enemy option `maxHealth` | Health assigned when spawned |
-| enemy option `moveSpeed` | Lane movement speed assigned when spawned |
+Do not put potion rules into VVEWorldPointer.
 
-`Level 1` currently ramps from an 8 second interval and 8 alive enemies toward a 2 second interval and 21 alive enemies over about 180 seconds.
+## Validation
 
-To make the game harder faster without changing the opening delay, start with these two fields:
+Before considering a gameplay change complete, verify the affected path and its neighboring shared behavior:
 
-| Goal | Change |
-| --- | --- |
-| Reach full pressure sooner | Lower `timeToMaxDifficulty`, for example `180` to `120` |
-| Make pressure climb earlier | Lower `difficultyCurveExponent`, for example `1.3` to `1.0` |
+- scripts compile without errors
+- MainMenu can discover and hand off a selected level
+- the loadout opens and starts the level
+- defenders can be placed only on valid cells
+- removal affects only placed defenders
+- pickups can be collected
+- potion targeting accepts only valid targets
+- defenders and enemies remain lane-correct
+- health bars appear while damaged and hide at full health
+- wave completion waits for tracked enemies to clear
+- board life reaches the game-over state correctly
 
-Use `minimumSpawnInterval` and `maxAliveEnemiesAtFullDifficulty` only when you also want the late game itself to become harder.
+## Known Technical Debt
 
-## Tuning Board Life
-
-Board life lives on `VVEBoardLife`.
-
-Current behavior:
-
-- starts at 5 life
-- leaked enemies usually deal 1 life
-- reaches `GAME OVER` at 0 life
-- pauses time when game over is enabled
-
-Tune `startingLife` for overall forgiveness, and tune `VVEEnemyVikingWalker.boardDamageOnExit` for enemy leak severity.
-
-## Tuning Economy
-
-Economy has three main knobs:
-
-- `VVEUsableWallet.startingDiamonds`
-- `VVEPlacementCharacterSlot.cost`
-- miner/potion reward rates and pickup values
-
-`Level 1` currently starts with 14 diamonds. Current observed slot costs are:
-
-| Character | Cost |
-| --- | --- |
-| Miner | 8 |
-| Archer | 12 |
-| Wizard | 12 |
-| Cave man | 18 |
-| Potion maker | 21 |
-
-## Validation Checklist
-
-Before calling a gameplay change done, quickly test:
-
-- Can the scene enter Play Mode?
-- Can the player place every visible character slot?
-- Do invalid tiles reject placement?
-- Does the diamond counter update after placement and pickup collection?
-- Do enemies spawn in valid lanes?
-- Do defenders attack only their lane?
-- Do enemies damage or destroy defenders?
-- Does the chest lose life when an enemy leaks through?
-- Does `GAME OVER` appear when life reaches zero?
-- Can damaged defenders be healed with potions?
-- Does the remove tool work with `X` and `Left Shift`?
-
-## Known Cleanup Candidates
-
-- Rename `PlantPlacementManager` to a VVE-specific placement name.
-- Keep or delete `Recovered_PlayMode_20260705_1956.unity` once `Level 1` is fully accepted as the main scene.
-- Remove or restore the disabled `Assets/Scenes/Level 2.unity` build-settings reference. The file is not present in the current project tree.
-- Separate legacy platformer content from board-defense content.
-- Move scene-only balance values into ScriptableObjects once tuning stabilizes.
-- Add automated edit-mode tests for wallet, health, lane spawning, and projectile target filtering.
+- PlantPlacementManager and CharPlacementManagement.cs do not share a name.
+- VVELevelSelectUI still provides the in-game selection/continuation flow alongside MainMenu stage selection.
+- available_units is parsed from level YAML but is not enforced.
+- Automated edit-mode and play-mode coverage is limited.

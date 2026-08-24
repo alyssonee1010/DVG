@@ -1,46 +1,29 @@
-# TODO
+# Maintained Backlog
 
-Working list for upcoming Vikings vs Everyone improvements.
+Keep this file limited to actionable work that is not already implemented. Put balance values in level, catalog, prefab, or scene data rather than copying them here.
 
 ## Gameplay
 
-- Add death animations for characters and Vikings.
-- Add more levels.
-- Add a character-selection flow so the player chooses which character slots are available before a level.
-- Add fire status effects for fire hits, starting with the wizard:
-  - catching fire state
-  - burn sound
-  - burn animation/VFX
-  - burn damage over time or related gameplay effect
-  - lower wizard direct damage once fire is implemented
-- Rebalance potions. They are probably too strong right now:
-  - make potion characters or potion use more expensive
-  - slow down potion generation
-  - revisit healing amount after testing
-- Add the new potion character, such as a lucky potion or speed potion maker.
-- Improve potion readability. Current potion pickups do not appear clearly enough, so explore stronger visual treatment or UI feedback.
+- Add defender and Viking death presentation.
+- Add fire/status-effect support through a reusable status module, then integrate it with the relevant attacks.
+- Add the confirmed future potion types using the shared VVEWorldPointer targeting utility and focused effect controllers.
+- Improve pickup readability and collection feedback.
 
-## Enemies
+## Content
 
-- Add the new Viking variants:
-  - naked Viking
-  - woman Viking
-- Viking falls from the sky
+- Add and validate more level YAML files.
+- Register additional enemy variants with VVEWaveDirector and use them in level wave data.
 
-## UI
+## UI And Audio
 
-- Add a more complete in-game UI.
+- Improve in-game UI feedback without duplicating gameplay state.
+- Complete missing combat and character sound coverage.
+- Verify audio timing against animation events.
 
-## Art
+## Engineering
 
-- Improve the chest drawing.
-- Improve other drawings and polish art where needed. Not urgent.
-
-## Audio
-
-- Add wizard sound effects.
-- Fix sound timing.
-
-## Improvements
-- [ ] Too many diamonds and too hard to click (I'm just clicking all the time)
-- [ ] 
+- Rename PlantPlacementManager and CharPlacementManagement.cs together.
+- Decide whether the standalone VVEEnemyLaneSpawner remains necessary beside VVEWaveDirector.
+- Enforce or remove the currently unused available_units level field.
+- Add edit-mode tests for level parsing, wallet changes, health, and target filters.
+- Add play-mode coverage for placement, removal, pickups, potions, wave completion, and menu hand-off.
