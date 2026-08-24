@@ -10,7 +10,7 @@ Vikings vs Everyone is a Unity 2D lane-defense game.
 - Entry scene: Assets/Scenes/MainMenu.unity
 - Shared gameplay scene: Assets/Scenes/Level 1.unity
 - Level data: Assets/Levels/*.yml
-- C# verification: dotnet build DVG.slnx
+- C# verification: dotnet build VikingsVsEveryone.slnx
 
 Unity Play Mode remains required for scene, animation, asset-import, and runtime interaction verification.
 
