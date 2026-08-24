@@ -218,60 +218,39 @@ public class PlantPlacementManager : MonoBehaviour
             return true;
         }
 
-        Collider2D[] hits = Physics2D.OverlapPointAll(worldPosition);
-        foreach (Collider2D hit in hits)
+        character = VVEWorldPointer.FindClosest<VVEDefender>(
+            worldPosition,
+            0f,
+            candidate => candidate != null && occupiedCells.ContainsValue(candidate));
+        if (character == null)
         {
-            VVEDefender hitCharacter = hit.GetComponentInParent<VVEDefender>();
-            if (hitCharacter == null)
-            {
-                continue;
-            }
+            return false;
+        }
 
-            if (hitCharacter.HasCell
-                && occupiedCells.TryGetValue(hitCharacter.Cell, out VVEDefender occupiedCharacter)
-                && occupiedCharacter == hitCharacter)
+        if (character.HasCell
+            && occupiedCells.TryGetValue(character.Cell, out VVEDefender occupiedCharacter)
+            && occupiedCharacter == character)
+        {
+            cellPosition = character.Cell;
+            return true;
+        }
+
+        foreach (KeyValuePair<Vector3Int, VVEDefender> occupiedCell in occupiedCells)
+        {
+            if (occupiedCell.Value == character)
             {
-                cellPosition = hitCharacter.Cell;
-                character = hitCharacter;
+                cellPosition = occupiedCell.Key;
                 return true;
-            }
-
-            foreach (KeyValuePair<Vector3Int, VVEDefender> occupiedCell in occupiedCells)
-            {
-                if (occupiedCell.Value == hitCharacter)
-                {
-                    cellPosition = occupiedCell.Key;
-                    character = hitCharacter;
-                    return true;
-                }
             }
         }
 
-        character = null;
         return false;
     }
 
     private bool TryCollectBoardPickup()
     {
-        Vector3 mouseWorldPosition = GetMouseWorldPosition();
-        Collider2D[] hits = Physics2D.OverlapPointAll(mouseWorldPosition);
-        foreach (Collider2D hit in hits)
-        {
-            VVEBoardPickup pickup = hit.GetComponentInParent<VVEBoardPickup>();
-            if (pickup == null)
-            {
-                pickup = hit.GetComponentInChildren<VVEBoardPickup>();
-            }
-
-            if (pickup == null)
-            {
-                continue;
-            }
-
-            return pickup.Collect();
-        }
-
-        return false;
+        VVEBoardPickup pickup = VVEWorldPointer.FindClosest<VVEBoardPickup>(GetMouseWorldPosition(), 0f);
+        return pickup != null && pickup.Collect();
     }
 
     private bool TryUseHealingPotion()
@@ -528,12 +507,7 @@ public class PlantPlacementManager : MonoBehaviour
 
     private Vector3 GetMouseWorldPosition()
     {
-        Vector3 mouseScreenPosition = Input.mousePosition;
-        mouseScreenPosition.z = Mathf.Abs(Camera.main.transform.position.z);
-
-        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
-        mouseWorldPosition.z = 0f;
-        return mouseWorldPosition;
+        return VVEWorldPointer.GetPosition();
     }
 
     private void RebuildPlacementPreview()

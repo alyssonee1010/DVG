@@ -209,40 +209,7 @@ public class VVEHealingPotionUseController : MonoBehaviour
 
     VVEDefender FindDamagedCharacterAt(Vector3 worldPosition)
     {
-        Collider2D[] hits = Physics2D.OverlapPointAll(worldPosition);
-        foreach (Collider2D hit in hits)
-        {
-            if (hit == null)
-            {
-                continue;
-            }
-
-            VVEDefender character = hit.GetComponentInParent<VVEDefender>();
-            if (IsDamagedCharacter(character))
-            {
-                return character;
-            }
-        }
-
-        VVEDefender bestCharacter = null;
-        float bestDistance = clickSearchRadius;
-        VVEDefender[] characters = FindObjectsByType<VVEDefender>(FindObjectsInactive.Exclude);
-        foreach (VVEDefender character in characters)
-        {
-            if (!IsDamagedCharacter(character))
-            {
-                continue;
-            }
-
-            float distance = Vector2.Distance(character.transform.position, worldPosition);
-            if (distance <= bestDistance)
-            {
-                bestDistance = distance;
-                bestCharacter = character;
-            }
-        }
-
-        return bestCharacter;
+        return VVEWorldPointer.FindClosest<VVEDefender>(worldPosition, clickSearchRadius, IsDamagedCharacter);
     }
 
     bool HasDamagedCharacter()
@@ -300,17 +267,7 @@ public class VVEHealingPotionUseController : MonoBehaviour
 
     Vector3 GetMouseWorldPosition()
     {
-        Camera mainCamera = Camera.main;
-        if (mainCamera == null)
-        {
-            return Vector3.zero;
-        }
-
-        Vector3 mouseScreenPosition = Input.mousePosition;
-        mouseScreenPosition.z = Mathf.Abs(mainCamera.transform.position.z);
-        Vector3 mouseWorldPosition = mainCamera.ScreenToWorldPoint(mouseScreenPosition);
-        mouseWorldPosition.z = 0f;
-        return mouseWorldPosition;
+        return VVEWorldPointer.GetPosition();
     }
 
     void RestoreMissingTintedRenderers(List<SpriteRenderer> stillTinted)
