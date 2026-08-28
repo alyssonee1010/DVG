@@ -110,4 +110,10 @@ public class VVEUsableWallet : MonoBehaviour
         HealingPotions += amount;
         HealingPotionsChanged?.Invoke(HealingPotions);
     }
+
+    public void SetHealingPotions(int amount)
+    {
+        HealingPotions = Mathf.Max(0, amount);
+        HealingPotionsChanged?.Invoke(HealingPotions);
+    }
 }

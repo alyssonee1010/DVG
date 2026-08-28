@@ -141,6 +141,7 @@ public class VVEWaveDirector : MonoBehaviour
             return;
         }
 
+        bool isChangingStage = CurrentLevel != null && CurrentLevel.Stage != level.Stage;
         StopLevel();
         CurrentLevel = level;
         RebuildLanes();
@@ -150,6 +151,10 @@ public class VVEWaveDirector : MonoBehaviour
         if (wallet != null)
         {
             wallet.SetDiamonds(level.StartingCurrency);
+            if (isChangingStage)
+            {
+                wallet.SetHealingPotions(0);
+            }
         }
 
         LevelStartTime = Time.time;
