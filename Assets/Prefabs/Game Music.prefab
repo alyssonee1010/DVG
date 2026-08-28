@@ -144,4 +144,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::VVELevelMusicController
   earlyLevelsMusic: {fileID: 8300000, guid: c66d840153af759459336fe9e7da0b70, type: 3}
   laterLevelsMusic: {fileID: 8300000, guid: f98db6e2c4384fd184d948a5fca20a31, type: 3}
-  laterMusicStartsAtStage: 2

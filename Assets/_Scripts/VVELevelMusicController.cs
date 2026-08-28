@@ -5,7 +5,6 @@ public class VVELevelMusicController : MonoBehaviour
 {
     [SerializeField] AudioClip earlyLevelsMusic;
     [SerializeField] AudioClip laterLevelsMusic;
-    [SerializeField] int laterMusicStartsAtStage = 2;
 
     AudioSource audioSource;
     VVEWaveDirector waveDirector;
@@ -59,7 +58,7 @@ public class VVELevelMusicController : MonoBehaviour
             return;
         }
 
-        AudioClip selectedMusic = level.Stage >= laterMusicStartsAtStage
+        AudioClip selectedMusic = IsLastLevelInStage(level)
             ? laterLevelsMusic
             : earlyLevelsMusic;
 
@@ -79,5 +78,18 @@ public class VVELevelMusicController : MonoBehaviour
         {
             audioSource.Play();
         }
+    }
+
+    static bool IsLastLevelInStage(VVELevelDefinition level)
+    {
+        foreach (VVELevelDefinition candidate in VVELevelLoader.DiscoverLevels())
+        {
+            if (candidate.Stage == level.Stage && candidate.Level > level.Level)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
