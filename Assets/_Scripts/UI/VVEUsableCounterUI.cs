@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class VVEUsableCounterUI : MonoBehaviour
 {
-    enum CounterResource { Diamonds, HealingPotions }
+    enum CounterResource { Diamonds, HealingPotions, SpeedPotions }
 
     [SerializeField] VVEUsableWallet wallet;
     [SerializeField] CounterResource resource = CounterResource.Diamonds;
@@ -12,6 +12,7 @@ public class VVEUsableCounterUI : MonoBehaviour
 
     public static Transform DiamondTarget { get; private set; }
     public static Transform HealingPotionTarget { get; private set; }
+    public static Transform SpeedPotionTarget { get; private set; }
 
     void Awake()
     {
@@ -53,6 +54,12 @@ public class VVEUsableCounterUI : MonoBehaviour
                 UpdateCounter(wallet.HealingPotions);
                 HealingPotionTarget = transform;
             }
+            else if (resource == CounterResource.SpeedPotions)
+            {
+                wallet.SpeedPotionsChanged += UpdateCounter;
+                UpdateCounter(wallet.SpeedPotions);
+                SpeedPotionTarget = transform;
+            }
             else
             {
                 wallet.DiamondsChanged += UpdateCounter;
@@ -68,6 +75,7 @@ public class VVEUsableCounterUI : MonoBehaviour
         {
             wallet.DiamondsChanged -= UpdateCounter;
             wallet.HealingPotionsChanged -= UpdateCounter;
+            wallet.SpeedPotionsChanged -= UpdateCounter;
         }
 
         if (DiamondTarget == transform)
@@ -78,6 +86,11 @@ public class VVEUsableCounterUI : MonoBehaviour
         if (HealingPotionTarget == transform)
         {
             HealingPotionTarget = null;
+        }
+
+        if (SpeedPotionTarget == transform)
+        {
+            SpeedPotionTarget = null;
         }
     }
 

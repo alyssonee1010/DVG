@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class VVEBoardPickup : MonoBehaviour
 {
-    public enum PickupResource { Diamonds, HealingPotions }
+    public enum PickupResource { Diamonds, HealingPotions, SpeedPotions }
 
     [SerializeField] int value = 1;
     [SerializeField] PickupResource resource = PickupResource.Diamonds;
@@ -86,6 +86,10 @@ public class VVEBoardPickup : MonoBehaviour
             {
                 wallet.AddHealingPotions(value);
             }
+            else if (resource == PickupResource.SpeedPotions)
+            {
+                wallet.AddSpeedPotions(value);
+            }
             else
             {
                 wallet.AddDiamonds(value);
@@ -114,9 +118,17 @@ public class VVEBoardPickup : MonoBehaviour
 
     Transform GetFlyTarget()
     {
-        return resource == PickupResource.HealingPotions
-            ? VVEUsableCounterUI.HealingPotionTarget
-            : VVEUsableCounterUI.DiamondTarget;
+        if (resource == PickupResource.HealingPotions)
+        {
+            return VVEUsableCounterUI.HealingPotionTarget;
+        }
+
+        if (resource == PickupResource.SpeedPotions)
+        {
+            return VVEUsableCounterUI.SpeedPotionTarget;
+        }
+
+        return VVEUsableCounterUI.DiamondTarget;
     }
 
     void SetClickable(bool clickable)

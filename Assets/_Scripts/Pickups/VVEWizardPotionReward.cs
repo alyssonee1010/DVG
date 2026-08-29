@@ -10,6 +10,7 @@ public class VVEWizardPotionReward : MonoBehaviour
 
     [Header("Spawn Assets")]
     [SerializeField] Sprite potionSprite;
+    [SerializeField] VVEBoardPickup.PickupResource potionResource = VVEBoardPickup.PickupResource.HealingPotions;
     [SerializeField] string templatePotionName = "";
 
     [Header("Spawn Positions")]
@@ -56,7 +57,7 @@ public class VVEWizardPotionReward : MonoBehaviour
             return;
         }
 
-        automaticBrewTimer -= Time.deltaTime;
+        automaticBrewTimer -= Time.deltaTime * VVEActionSpeedModifier.GetMultiplier(this);
         if (automaticBrewTimer > 0f)
         {
             return;
@@ -133,7 +134,7 @@ public class VVEWizardPotionReward : MonoBehaviour
 
     GameObject SpawnPotionObject(Vector3 worldPosition, Sprite sprite)
     {
-        GameObject spawned = new GameObject("Healing Potion");
+        GameObject spawned = new GameObject(GetPotionName());
         spawned.transform.position = worldPosition;
         spawned.transform.rotation = Quaternion.identity;
         spawned.transform.localScale = GetPotionScale();
@@ -147,8 +148,15 @@ public class VVEWizardPotionReward : MonoBehaviour
         collider.radius = potionColliderRadius;
 
         VVEBoardPickup pickup = spawned.AddComponent<VVEBoardPickup>();
-        pickup.Initialize(potionValue, VVEBoardPickup.PickupResource.HealingPotions, CacheSoundPlayer());
+        pickup.Initialize(potionValue, potionResource, CacheSoundPlayer());
         return spawned;
+    }
+
+    string GetPotionName()
+    {
+        return potionResource == VVEBoardPickup.PickupResource.SpeedPotions
+            ? "Speed Potion"
+            : "Healing Potion";
     }
 
     void ApplySorting(SpriteRenderer spawnedRenderer)
