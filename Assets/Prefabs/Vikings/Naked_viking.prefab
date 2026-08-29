@@ -229,7 +229,7 @@ MonoBehaviour:
   useAttackAnimationEvents: 1
   fallbackFirstAttackDelay: 0.5
   fallbackAttackInterval: 1.5
-  afterKillLockSeconds: 0
+  afterKillLockSeconds: 0.17
   boardDamageOnExit: 1
 --- !u!61 &6627431872690101013
 BoxCollider2D:
