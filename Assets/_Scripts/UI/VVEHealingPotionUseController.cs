@@ -12,7 +12,7 @@ public class VVEHealingPotionUseController : MonoBehaviour
     [SerializeField] string potionCounterTextName = "Healing Potion Counter";
     [SerializeField, Min(1)] int healAmount = 100;
     [SerializeField, Min(0.05f)] float clickSearchRadius = 0.55f;
-    [SerializeField] Color validTargetTint = new Color(0.55f, 1f, 0.85f, 0.55f);
+    [SerializeField] VVECharacterTargetHighlight targetHighlight;
     [SerializeField] Color selectedPotionTint = new Color(0.55f, 0.95f, 1f, 0.55f);
     [SerializeField] Color healFlashTint = new Color(0.65f, 1f, 0.65f, 1f);
     [SerializeField] Vector3 scenePotionCounterTextLocalPosition = new Vector3(0.28f, 0.03f, -0.01f);
@@ -20,15 +20,12 @@ public class VVEHealingPotionUseController : MonoBehaviour
     [SerializeField] Vector3 fallbackCounterScale = new Vector3(0.08f, 0.08f, 1f);
     [SerializeField] string fallbackCounterPrefix = "P: ";
 
-    readonly Dictionary<SpriteRenderer, Color> originalColors = new Dictionary<SpriteRenderer, Color>();
     readonly Dictionary<SpriteRenderer, Color> potionOriginalColors = new Dictionary<SpriteRenderer, Color>();
-    readonly Dictionary<SpriteRenderer, SpriteRenderer> targetGhostRenderers = new Dictionary<SpriteRenderer, SpriteRenderer>();
 
     TextMeshPro fallbackCounterText;
     Transform scenePotionTransform;
     SpriteRenderer potionGhostRenderer;
     SpriteRenderer potionCursorGhostRenderer;
-    VVEDefender hoveredTargetCharacter;
     bool isAiming;
 
     public static VVEHealingPotionUseController Instance { get; private set; }
@@ -49,6 +46,16 @@ public class VVEHealingPotionUseController : MonoBehaviour
         if (wallet == null)
         {
             wallet = VVEUsableWallet.Instance != null ? VVEUsableWallet.Instance : FindAnyObjectByType<VVEUsableWallet>();
+        }
+
+        if (targetHighlight == null)
+        {
+            targetHighlight = GetComponent<VVECharacterTargetHighlight>();
+        }
+
+        if (targetHighlight == null)
+        {
+            targetHighlight = gameObject.AddComponent<VVECharacterTargetHighlight>();
         }
 
         EnsureFallbackCounter();
@@ -121,7 +128,6 @@ public class VVEHealingPotionUseController : MonoBehaviour
         if (target != null && wallet != null && wallet.TrySpendHealingPotion())
         {
             ClearTargetTint();
-            RestoreCharacterTint(target);
             target.Health.Heal(healAmount);
             RefreshHealthBar(target);
             PlayHealFlash(target);
@@ -237,32 +243,10 @@ public class VVEHealingPotionUseController : MonoBehaviour
 
     void UpdateTargetTint()
     {
-        VVEDefender hoveredCharacter = FindDamagedCharacterAt(GetMouseWorldPosition());
-        if (hoveredCharacter != hoveredTargetCharacter)
+        if (targetHighlight != null)
         {
-            ClearTargetTint();
-            hoveredTargetCharacter = hoveredCharacter;
+            targetHighlight.Show(FindDamagedCharacterAt(GetMouseWorldPosition()));
         }
-
-        if (hoveredCharacter == null)
-        {
-            return;
-        }
-
-        List<SpriteRenderer> stillPreviewed = new List<SpriteRenderer>();
-        SpriteRenderer[] renderers = hoveredCharacter.GetComponentsInChildren<SpriteRenderer>(true);
-        foreach (SpriteRenderer renderer in renderers)
-        {
-            if (renderer == null || IsHealthBarRenderer(renderer) || IsTargetGhostRenderer(renderer))
-            {
-                continue;
-            }
-
-            EnsureTargetGhostRenderer(renderer);
-            stillPreviewed.Add(renderer);
-        }
-
-        RemoveMissingTargetGhosts(stillPreviewed);
     }
 
     Vector3 GetMouseWorldPosition()
@@ -270,124 +254,11 @@ public class VVEHealingPotionUseController : MonoBehaviour
         return VVEWorldPointer.GetPosition();
     }
 
-    void RestoreMissingTintedRenderers(List<SpriteRenderer> stillTinted)
-    {
-        List<SpriteRenderer> restore = new List<SpriteRenderer>();
-        foreach (KeyValuePair<SpriteRenderer, Color> entry in originalColors)
-        {
-            if (entry.Key == null || !stillTinted.Contains(entry.Key))
-            {
-                restore.Add(entry.Key);
-            }
-        }
-
-        foreach (SpriteRenderer renderer in restore)
-        {
-            RestoreRenderer(renderer);
-        }
-    }
-
     void ClearTargetTint()
     {
-        ClearTargetGhosts();
-
-        List<SpriteRenderer> renderers = new List<SpriteRenderer>(originalColors.Keys);
-        foreach (SpriteRenderer renderer in renderers)
+        if (targetHighlight != null)
         {
-            RestoreRenderer(renderer);
-        }
-
-        hoveredTargetCharacter = null;
-    }
-
-    void EnsureTargetGhostRenderer(SpriteRenderer sourceRenderer)
-    {
-        if (sourceRenderer == null)
-        {
-            return;
-        }
-
-        if (!targetGhostRenderers.TryGetValue(sourceRenderer, out SpriteRenderer ghostRenderer) || ghostRenderer == null)
-        {
-            GameObject ghostObject = new GameObject("Healing Target Ghost Effect");
-            ghostObject.transform.SetParent(sourceRenderer.transform, false);
-            ghostObject.transform.localPosition = new Vector3(0f, 0f, -0.02f);
-            ghostObject.transform.localRotation = Quaternion.identity;
-            ghostObject.transform.localScale = new Vector3(1.08f, 1.08f, 1f);
-            ghostRenderer = ghostObject.AddComponent<SpriteRenderer>();
-            targetGhostRenderers[sourceRenderer] = ghostRenderer;
-        }
-
-        ghostRenderer.sprite = sourceRenderer.sprite;
-        ghostRenderer.flipX = sourceRenderer.flipX;
-        ghostRenderer.flipY = sourceRenderer.flipY;
-        ghostRenderer.sortingLayerID = sourceRenderer.sortingLayerID;
-        ghostRenderer.sortingOrder = sourceRenderer.sortingOrder + 2;
-        ghostRenderer.color = validTargetTint;
-    }
-
-    void RemoveMissingTargetGhosts(List<SpriteRenderer> stillPreviewed)
-    {
-        List<SpriteRenderer> remove = new List<SpriteRenderer>();
-        foreach (KeyValuePair<SpriteRenderer, SpriteRenderer> entry in targetGhostRenderers)
-        {
-            if (entry.Key == null || entry.Value == null || !stillPreviewed.Contains(entry.Key))
-            {
-                remove.Add(entry.Key);
-            }
-        }
-
-        foreach (SpriteRenderer sourceRenderer in remove)
-        {
-            DestroyTargetGhost(sourceRenderer);
-        }
-    }
-
-    void ClearTargetGhosts()
-    {
-        List<SpriteRenderer> sourceRenderers = new List<SpriteRenderer>(targetGhostRenderers.Keys);
-        foreach (SpriteRenderer sourceRenderer in sourceRenderers)
-        {
-            DestroyTargetGhost(sourceRenderer);
-        }
-    }
-
-    void DestroyTargetGhost(SpriteRenderer sourceRenderer)
-    {
-        if (sourceRenderer != null && targetGhostRenderers.TryGetValue(sourceRenderer, out SpriteRenderer ghostRenderer) && ghostRenderer != null)
-        {
-            Destroy(ghostRenderer.gameObject);
-        }
-
-        targetGhostRenderers.Remove(sourceRenderer);
-    }
-
-    void RestoreRenderer(SpriteRenderer renderer)
-    {
-        if (renderer != null && originalColors.TryGetValue(renderer, out Color originalColor))
-        {
-            renderer.color = originalColor;
-        }
-
-        originalColors.Remove(renderer);
-    }
-
-    void RestoreCharacterTint(VVEDefender character)
-    {
-        if (character == null)
-        {
-            return;
-        }
-
-        SpriteRenderer[] renderers = character.GetComponentsInChildren<SpriteRenderer>(true);
-        foreach (SpriteRenderer renderer in renderers)
-        {
-            if (IsHealthBarRenderer(renderer) || IsTargetGhostRenderer(renderer))
-            {
-                continue;
-            }
-
-            RestoreRenderer(renderer);
+            targetHighlight.Clear();
         }
     }
 
@@ -583,7 +454,7 @@ public class VVEHealingPotionUseController : MonoBehaviour
 
     bool IsTargetGhostRenderer(SpriteRenderer renderer)
     {
-        return renderer != null && renderer.gameObject.name == "Healing Target Ghost Effect";
+        return targetHighlight != null && targetHighlight.IsHighlightRenderer(renderer);
     }
 
     void RefreshHealthBar(VVEDefender character)

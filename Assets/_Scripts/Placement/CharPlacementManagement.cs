@@ -31,6 +31,8 @@ public class PlantPlacementManager : MonoBehaviour
 
     public void ResetBoard()
     {
+        VVECharacterPotionTargeting.Cancel();
+
         foreach (KeyValuePair<Vector3Int, VVEDefender> occupiedCell in occupiedCells)
         {
             if (occupiedCell.Value != null)
@@ -110,6 +112,12 @@ public class PlantPlacementManager : MonoBehaviour
 
     private void HandlePrimaryClick()
     {
+        if (VVECharacterPotionTargeting.TryHandlePrimaryClick(GetMouseWorldPosition()))
+        {
+            ClearSelection();
+            return;
+        }
+
         if (IsAimingHealingPotion())
         {
             if (TryUseHealingPotion())

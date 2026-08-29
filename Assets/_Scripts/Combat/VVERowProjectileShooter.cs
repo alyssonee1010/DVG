@@ -56,7 +56,7 @@ public class VVERowProjectileShooter : MonoBehaviour
 
     void Update()
     {
-        fireTimer -= Time.deltaTime;
+        fireTimer -= Time.deltaTime * VVEActionSpeedModifier.GetMultiplier(this);
 
         if (projectilePrefab == null || !TryFindTarget(out IVVEEnemyLaneWalker target))
         {

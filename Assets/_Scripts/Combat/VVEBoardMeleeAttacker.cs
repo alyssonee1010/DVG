@@ -28,7 +28,7 @@ public class VVEBoardMeleeAttacker : MonoBehaviour
 
     void Update()
     {
-        attackTimer -= Time.deltaTime;
+        attackTimer -= Time.deltaTime * VVEActionSpeedModifier.GetMultiplier(this);
         if (attackTimer > 0f || animator == null || string.IsNullOrWhiteSpace(attackTriggerName))
         {
             return;
