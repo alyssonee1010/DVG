@@ -1,22 +1,39 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Reusable hover/selection highlight for potions and other character-targeting tools.
-// It renders a slightly enlarged colored copy of each character sprite without
-// changing the character's original colors or its health bar.
+// Reusable hover/selection feedback for potions and other character-targeting tools.
+// It can render a colored ghost or temporarily reduce the target's transparency,
+// while leaving its health bar alone.
 public class VVECharacterTargetHighlight : MonoBehaviour
 {
+    enum HighlightStyle
+    {
+        Ghost,
+        Transparency
+    }
+
+    [SerializeField] HighlightStyle highlightStyle = HighlightStyle.Ghost;
     [SerializeField] Color highlightColor = new Color(1f, 0.82f, 0.12f, 0.65f);
     [SerializeField, Min(1f)] float scaleMultiplier = 1.08f;
     [SerializeField] int sortingOrderOffset = 2;
     [SerializeField] float depthOffset = -0.02f;
+    [SerializeField, Range(0f, 1f)] float transparencyMultiplier = 0.45f;
 
     readonly Dictionary<SpriteRenderer, SpriteRenderer> ghosts =
         new Dictionary<SpriteRenderer, SpriteRenderer>();
+    readonly Dictionary<SpriteRenderer, Color> originalColors =
+        new Dictionary<SpriteRenderer, Color>();
 
     VVEDefender currentTarget;
 
     public VVEDefender CurrentTarget => currentTarget;
+
+    public void ConfigureTransparency(float alphaMultiplier)
+    {
+        Clear();
+        highlightStyle = HighlightStyle.Transparency;
+        transparencyMultiplier = Mathf.Clamp01(alphaMultiplier);
+    }
 
     void OnDisable()
     {
@@ -45,11 +62,21 @@ public class VVECharacterTargetHighlight : MonoBehaviour
             }
 
             visibleSources.Add(source);
-            EnsureGhost(source);
+            if (highlightStyle == HighlightStyle.Transparency)
+            {
+                ApplyTransparency(source);
+            }
+            else
+            {
+                EnsureGhost(source);
+            }
         }
 
         List<SpriteRenderer> staleSources = new List<SpriteRenderer>();
-        foreach (SpriteRenderer source in ghosts.Keys)
+        IEnumerable<SpriteRenderer> trackedSources = highlightStyle == HighlightStyle.Transparency
+            ? originalColors.Keys
+            : ghosts.Keys;
+        foreach (SpriteRenderer source in trackedSources)
         {
             if (source == null || !visibleSources.Contains(source))
             {
@@ -59,7 +86,7 @@ public class VVECharacterTargetHighlight : MonoBehaviour
 
         foreach (SpriteRenderer source in staleSources)
         {
-            RemoveGhost(source);
+            RemoveHighlight(source);
         }
     }
 
@@ -74,6 +101,16 @@ public class VVECharacterTargetHighlight : MonoBehaviour
         }
 
         ghosts.Clear();
+
+        foreach (KeyValuePair<SpriteRenderer, Color> entry in originalColors)
+        {
+            if (entry.Key != null)
+            {
+                entry.Key.color = entry.Value;
+            }
+        }
+
+        originalColors.Clear();
         currentTarget = null;
     }
 
@@ -102,6 +139,37 @@ public class VVECharacterTargetHighlight : MonoBehaviour
         ghost.sortingLayerID = source.sortingLayerID;
         ghost.sortingOrder = source.sortingOrder + sortingOrderOffset;
         ghost.color = highlightColor;
+    }
+
+    void ApplyTransparency(SpriteRenderer source)
+    {
+        if (!originalColors.TryGetValue(source, out Color originalColor))
+        {
+            originalColor = source.color;
+            originalColors[source] = originalColor;
+        }
+
+        source.color = new Color(
+            originalColor.r,
+            originalColor.g,
+            originalColor.b,
+            originalColor.a * transparencyMultiplier);
+    }
+
+    void RemoveHighlight(SpriteRenderer source)
+    {
+        if (highlightStyle == HighlightStyle.Transparency)
+        {
+            if (source != null && originalColors.TryGetValue(source, out Color originalColor))
+            {
+                source.color = originalColor;
+            }
+
+            originalColors.Remove(source);
+            return;
+        }
+
+        RemoveGhost(source);
     }
 
     void RemoveGhost(SpriteRenderer source)

@@ -17,6 +17,8 @@ public class PlantPlacementManager : MonoBehaviour
     [SerializeField] private KeyCode toggleRemoveToolKey = KeyCode.X;
     [SerializeField] private KeyCode holdRemoveToolKey = KeyCode.LeftShift;
     [SerializeField] private VVERemoveToolCursor removeTool;
+    [SerializeField] private VVECharacterTargetHighlight removeTargetHighlight;
+    [SerializeField, Range(0f, 1f)] private float removeTargetAlpha = 0.45f;
 
     private Dictionary<Vector3Int, VVEDefender> occupiedCells = new Dictionary<Vector3Int, VVEDefender>();
     private GameObject selectedPlantPrefab;
@@ -78,6 +80,13 @@ public class PlantPlacementManager : MonoBehaviour
         {
             removeTool.FollowCursor(false);
         }
+
+        if (removeTargetHighlight == null)
+        {
+            removeTargetHighlight = gameObject.AddComponent<VVECharacterTargetHighlight>();
+        }
+
+        removeTargetHighlight.ConfigureTransparency(removeTargetAlpha);
     }
 
     private void Update()
@@ -107,6 +116,7 @@ public class PlantPlacementManager : MonoBehaviour
             ClearSelection();
         }
 
+        UpdateRemoveTargetHighlight();
         UpdatePlacementPreview();
     }
 
@@ -484,6 +494,24 @@ public class PlantPlacementManager : MonoBehaviour
         }
     }
 
+    private void UpdateRemoveTargetHighlight()
+    {
+        if (removeTargetHighlight == null)
+        {
+            return;
+        }
+
+        if (!IsRemoveToolActive())
+        {
+            removeTargetHighlight.Clear();
+            return;
+        }
+
+        CleanupOccupiedCells();
+        TryGetPlacedCharacterAt(GetMouseWorldPosition(), out _, out VVEDefender character);
+        removeTargetHighlight.Show(character);
+    }
+
     private void OnDisable()
     {
         if (cursorShowingRemoveTool && removeTool != null)
@@ -492,6 +520,10 @@ public class PlantPlacementManager : MonoBehaviour
         }
 
         cursorShowingRemoveTool = false;
+        if (removeTargetHighlight != null)
+        {
+            removeTargetHighlight.Clear();
+        }
     }
 
     private void ClearSelection()
@@ -505,6 +537,11 @@ public class PlantPlacementManager : MonoBehaviour
         selectedPlantPrefab = null;
         previewRenderers = null;
         removeToolSelected = false;
+
+        if (removeTargetHighlight != null)
+        {
+            removeTargetHighlight.Clear();
+        }
 
         if (placementPreview != null)
         {
