@@ -84,6 +84,7 @@ public class VVEAnimationSoundPlayer : MonoBehaviour
         lastCollectTime = Time.unscaledTime;
 
         audioSource.pitch = currentCollectPitch;
+        audioSource.volume = VVEAudioSettings.SfxVolume;
         audioSource.PlayOneShot(clip);
     }
 
@@ -107,6 +108,7 @@ public class VVEAnimationSoundPlayer : MonoBehaviour
         }
 
         audioSource.pitch = Random.Range(pitchRange.x, pitchRange.y);
+        audioSource.volume = VVEAudioSettings.SfxVolume;
         audioSource.PlayOneShot(clip);
         return true;
     }
