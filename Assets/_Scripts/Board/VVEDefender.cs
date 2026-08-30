@@ -10,7 +10,7 @@ public class VVEDefender : MonoBehaviour
     VVEHealth health;
     VVEWorldHealthBar healthBar;
 
-    public Vector3Int Cell { get; private set; }
+    public Vector2Int Cell { get; private set; }
     public bool HasCell { get; private set; }
     public VVEHealth Health => health;
 
@@ -30,7 +30,7 @@ public class VVEDefender : MonoBehaviour
         }
     }
 
-    public void SetCell(Vector3Int cell)
+    public void SetCell(Vector2Int cell)
     {
         Cell = cell;
         HasCell = true;

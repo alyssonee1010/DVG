@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class VVEWaveDirector : MonoBehaviour
 {
@@ -29,7 +28,7 @@ public class VVEWaveDirector : MonoBehaviour
     }
 
     [Header("Board")]
-    [SerializeField] VVETilemapBoard tilemapBoard;
+    [SerializeField] VVEBoardGrid boardGrid;
     [SerializeField] WalkDirection walkDirection = WalkDirection.RightToLeft;
     [SerializeField] float edgePadding = 0f;
     [SerializeField] float laneYOffset = -0.7f;
@@ -66,9 +65,9 @@ public class VVEWaveDirector : MonoBehaviour
 
     void Awake()
     {
-        if (tilemapBoard == null)
+        if (boardGrid == null)
         {
-            tilemapBoard = FindAnyObjectByType<VVETilemapBoard>();
+            boardGrid = FindAnyObjectByType<VVEBoardGrid>();
         }
 
         RebuildLanes();
@@ -78,41 +77,16 @@ public class VVEWaveDirector : MonoBehaviour
     {
         lanes.Clear();
 
-        if (tilemapBoard == null || tilemapBoard.Grid == null || tilemapBoard.Tilemap == null)
+        if (boardGrid == null)
         {
             return;
         }
 
-        Tilemap tilemap = tilemapBoard.Tilemap;
-        BoundsInt bounds = tilemap.cellBounds;
-
-        for (int y = bounds.yMin; y < bounds.yMax; y++)
+        for (int row = 0; row < boardGrid.Rows; row++)
         {
-            bool foundTile = false;
-            int minX = int.MaxValue;
-            int maxX = int.MinValue;
-
-            for (int x = bounds.xMin; x < bounds.xMax; x++)
-            {
-                Vector3Int cell = new Vector3Int(x, y, 0);
-                if (!tilemap.HasTile(cell))
-                {
-                    continue;
-                }
-
-                foundTile = true;
-                minX = Mathf.Min(minX, x);
-                maxX = Mathf.Max(maxX, x);
-            }
-
-            if (!foundTile)
-            {
-                continue;
-            }
-
-            Vector3 first = tilemap.GetCellCenterWorld(new Vector3Int(minX, y, 0));
-            Vector3 last = tilemap.GetCellCenterWorld(new Vector3Int(maxX, y, 0));
-            AddLane(y, first, last, Mathf.Max(1, maxX - minX));
+            Vector3 first = boardGrid.GetCellCenterWorld(row, 0);
+            Vector3 last = boardGrid.GetCellCenterWorld(row, boardGrid.Columns - 1);
+            AddLane(row, first, last, Mathf.Max(1, boardGrid.Columns - 1));
         }
     }
 
