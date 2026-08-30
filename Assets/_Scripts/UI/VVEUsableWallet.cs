@@ -5,14 +5,17 @@ public class VVEUsableWallet : MonoBehaviour
 {
     [SerializeField] int startingDiamonds = 5;
     [SerializeField] int startingHealingPotions;
+    [SerializeField] int startingSpeedPotions;
 
     public static VVEUsableWallet Instance { get; private set; }
 
     public int Diamonds { get; private set; }
     public int HealingPotions { get; private set; }
+    public int SpeedPotions { get; private set; }
 
     public event Action<int> DiamondsChanged;
     public event Action<int> HealingPotionsChanged;
+    public event Action<int> SpeedPotionsChanged;
 
     void Awake()
     {
@@ -23,12 +26,14 @@ public class VVEUsableWallet : MonoBehaviour
 
         Diamonds = Mathf.Max(0, startingDiamonds);
         HealingPotions = Mathf.Max(0, startingHealingPotions);
+        SpeedPotions = Mathf.Max(0, startingSpeedPotions);
     }
 
     void OnEnable()
     {
         DiamondsChanged?.Invoke(Diamonds);
         HealingPotionsChanged?.Invoke(HealingPotions);
+        SpeedPotionsChanged?.Invoke(SpeedPotions);
     }
 
     void OnDestroy()
@@ -109,5 +114,46 @@ public class VVEUsableWallet : MonoBehaviour
 
         HealingPotions += amount;
         HealingPotionsChanged?.Invoke(HealingPotions);
+    }
+
+    public void SetHealingPotions(int amount)
+    {
+        HealingPotions = Mathf.Max(0, amount);
+        HealingPotionsChanged?.Invoke(HealingPotions);
+    }
+
+    public bool CanUseSpeedPotion(int cost = 1)
+    {
+        return SpeedPotions >= Mathf.Max(1, cost);
+    }
+
+    public bool TrySpendSpeedPotion(int cost = 1)
+    {
+        cost = Mathf.Max(1, cost);
+        if (!CanUseSpeedPotion(cost))
+        {
+            return false;
+        }
+
+        SpeedPotions -= cost;
+        SpeedPotionsChanged?.Invoke(SpeedPotions);
+        return true;
+    }
+
+    public void AddSpeedPotions(int amount)
+    {
+        if (amount <= 0)
+        {
+            return;
+        }
+
+        SpeedPotions += amount;
+        SpeedPotionsChanged?.Invoke(SpeedPotions);
+    }
+
+    public void SetSpeedPotions(int amount)
+    {
+        SpeedPotions = Mathf.Max(0, amount);
+        SpeedPotionsChanged?.Invoke(SpeedPotions);
     }
 }

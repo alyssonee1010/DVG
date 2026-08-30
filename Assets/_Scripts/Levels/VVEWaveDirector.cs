@@ -124,6 +124,8 @@ public class VVEWaveDirector : MonoBehaviour
         if (wallet != null)
         {
             wallet.SetDiamonds(level.StartingCurrency);
+            wallet.SetHealingPotions(0);
+            wallet.SetSpeedPotions(0);
         }
 
         LevelStartTime = Time.time;
