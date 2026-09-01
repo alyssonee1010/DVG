@@ -35,7 +35,9 @@ public class VVEMainMenuController : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] Button settingsBackButton;
-    [SerializeField] Slider volumeSlider;
+    [SerializeField] Slider masterVolumeSlider;
+    [SerializeField] Slider musicVolumeSlider;
+    [SerializeField] Slider sfxVolumeSlider;
 
     [Header("Gameplay Hand-off")]
     [SerializeField] string gameplaySceneName = "Level 1";
@@ -96,13 +98,22 @@ public class VVEMainMenuController : MonoBehaviour
             settingsBackButton.onClick.AddListener(ShowMainPanel);
         }
 
-        if (volumeSlider != null)
+        WireVolumeSlider(masterVolumeSlider, VVEAudioSettings.MasterVolume, VVEAudioSettings.SetMasterVolume);
+        WireVolumeSlider(musicVolumeSlider, VVEAudioSettings.MusicVolume, VVEAudioSettings.SetMusicVolume);
+        WireVolumeSlider(sfxVolumeSlider, VVEAudioSettings.SfxVolume, VVEAudioSettings.SetSfxVolume);
+    }
+
+    static void WireVolumeSlider(Slider slider, float initialValue, UnityEngine.Events.UnityAction<float> onChanged)
+    {
+        if (slider == null)
         {
-            volumeSlider.minValue = 0f;
-            volumeSlider.maxValue = 1f;
-            volumeSlider.SetValueWithoutNotify(VVEAudioSettings.MasterVolume);
-            volumeSlider.onValueChanged.AddListener(VVEAudioSettings.SetMasterVolume);
+            return;
         }
+
+        slider.minValue = 0f;
+        slider.maxValue = 1f;
+        slider.SetValueWithoutNotify(initialValue);
+        slider.onValueChanged.AddListener(onChanged);
     }
 
     // ---- Navigation -----------------------------------------------------
@@ -119,9 +130,19 @@ public class VVEMainMenuController : MonoBehaviour
 
     public void ShowSettings()
     {
-        if (volumeSlider != null)
+        if (masterVolumeSlider != null)
         {
-            volumeSlider.SetValueWithoutNotify(VVEAudioSettings.MasterVolume);
+            masterVolumeSlider.SetValueWithoutNotify(VVEAudioSettings.MasterVolume);
+        }
+
+        if (musicVolumeSlider != null)
+        {
+            musicVolumeSlider.SetValueWithoutNotify(VVEAudioSettings.MusicVolume);
+        }
+
+        if (sfxVolumeSlider != null)
+        {
+            sfxVolumeSlider.SetValueWithoutNotify(VVEAudioSettings.SfxVolume);
         }
 
         SetActivePanel(settingsPanel, instant: false);

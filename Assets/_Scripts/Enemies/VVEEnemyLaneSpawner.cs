@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class VVEEnemyLaneSpawner : MonoBehaviour
 {
@@ -27,8 +26,7 @@ public class VVEEnemyLaneSpawner : MonoBehaviour
     }
 
     [Header("Board")]
-    [SerializeField] VVEBoard board;
-    [SerializeField] VVETilemapBoard tilemapBoard;
+    [SerializeField] VVEBoardGrid boardGrid;
     [SerializeField] WalkDirection walkDirection = WalkDirection.RightToLeft;
     [SerializeField] float edgePadding = 0f;
     [SerializeField] float laneYOffset = 0f;
@@ -56,14 +54,9 @@ public class VVEEnemyLaneSpawner : MonoBehaviour
 
     void Awake()
     {
-        if (board == null)
+        if (boardGrid == null)
         {
-            board = FindAnyObjectByType<VVEBoard>();
-        }
-
-        if (tilemapBoard == null)
-        {
-            tilemapBoard = FindAnyObjectByType<VVETilemapBoard>();
+            boardGrid = FindAnyObjectByType<VVEBoardGrid>();
         }
 
         RebuildLanes();
@@ -103,18 +96,9 @@ public class VVEEnemyLaneSpawner : MonoBehaviour
     {
         lanes.Clear();
 
-        if (board != null)
+        if (boardGrid != null)
         {
-            BuildPrefabBoardLanes();
-            if (lanes.Count > 0)
-            {
-                return;
-            }
-        }
-
-        if (tilemapBoard != null)
-        {
-            BuildTilemapBoardLanes();
+            BuildBoardLanes();
         }
     }
 
@@ -145,53 +129,13 @@ public class VVEEnemyLaneSpawner : MonoBehaviour
         aliveEnemies.Add(instance);
     }
 
-    void BuildPrefabBoardLanes()
+    void BuildBoardLanes()
     {
-        for (int row = 0; row < board.Rows; row++)
+        for (int row = 0; row < boardGrid.Rows; row++)
         {
-            Vector3 first = board.GetWorldPosition(row, 0);
-            Vector3 last = board.GetWorldPosition(row, board.Columns - 1);
+            Vector3 first = boardGrid.GetCellCenterWorld(row, 0);
+            Vector3 last = boardGrid.GetCellCenterWorld(row, boardGrid.Columns - 1);
             AddLane(row, first, last);
-        }
-    }
-
-    void BuildTilemapBoardLanes()
-    {
-        Grid grid = tilemapBoard.Grid;
-        Tilemap tilemap = tilemapBoard.Tilemap;
-        if (grid == null || tilemap == null)
-        {
-            return;
-        }
-
-        BoundsInt bounds = tilemap.cellBounds;
-        for (int y = bounds.yMin; y < bounds.yMax; y++)
-        {
-            bool foundTile = false;
-            int minX = int.MaxValue;
-            int maxX = int.MinValue;
-
-            for (int x = bounds.xMin; x < bounds.xMax; x++)
-            {
-                Vector3Int cell = new Vector3Int(x, y, 0);
-                if (!tilemap.HasTile(cell))
-                {
-                    continue;
-                }
-
-                foundTile = true;
-                minX = Mathf.Min(minX, x);
-                maxX = Mathf.Max(maxX, x);
-            }
-
-            if (!foundTile)
-            {
-                continue;
-            }
-
-            Vector3 first = tilemap.GetCellCenterWorld(new Vector3Int(minX, y, 0));
-            Vector3 last = tilemap.GetCellCenterWorld(new Vector3Int(maxX, y, 0));
-            AddLane(y, first, last);
         }
     }
 
@@ -216,14 +160,9 @@ public class VVEEnemyLaneSpawner : MonoBehaviour
 
     int GetColumnSpan()
     {
-        if (tilemapBoard != null && tilemapBoard.Tilemap != null)
+        if (boardGrid != null)
         {
-            return Mathf.Max(1, tilemapBoard.Tilemap.cellBounds.size.x - 1);
-        }
-
-        if (board != null)
-        {
-            return Mathf.Max(1, board.Columns - 1);
+            return Mathf.Max(1, boardGrid.Columns - 1);
         }
 
         return 1;

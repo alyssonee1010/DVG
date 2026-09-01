@@ -14,8 +14,10 @@ public class VVELevelMusicController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         audioSource.playOnAwake = false;
         audioSource.loop = true;
+        audioSource.volume = VVEAudioSettings.MusicVolume;
 
         VVEAudioSettings.ApplySavedVolume();
+        VVEAudioSettings.MusicVolumeChanged += ApplyMusicVolume;
         TrySubscribe();
     }
 
@@ -31,10 +33,16 @@ public class VVELevelMusicController : MonoBehaviour
 
     void OnDisable()
     {
+        VVEAudioSettings.MusicVolumeChanged -= ApplyMusicVolume;
         if (waveDirector != null)
         {
             waveDirector.LevelStarted -= PlayMusicFor;
         }
+    }
+
+    void ApplyMusicVolume()
+    {
+        audioSource.volume = VVEAudioSettings.MusicVolume;
     }
 
     void TrySubscribe()

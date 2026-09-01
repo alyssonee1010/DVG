@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class PlantPlacementManager : MonoBehaviour
 {
-    [SerializeField] private Tilemap placementTilemap;
+    [SerializeField] private VVEBoardGrid boardGrid;
     [SerializeField] private VVEUsableWallet usableWallet;
     [SerializeField] private VVEHealingPotionUseController healingPotionUseController;
     [SerializeField] private Vector2 placementOffset = new Vector2(-0.2f, 0.2f);
@@ -20,7 +19,7 @@ public class PlantPlacementManager : MonoBehaviour
     [SerializeField] private VVECharacterTargetHighlight removeTargetHighlight;
     [SerializeField, Range(0f, 1f)] private float removeTargetAlpha = 0.45f;
 
-    private Dictionary<Vector3Int, VVEDefender> occupiedCells = new Dictionary<Vector3Int, VVEDefender>();
+    private Dictionary<Vector2Int, VVEDefender> occupiedCells = new Dictionary<Vector2Int, VVEDefender>();
     private GameObject selectedPlantPrefab;
     private VVEDefenderCard selectedCard;
     private GameObject placementPreview;
@@ -35,7 +34,7 @@ public class PlantPlacementManager : MonoBehaviour
     {
         VVECharacterPotionTargeting.Cancel();
 
-        foreach (KeyValuePair<Vector3Int, VVEDefender> occupiedCell in occupiedCells)
+        foreach (KeyValuePair<Vector2Int, VVEDefender> occupiedCell in occupiedCells)
         {
             if (occupiedCell.Value != null)
             {
@@ -67,6 +66,11 @@ public class PlantPlacementManager : MonoBehaviour
         if (usableWallet == null)
         {
             usableWallet = VVEUsableWallet.Instance != null ? VVEUsableWallet.Instance : FindAnyObjectByType<VVEUsableWallet>();
+        }
+
+        if (boardGrid == null)
+        {
+            boardGrid = FindAnyObjectByType<VVEBoardGrid>();
         }
 
         if (healingPotionUseController == null)
@@ -208,7 +212,7 @@ public class PlantPlacementManager : MonoBehaviour
     private bool TryRemovePlacedCharacter()
     {
         CleanupOccupiedCells();
-        if (!TryGetPlacedCharacterAt(GetMouseWorldPosition(), out Vector3Int cellPosition, out VVEDefender character))
+        if (!TryGetPlacedCharacterAt(GetMouseWorldPosition(), out Vector2Int cellPosition, out VVEDefender character))
         {
             Debug.Log("No placed character to remove here.");
             return false;
@@ -228,9 +232,17 @@ public class PlantPlacementManager : MonoBehaviour
         return true;
     }
 
-    private bool TryGetPlacedCharacterAt(Vector3 worldPosition, out Vector3Int cellPosition, out VVEDefender character)
+    private bool TryGetPlacedCharacterAt(Vector3 worldPosition, out Vector2Int cellPosition, out VVEDefender character)
     {
-        cellPosition = placementTilemap.WorldToCell(worldPosition);
+        cellPosition = default;
+        character = null;
+        if (boardGrid == null)
+        {
+            return false;
+        }
+
+        boardGrid.TryGetCellFromWorldPosition(worldPosition, out int row, out int column);
+        cellPosition = new Vector2Int(column, row);
         if (occupiedCells.TryGetValue(cellPosition, out character) && character != null)
         {
             return true;
@@ -253,7 +265,7 @@ public class PlantPlacementManager : MonoBehaviour
             return true;
         }
 
-        foreach (KeyValuePair<Vector3Int, VVEDefender> occupiedCell in occupiedCells)
+        foreach (KeyValuePair<Vector2Int, VVEDefender> occupiedCell in occupiedCells)
         {
             if (occupiedCell.Value == character)
             {
@@ -331,16 +343,16 @@ public class PlantPlacementManager : MonoBehaviour
 
         Vector3 mouseWorldPosition = GetMouseWorldPosition();
 
-        Vector3Int cellPosition = placementTilemap.WorldToCell(mouseWorldPosition);
-
-        Debug.Log("Clicked cell: " + cellPosition);
-        Debug.Log("Has placement tile: " + placementTilemap.HasTile(cellPosition));
-
-        if (!placementTilemap.HasTile(cellPosition))
+        int row = 0;
+        int column = 0;
+        if (boardGrid == null || !boardGrid.TryGetCellFromWorldPosition(mouseWorldPosition, out row, out column))
         {
             Debug.Log("Cannot place here. This is not a valid placement tile.");
             return;
         }
+
+        Vector2Int cellPosition = new Vector2Int(column, row);
+        Debug.Log("Clicked cell: " + cellPosition);
 
         if (occupiedCells.ContainsKey(cellPosition))
         {
@@ -355,9 +367,9 @@ public class PlantPlacementManager : MonoBehaviour
             return;
         }
 
-        Vector3 spawnPosition = placementTilemap.GetCellCenterWorld(cellPosition);
+        Vector3 spawnPosition = boardGrid.GetCellCenterWorld(row, column);
         spawnPosition += (Vector3)placementOffset;
-        spawnPosition = VVELaneDepth.WithLaneZ(spawnPosition, cellPosition.y);
+        spawnPosition = VVELaneDepth.WithLaneZ(spawnPosition, row);
         if (usableWallet != null && !usableWallet.TrySpendDiamonds(selectedCost))
         {
             Debug.Log("Not enough diamonds to place " + selectedPlantPrefab.name + ". Cost: " + selectedCost);
@@ -585,11 +597,14 @@ public class PlantPlacementManager : MonoBehaviour
         }
 
         Vector3 mouseWorldPosition = GetMouseWorldPosition();
-        Vector3Int cellPosition = placementTilemap.WorldToCell(mouseWorldPosition);
-        bool validCell = placementTilemap.HasTile(cellPosition) && !occupiedCells.ContainsKey(cellPosition);
+        int row = 0;
+        int column = 0;
+        bool validCell = boardGrid != null
+            && boardGrid.TryGetCellFromWorldPosition(mouseWorldPosition, out row, out column)
+            && !occupiedCells.ContainsKey(new Vector2Int(column, row));
 
         Vector3 previewPosition = validCell
-            ? VVELaneDepth.WithLaneZ(placementTilemap.GetCellCenterWorld(cellPosition) + (Vector3)placementOffset, cellPosition.y)
+            ? VVELaneDepth.WithLaneZ(boardGrid.GetCellCenterWorld(row, column) + (Vector3)placementOffset, row)
             : mouseWorldPosition;
 
         placementPreview.transform.position = previewPosition;
@@ -642,8 +657,8 @@ public class PlantPlacementManager : MonoBehaviour
 
     private void CleanupOccupiedCells()
     {
-        List<Vector3Int> clearedCells = new List<Vector3Int>();
-        foreach (KeyValuePair<Vector3Int, VVEDefender> occupiedCell in occupiedCells)
+        List<Vector2Int> clearedCells = new List<Vector2Int>();
+        foreach (KeyValuePair<Vector2Int, VVEDefender> occupiedCell in occupiedCells)
         {
             VVEDefender character = occupiedCell.Value;
             if (character == null || character.Health == null || !character.Health.IsAlive)
@@ -652,7 +667,7 @@ public class PlantPlacementManager : MonoBehaviour
             }
         }
 
-        foreach (Vector3Int cell in clearedCells)
+        foreach (Vector2Int cell in clearedCells)
         {
             occupiedCells.Remove(cell);
         }
