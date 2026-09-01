@@ -21,7 +21,7 @@ Defenders are VVEDefender components backed by VVEHealth. Their behavior comes f
 
 VVEWorldHealthBar is created for defenders at runtime. It appears after damage and hides again when health returns to full. Vikings do not receive this defender health bar.
 
-The defender catalog maps stable ids to prefabs, display names, costs, and default unlock state. The loadout system persists unlocked ids and the player's selected defenders, with up to six selected for play.
+The defender catalog maps stable ids to prefabs, display names, costs, and default unlock state. Unlocked ids persist across sessions; the player's selected loadout contains up to six defenders and resets when the game restarts.
 
 ## Board Interaction
 

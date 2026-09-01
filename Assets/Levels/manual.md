@@ -16,13 +16,16 @@ Levels are displayed in stage/level order using their stage and level fields.
 | name | Player-facing level name |
 | stage | Numeric stage grouping |
 | level | Numeric order inside the stage |
-| settings.lanes | Parsed lane count |
+| settings.rows | Playable board rows/lane count |
+| settings.columns | Playable board columns |
 | settings.starting_currency | Diamond wallet value applied when the level starts |
 | available_units | Parsed unit-id list; currently not enforced |
 | waves | Ordered wave definitions |
 | unlocks | Defender ids unlocked after completion |
 
 Unlock ids must exist in VVEDefenderCatalog.
+
+The board is resized to `settings.rows` x `settings.columns` before the level's enemy lanes are built. The legacy `settings.lanes` field remains supported as an alias for `settings.rows`.
 
 ## Wave Fields
 

@@ -6,7 +6,8 @@ level: 1
 
 # General level settings
 settings:
-  lanes: 6
+  rows: 1
+  columns: 10
   starting_currency: 20
 
 # Units that can appear in this level

@@ -26,7 +26,7 @@ Owns the pre-level and between-level flow inside the gameplay scene. It coordina
 
 ### VVEDefenderCatalog, VVEDefenderUnlocks, And VVELevelCompletion
 
-VVEDefenderCatalog is the scene source of truth for defender ids, prefabs, display names, costs, and default unlocks. VVEDefenderUnlocks persists unlocked ids and the current loadout selection. VVELevelCompletion persists completed level ids for progression and menu presentation.
+VVEDefenderCatalog is the scene source of truth for defender ids, prefabs, display names, costs, and default unlocks. VVEDefenderUnlocks persists unlocked ids while keeping the current loadout in memory for the game session. VVELevelCompletion persists completed level ids for progression and menu presentation.
 
 ### VVEWaveDirector
 

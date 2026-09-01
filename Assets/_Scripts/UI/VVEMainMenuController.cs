@@ -280,7 +280,8 @@ public class VVEMainMenuController : MonoBehaviour
 
             foreach (VVELevelDefinition level in stageGroup.OrderBy(l => l.Level))
             {
-                string label = level.Stage + "-" + level.Level.ToString("00") + (string.IsNullOrEmpty(level.Name) ? "" : "  " + level.Name);
+                string label = level.Stage + "-" + level.Level.ToString("00")
+                    + (string.IsNullOrEmpty(level.Name) ? "" : "  " + level.Name);
                 VVELevelDefinition capturedLevel = level;
                 VVEStageSelectListItem item = Instantiate(stageListItemPrefab, stageListContent);
                 item.Bind(label, () => OnLevelSelected(capturedLevel));

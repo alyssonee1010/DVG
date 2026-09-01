@@ -68,7 +68,8 @@ public class VVELevelDefinition
     public string Name = "";
     public int Stage = 1;
     public int Level = 1;
-    public int Lanes = 6;
+    public int BoardRows = 6;
+    public int BoardColumns = 10;
     public int StartingCurrency = 100;
     public List<string> AvailableUnits = new List<string>();
     public List<string> Unlocks = new List<string>();

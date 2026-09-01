@@ -24,12 +24,29 @@ public class VVEBoardGrid : MonoBehaviour
     int builtColumns = -1;
     Vector2 builtCellSize = Vector2.zero;
     int builtContentSignature;
+    float verticalCenterAnchorY;
+    bool verticalCenterAnchorInitialized;
 
     public int Rows => rows;
     public int Columns => columns;
     public Vector2 CellSize => cellSize;
     public float BoardWidth => columns * cellSize.x;
     public float BoardHeight => rows * cellSize.y;
+
+    public void SetDimensions(int newRows, int newColumns)
+    {
+        newRows = Mathf.Max(1, newRows);
+        newColumns = Mathf.Max(1, newColumns);
+
+        if (rows == newRows && columns == newColumns)
+        {
+            return;
+        }
+
+        rows = newRows;
+        columns = newColumns;
+        Rebuild();
+    }
 
     void OnValidate()
     {
@@ -54,6 +71,8 @@ public class VVEBoardGrid : MonoBehaviour
 
     void Rebuild()
     {
+        ApplyVerticalCentering();
+
         for (int i = transform.childCount - 1; i >= 0; i--)
         {
             GameObject child = transform.GetChild(i).gameObject;
@@ -97,6 +116,23 @@ public class VVEBoardGrid : MonoBehaviour
         builtColumns = columns;
         builtCellSize = cellSize;
         builtContentSignature = ComputeContentSignature();
+    }
+
+    // Keeps the board's vertical middle pinned to wherever it was authored (with the original row
+    // count), instead of growing upward from a fixed bottom edge. The anchor is captured once, from
+    // the first Rebuild, so later row-count changes (e.g. per level) recenter around that same point
+    // rather than leaving fewer lanes stuck to the bottom of the screen.
+    void ApplyVerticalCentering()
+    {
+        if (!verticalCenterAnchorInitialized)
+        {
+            verticalCenterAnchorY = transform.localPosition.y + BoardHeight / 2f;
+            verticalCenterAnchorInitialized = true;
+        }
+
+        Vector3 position = transform.localPosition;
+        position.y = verticalCenterAnchorY - BoardHeight / 2f;
+        transform.localPosition = position;
     }
 
     // Picks a sprite from the set deterministically from (randomSeed, row, column), so a given

@@ -99,7 +99,10 @@ public static class VVELevelLoader
             Dictionary<string, object> settings = settingsObject as Dictionary<string, object>;
             if (settings != null)
             {
-                level.Lanes = GetInt(settings, "lanes", level.Lanes);
+                // "lanes" is retained as a legacy alias for "rows" so existing levels keep
+                // working while new levels can describe the board in grid terms.
+                level.BoardRows = GetInt(settings, "rows", GetInt(settings, "lanes", level.BoardRows));
+                level.BoardColumns = GetInt(settings, "columns", level.BoardColumns);
                 level.StartingCurrency = GetInt(settings, "starting_currency", level.StartingCurrency);
             }
         }

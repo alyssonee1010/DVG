@@ -15,6 +15,7 @@ public class VVELevelSelectUI : MonoBehaviour
     [SerializeField] Color cardColor = new Color(0.12f, 0.16f, 0.24f, 0.95f);
     [SerializeField] Color cardTextColor = Color.white;
     [SerializeField] float cameraPlaneDistance = 5f;
+    [SerializeField] VVEBoardGrid boardGrid;
 
     GameObject root;
 
@@ -38,6 +39,12 @@ public class VVELevelSelectUI : MonoBehaviour
         if (slotBinder == null)
         {
             slotBinder = FindAnyObjectByType<VVEPlacementSlotBinder>();
+        }
+
+        
+        if (boardGrid == null) 
+        {
+            boardGrid = FindAnyObjectByType<VVEBoardGrid>();
         }
 
         if (waveDirector != null)
@@ -87,9 +94,14 @@ public class VVELevelSelectUI : MonoBehaviour
             VVEBoardLife.Instance.ResetLife();
         }
 
-        if (level != null && level.Unlocks.Count > 0)
+        if (level != null)
         {
-            VVEDefenderUnlocks.UnlockAll(level.Unlocks);
+            VVELevelCompletion.MarkCompleted(level.Id);
+
+            if (level.Unlocks.Count > 0)
+            {
+                VVEDefenderUnlocks.UnlockAll(level.Unlocks);
+            }
         }
 
         // Continuous flow: go back to defender selection with a "Continue" prompt for the next
@@ -138,6 +150,11 @@ public class VVELevelSelectUI : MonoBehaviour
         if (placementManager != null)
         {
             placementManager.enabled = false;
+        }
+
+        if (onlyLevel != null && boardGrid != null)
+        {
+            boardGrid.SetDimensions(onlyLevel.BoardRows, onlyLevel.BoardColumns);
         }
 
         if (loadoutUI != null)

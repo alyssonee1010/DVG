@@ -117,6 +117,7 @@ public class VVEWaveDirector : MonoBehaviour
 
         StopLevel();
         CurrentLevel = level;
+
         RebuildLanes();
         aliveEnemies.Clear();
 
