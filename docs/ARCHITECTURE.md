@@ -8,7 +8,7 @@
 4. VVEWaveDirector schedules YAML-authored waves and resolves unit ids to configured enemy prefabs.
 5. PlantPlacementManager handles placement and routes world interactions.
 6. Defenders, enemies, projectiles, pickups, health, and wallet systems communicate through focused components and events.
-7. Level completion resets board state, applies unlocks, and advances to the next discovered level.
+7. Level completion persists progress, resets board state, applies unlocks, and advances to the next discovered level.
 
 ## Level And Menu Layer
 
@@ -24,9 +24,9 @@ Controls the scene-authored MainMenu Canvas, including panel transitions, stage-
 
 Owns the pre-level and between-level flow inside the gameplay scene. It coordinates the loadout, starts VVEWaveDirector, resets completed levels, applies unlocks, and selects the next level.
 
-### VVEDefenderCatalog And VVEDefenderUnlocks
+### VVEDefenderCatalog, VVEDefenderUnlocks, And VVELevelCompletion
 
-VVEDefenderCatalog is the scene source of truth for defender ids, prefabs, display names, costs, and default unlocks. VVEDefenderUnlocks persists unlocked ids and owns the current loadout selection.
+VVEDefenderCatalog is the scene source of truth for defender ids, prefabs, display names, costs, and default unlocks. VVEDefenderUnlocks persists unlocked ids and the current loadout selection. VVELevelCompletion persists completed level ids for progression and menu presentation.
 
 ### VVEWaveDirector
 

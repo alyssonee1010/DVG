@@ -8,7 +8,7 @@
 4. Starting the level gives VVEWaveDirector the selected level definition.
 5. The player places defenders, collects pickups, and uses consumables while scheduled waves spawn.
 6. A level completes after every scheduled wave has spawned and all tracked enemies have left the board or been defeated.
-7. Completion resets the board, applies defender unlocks, and opens the loadout for the next discovered level.
+7. Completion records the level, resets the board, applies defender unlocks, and opens the loadout for the next discovered level.
 
 ## Defenders
 
@@ -21,7 +21,7 @@ Defenders are VVEDefender components backed by VVEHealth. Their behavior comes f
 
 VVEWorldHealthBar is created for defenders at runtime. It appears after damage and hides again when health returns to full. Vikings do not receive this defender health bar.
 
-The defender catalog maps stable ids to prefabs, display names, costs, and default unlock state. The loadout system stores unlocked ids and allows a limited set of defenders to be selected for play.
+The defender catalog maps stable ids to prefabs, display names, costs, and default unlock state. The loadout system persists unlocked ids and the player's selected defenders, with up to six selected for play.
 
 ## Board Interaction
 
