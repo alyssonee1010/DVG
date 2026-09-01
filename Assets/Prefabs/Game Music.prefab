@@ -43,8 +43,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: c66d840153af759459336fe9e7da0b70, type: 3}
-  m_Resource: {fileID: 8300000, guid: c66d840153af759459336fe9e7da0b70, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 819fa9c08099498bb681d1a016380fb6, type: 3}
+  m_Resource: {fileID: 8300000, guid: 819fa9c08099498bb681d1a016380fb6, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.65
   m_Pitch: 1
@@ -142,5 +142,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b5e5e056d784871a11d57ab54c95ff4, type: 3}
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::VVELevelMusicController
-  earlyLevelsMusic: {fileID: 8300000, guid: c66d840153af759459336fe9e7da0b70, type: 3}
+  earlyLevelsMusic: {fileID: 8300000, guid: 819fa9c08099498bb681d1a016380fb6, type: 3}
   laterLevelsMusic: {fileID: 8300000, guid: f98db6e2c4384fd184d948a5fca20a31, type: 3}
