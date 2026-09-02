@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
+using Unity.InferenceEngine;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class VVEHealth : MonoBehaviour
 {
@@ -14,10 +17,13 @@ public class VVEHealth : MonoBehaviour
     public event Action<VVEHealth> Died;
     public event Action<VVEHealth, int> HealthChanged;
 
+    [SerializeField] UnityEvent onTakeDamage;
+
     void Awake()
     {
         CurrentHealth = Mathf.Max(1, maxHealth);
     }
+
 
     public void SetMaxHealth(int value, bool refill = true)
     {
@@ -35,6 +41,7 @@ public class VVEHealth : MonoBehaviour
 
     public void TakeDamage(int amount, float recoilMultiplier = 1f)
     {
+        onTakeDamage.Invoke();
         if (amount <= 0 || !IsAlive)
         {
             return;
