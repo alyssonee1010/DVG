@@ -213,7 +213,6 @@ public class VVEHitRecoil : MonoBehaviour
         if (health != null && !health.IsAlive)
         {
             return false;
-            new Animator().Play();
         }
 
         float resistanceMultiplier = Mathf.Clamp01(1f - StunResistancePercent / 200f);

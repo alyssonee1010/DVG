@@ -37,7 +37,7 @@ public class VVEBumpChildren : MonoBehaviour, IPointerClickHandler
             targetPos.y *= 1 + h;
             tweensInProgress += 1;
             VVETween.TweenTo(child, transform.position + targetPos, duration * h * Mathf.Sqrt(2), PrimeTween.Ease.OutQuad, 2, CycleMode.Rewind)
-                .OnComplete(() => tweensInProgress -= 1);
+                .OnComplete(() => tweensInProgress -= 1, warnIfTargetDestroyed: false);
         }
     }
 
