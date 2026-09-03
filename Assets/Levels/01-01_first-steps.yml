@@ -1,0 +1,38 @@
+id: 01-01
+name: "First Steps"
+
+stage: 1
+level: 1
+
+# A short, single-lane introduction with Cave Man as the only starting defender.
+settings:
+  rows: 1
+  columns: 10
+  starting_currency: 20
+
+available_units:
+  - viking
+
+waves:
+  - time_offset: 4
+    spawns:
+      - unit: viking
+        count: 1
+        duration: 0
+
+  - time_offset: 8
+    spawns:
+      - unit: viking
+        count: 2
+        duration: 4
+
+  - time_offset: 8
+    tier: final
+    spawns:
+      - unit: viking
+        count: 3
+        duration: 5
+
+# Miner joins the player's roster after this tutorial.
+unlocks:
+  - miner

@@ -19,6 +19,16 @@ public static class VVEDefenderUnlocks
 
     static void EnsureLoaded()
     {
+        // Unity's built-in Clear All PlayerPrefs command does not restart the scripting domain.
+        // Drop stale runtime state when that command removes our persisted key.
+        if (unlockedIds != null && !PlayerPrefs.HasKey(UnlockedIdsPrefsKey))
+        {
+            unlockedIds = null;
+            loadoutIds.Clear();
+            seededFromCatalog = false;
+            loadoutCustomizedByPlayer = false;
+        }
+
         if (unlockedIds == null)
         {
             unlockedIds = new HashSet<string>();
@@ -129,6 +139,18 @@ public static class VVEDefenderUnlocks
     {
         PlayerPrefs.SetString(UnlockedIdsPrefsKey, string.Join(",", unlockedIds));
         PlayerPrefs.Save();
+    }
+
+    // PlayerPrefs can be cleared while the game is running from the editor. Reset the cached
+    // progression too, otherwise callers keep seeing the values loaded before the clear.
+    public static void ReloadAfterPlayerPrefsClear()
+    {
+        unlockedIds = null;
+        loadoutIds.Clear();
+        seededFromCatalog = false;
+        loadoutCustomizedByPlayer = false;
+        UnlocksChanged?.Invoke();
+        LoadoutChanged?.Invoke();
     }
 
     public static IReadOnlyList<string> GetLoadout()

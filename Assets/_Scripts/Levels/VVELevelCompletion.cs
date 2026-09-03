@@ -10,6 +10,12 @@ public static class VVELevelCompletion
 
     static void EnsureLoaded()
     {
+        // Unity can clear PlayerPrefs without reloading scripts, so do not retain stale history.
+        if (completedLevelIds != null && !PlayerPrefs.HasKey(CompletedLevelIdsPrefsKey))
+        {
+            completedLevelIds = null;
+        }
+
         if (completedLevelIds != null)
         {
             return;
@@ -54,5 +60,11 @@ public static class VVELevelCompletion
         PlayerPrefs.SetString(CompletedLevelIdsPrefsKey, string.Join(",", completedLevelIds));
         PlayerPrefs.Save();
         return true;
+    }
+
+    // Keep runtime state in sync when PlayerPrefs are cleared without restarting Unity.
+    public static void ReloadAfterPlayerPrefsClear()
+    {
+        completedLevelIds = null;
     }
 }

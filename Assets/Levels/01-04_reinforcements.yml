@@ -1,12 +1,12 @@
-id: 01-01
-name: "First Defense"
+id: 01-04
+name: "Reinforcements"
 
 stage: 1
-level: 1
+level: 4
 
 # General level settings
 settings:
-  rows: 1
+  rows: 6
   columns: 10
   starting_currency: 20
 
@@ -41,29 +41,46 @@ waves:
         count: 4
         duration: 5
 
+  - time_offset: 12
+    spawns:
+      - unit: viking
+        count: 5
+        duration: 5
+
   - time_offset: 16
     tier: flag
     spawns:
       - unit: viking
-        count: 4
+        count: 6
         duration: 4
       - unit: naked_viking
-        count: 1
-        time_offset: 5 
+        count: 2
+        time_offset: 5
         duration: 0
-  
+
   - time_offset: 10
     spawns:
       - unit: viking
         count: 4
         duration: 5
 
+  - time_offset: 16
+    tier: flag
+    spawns:
+      - unit: viking
+        count: 6
+        duration: 4
+      - unit: naked_viking
+        count: 2
+        time_offset: 5
+        duration: 0
+
   - time_offset: 12
     spawns:
       - unit: viking
         count: 4
         duration: 5
-        
+
   - time_offset: 10
     tier: final
     spawns:
@@ -71,10 +88,10 @@ waves:
         count: 8
         duration: 8
       - unit: naked_viking
-        count: 2
+        count: 3
         time_offset: 5
         duration: 5
 
 # Defenders unlocked after clearing this level
 unlocks:
-  - cave_man
+  - potion_maker

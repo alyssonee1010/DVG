@@ -6420,7 +6420,7 @@ MonoBehaviour:
     displayName: Miner
     prefab: {fileID: 3406160727016397128, guid: 85eeeea72e837e04ea2dc19465949b3b, type: 3}
     cost: 8
-    unlockedByDefault: 1
+    unlockedByDefault: 0
   - id: archer
     displayName: Archer
     prefab: {fileID: 4595654302153356969, guid: 1b49ac1e5afbcc24ea1e19b84b6e8f91, type: 3}
@@ -6430,7 +6430,7 @@ MonoBehaviour:
     displayName: Cave Man
     prefab: {fileID: 3014573128971601006, guid: 50eadb4a5a894e64eabc7ab18c47e03e, type: 3}
     cost: 12
-    unlockedByDefault: 0
+    unlockedByDefault: 1
   - id: wizard
     displayName: Wizard
     prefab: {fileID: 2584130504248286778, guid: b2a5f8995a977be44b74ccb6a24e0368, type: 3}
@@ -6450,12 +6450,12 @@ MonoBehaviour:
     displayName: Speed Potion Maker
     prefab: {fileID: 1607800709610998807, guid: af2c8ca46425533458985bc1be065eab, type: 3}
     cost: 30
-    unlockedByDefault: 1
+    unlockedByDefault: 0
   - id: pile_of_rocks
     displayName: Pile of Rocks
     prefab: {fileID: 2621850774706791911, guid: 20124f55040841e498f35154bd73223d, type: 3}
     cost: 10
-    unlockedByDefault: 1
+    unlockedByDefault: 0
 --- !u!114 &1041379302
 MonoBehaviour:
   m_ObjectHideFlags: 0

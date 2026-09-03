@@ -1,0 +1,54 @@
+id: 01-02
+name: "Three Lanes"
+
+stage: 1
+level: 2
+
+# Introduces a wider board while keeping the enemy count gentle.
+settings:
+  rows: 3
+  columns: 10
+  starting_currency: 20
+
+available_units:
+  - viking
+  - naked_viking
+
+waves:
+  - time_offset: 4
+    spawns:
+      - unit: viking
+        count: 2
+        duration: 3
+
+  - time_offset: 8
+    spawns:
+      - unit: viking
+        count: 3
+        duration: 5
+
+  - time_offset: 8
+    tier: flag
+    spawns:
+      - unit: viking
+        count: 3
+        duration: 5
+      - unit: naked_viking
+        count: 1
+        time_offset: 4
+        duration: 0
+
+  - time_offset: 8
+    tier: final
+    spawns:
+      - unit: viking
+        count: 4
+        duration: 6
+      - unit: naked_viking
+        count: 1
+        time_offset: 4
+        duration: 0
+
+# Archer joins after the player completes the three-lane tutorial.
+unlocks:
+  - archer

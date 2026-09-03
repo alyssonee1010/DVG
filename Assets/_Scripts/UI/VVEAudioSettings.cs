@@ -57,4 +57,11 @@ public static class VVEAudioSettings
     {
         AudioListener.volume = MasterVolume;
     }
+
+    public static void ReloadAfterPlayerPrefsClear()
+    {
+        ApplySavedVolume();
+        MusicVolumeChanged?.Invoke();
+        SfxVolumeChanged?.Invoke();
+    }
 }

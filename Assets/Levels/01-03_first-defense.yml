@@ -1,8 +1,8 @@
-id: 01-02
-name: "Reinforcements"
+id: 01-03
+name: "First Defense"
 
 stage: 1
-level: 2
+level: 3
 
 # General level settings
 settings:
@@ -41,46 +41,29 @@ waves:
         count: 4
         duration: 5
 
-  - time_offset: 12
-    spawns:
-      - unit: viking
-        count: 5
-        duration: 5
-
   - time_offset: 16
     tier: flag
     spawns:
       - unit: viking
-        count: 6
+        count: 4
         duration: 4
       - unit: naked_viking
-        count: 2
-        time_offset: 5
+        count: 1
+        time_offset: 5 
         duration: 0
-
+  
   - time_offset: 10
     spawns:
       - unit: viking
         count: 4
         duration: 5
 
-  - time_offset: 16
-    tier: flag
-    spawns:
-      - unit: viking
-        count: 6
-        duration: 4
-      - unit: naked_viking
-        count: 2
-        time_offset: 5
-        duration: 0
-
   - time_offset: 12
     spawns:
       - unit: viking
         count: 4
         duration: 5
-
+        
   - time_offset: 10
     tier: final
     spawns:
@@ -88,10 +71,10 @@ waves:
         count: 8
         duration: 8
       - unit: naked_viking
-        count: 3
+        count: 2
         time_offset: 5
         duration: 5
 
 # Defenders unlocked after clearing this level
 unlocks:
-  - wizard
+  - pile_of_rocks

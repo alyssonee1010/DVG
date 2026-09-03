@@ -94,4 +94,4 @@ waves:
 
 # Defender unlocked after clearing this level
 unlocks:
-  - archer
+  - speed_potion_maker
