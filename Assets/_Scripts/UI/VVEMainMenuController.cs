@@ -59,6 +59,16 @@ public class VVEMainMenuController : MonoBehaviour
         SetActivePanel(mainPanel, instant: true);
     }
 
+    void OnEnable()
+    {
+        VVELevelCompletion.ProgressChanged += PopulateStageSelect;
+    }
+
+    void OnDisable()
+    {
+        VVELevelCompletion.ProgressChanged -= PopulateStageSelect;
+    }
+
     void Start()
     {
         SpawnDefenderShowcase();

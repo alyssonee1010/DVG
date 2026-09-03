@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ public static class VVELevelCompletion
     const string CompletedLevelIdsPrefsKey = "VVE_CompletedLevelIds";
 
     static HashSet<string> completedLevelIds;
+
+    public static event Action ProgressChanged;
 
     static void EnsureLoaded()
     {
@@ -83,6 +86,7 @@ public static class VVELevelCompletion
 
         PlayerPrefs.SetString(CompletedLevelIdsPrefsKey, string.Join(",", completedLevelIds));
         PlayerPrefs.Save();
+        ProgressChanged?.Invoke();
         return true;
     }
 
@@ -90,5 +94,6 @@ public static class VVELevelCompletion
     public static void ReloadAfterPlayerPrefsClear()
     {
         completedLevelIds = null;
+        ProgressChanged?.Invoke();
     }
 }
