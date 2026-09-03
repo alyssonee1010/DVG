@@ -74,6 +74,17 @@ Shader "Sprites/Default with Fog"
 				UNITY_VERTEX_OUTPUT_STEREO
 			};
 
+			// URP's ShaderLibrary doesn't carry the Built-in Render Pipeline's UnitySprites.cginc,
+			// so the PIXELSNAP_ON path (used by Unity's standard sprite shaders) has no
+			// UnityPixelSnap to call here. This is the same snapping formula, ported inline.
+			float4 UnityPixelSnap(float4 pos)
+			{
+				float2 hpc = _ScreenParams.xy * 0.5;
+				float2 adj = (pos.w < 0) ? -1.0 : 1.0;
+				pos.xy = (floor((pos.xy / pos.w) * hpc + 0.5 * adj) / hpc) * pos.w;
+				return pos;
+			}
+
 			v2f_fog SpriteVertFog(appdata IN)
 			{
 				v2f_fog OUT;
@@ -159,6 +170,17 @@ Shader "Sprites/Default with Fog"
 				float2 texcoord : TEXCOORD0;
 				UNITY_VERTEX_OUTPUT_STEREO
 			};
+
+			// URP's ShaderLibrary doesn't carry the Built-in Render Pipeline's UnitySprites.cginc,
+			// so the PIXELSNAP_ON path (used by Unity's standard sprite shaders) has no
+			// UnityPixelSnap to call here. This is the same snapping formula, ported inline.
+			float4 UnityPixelSnap(float4 pos)
+			{
+				float2 hpc = _ScreenParams.xy * 0.5;
+				float2 adj = (pos.w < 0) ? -1.0 : 1.0;
+				pos.xy = (floor((pos.xy / pos.w) * hpc + 0.5 * adj) / hpc) * pos.w;
+				return pos;
+			}
 
 			v2f_depth DepthVert(appdata IN)
 			{
