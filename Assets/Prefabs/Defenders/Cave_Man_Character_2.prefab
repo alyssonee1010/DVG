@@ -554,6 +554,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::VVEHealth
   maxHealth: 150
   destroyWhenDead: 1
+  onTakeDamage:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &6587178015064576824
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -576,7 +579,7 @@ MonoBehaviour:
   triggerStunAnimation: 1
   animator: {fileID: 611986551926976646}
   stunTriggerName: Stun
-  stunHitChance: 0.46
+  stunHitChance: 0.396
   stunResistancePercent: 100
   flashOnHit: 1
   hitFlashTint: {r: 1, g: 0.22, b: 0.16, a: 1}

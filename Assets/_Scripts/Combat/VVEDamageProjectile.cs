@@ -1,15 +1,18 @@
 using UnityEngine;
 
+// A projectile carries no gameplay tuning of its own — the shooter that launches it (see
+// VVERowProjectileShooter) is the single source of truth for damage, recoil, speed, and hit
+// detection, and pushes all of it in via Configure() on every shot.
 public class VVEDamageProjectile : MonoBehaviour
 {
-    [SerializeField] int damage = 25;
-    [SerializeField] float recoilMultiplier = 1f;
-    [SerializeField] float speed = 5f;
-    [SerializeField] float lifetime = 5f;
-    [SerializeField] bool destroyOnHit = true;
-    [SerializeField] bool useLaneBasedHit = true;
-    [SerializeField] float hitPadding = 0.15f;
-    [SerializeField, Min(0f)] float depthTolerance = VVELaneDepth.DefaultDepthTolerance;
+    int damage = 25;
+    float recoilMultiplier = 1f;
+    float speed = 5f;
+    float lifetime = 5f;
+    bool destroyOnHit = true;
+    bool useLaneBasedHit = true;
+    float hitPadding = 0.15f;
+    float depthTolerance = VVELaneDepth.DefaultDepthTolerance;
 
     Vector2 direction = Vector2.right;
     int laneIndex;
@@ -50,9 +53,17 @@ public class VVEDamageProjectile : MonoBehaviour
         stunSource = source;
     }
 
-    public void SetDamage(int value)
+    public void Configure(int damageValue, float recoilMultiplierValue, float speedValue, float lifetimeValue,
+        bool destroyOnHitValue, bool useLaneBasedHitValue, float hitPaddingValue, float depthToleranceValue)
     {
-        damage = Mathf.Max(0, value);
+        damage = Mathf.Max(0, damageValue);
+        recoilMultiplier = recoilMultiplierValue;
+        speed = speedValue;
+        lifetime = lifetimeValue;
+        destroyOnHit = destroyOnHitValue;
+        useLaneBasedHit = useLaneBasedHitValue;
+        hitPadding = hitPaddingValue;
+        depthTolerance = Mathf.Max(0f, depthToleranceValue);
     }
 
     public void Launch(Vector2 launchDirection, int targetLaneIndex)

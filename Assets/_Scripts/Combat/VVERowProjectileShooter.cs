@@ -14,6 +14,17 @@ public class VVERowProjectileShooter : MonoBehaviour
     [Tooltip("Damage assigned to each projectile spawned by this character.")]
     [Min(0)]
     [SerializeField] int projectileDamage = 25;
+    [Tooltip("How far a hit enemy gets knocked back. 0 means no knockback at all.")]
+    [Min(0f)]
+    [SerializeField] float recoilMultiplier = 1f;
+    [SerializeField] float projectileSpeed = 6f;
+    [SerializeField] float projectileLifetime = 5f;
+    [SerializeField] bool destroyProjectileOnHit = true;
+    [Tooltip("If true, a hit is only checked against the enemy's horizontal position along the row (ignoring its exact travel path). Turn off for projectiles that need precise path-based hit detection.")]
+    [SerializeField] bool useLaneBasedHit = true;
+    [Tooltip("Extra margin added around an enemy's collider bounds when checking whether this projectile hit it.")]
+    [Min(0f)]
+    [SerializeField] float hitPadding = 0.6f;
 
     [Header("Pooling")]
     [SerializeField] bool useProjectilePool = true;
@@ -104,7 +115,8 @@ public class VVERowProjectileShooter : MonoBehaviour
         }
 
         GameObject projectileObject = projectile.gameObject;
-        projectile.SetDamage(projectileDamage);
+        projectile.Configure(projectileDamage, recoilMultiplier, projectileSpeed, projectileLifetime,
+            destroyProjectileOnHit, useLaneBasedHit, hitPadding, depthTolerance);
         projectile.SetStunSource(stunProfile);
         projectileObject.transform.SetPositionAndRotation(spawnPosition, Quaternion.identity);
         VVELaneDepth.ApplyGameplaySortingGroup(projectileObject);

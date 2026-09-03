@@ -507,6 +507,12 @@ MonoBehaviour:
   projectileDirection: {x: 1, y: 0}
   fireInterval: 1.5
   projectileDamage: 60
+  recoilMultiplier: 1
+  projectileSpeed: 6
+  projectileLifetime: 5
+  destroyProjectileOnHit: 1
+  useLaneBasedHit: 1
+  hitPadding: 0.6
   useProjectilePool: 1
   preloadProjectileCount: 6
   maxPooledProjectiles: 24

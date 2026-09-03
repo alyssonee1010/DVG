@@ -180,9 +180,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc60f27aa9a1aa441818886257aaf7fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VVEDamageProjectile
-  damage: 20
-  speed: 6
-  lifetime: 5
-  destroyOnHit: 1
-  useLaneBasedHit: 1
-  hitPadding: 0.6
