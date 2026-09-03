@@ -34,7 +34,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.2
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 0371fafe2121b084bb80b1e61fe085bc, type: 3}
       propertyPath: m_LocalPosition.z
@@ -206,6 +206,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::VVEHealth
   maxHealth: 100
   destroyWhenDead: 1
+  onTakeDamage:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &6627431872690101012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -434,6 +437,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ac8180567df1155439de8582b182f0d9, type: 3}
   - {fileID: 8300000, guid: 09d1af0e133d8f94aad19e50c1e3ade9, type: 3}
   pitchRange: {x: 0.95, y: 1.05}
+  collectPitchStart: 1
+  collectPitchMax: 2.5
+  collectPitchStep: 0.1
+  collectPitchResetInterval: 0.4
 --- !u!114 &1107847401754015791
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -262,11 +262,13 @@ public class VVEMainMenuController : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        List<VVELevelDefinition> levels = VVELevelLoader.DiscoverLevels();
-        if (levels.Count == 0)
+        List<VVELevelDefinition> allLevels = VVELevelLoader.DiscoverLevels();
+        if (allLevels.Count == 0)
         {
             Debug.LogWarning("No level files found in Assets/Levels.");
         }
+
+        List<VVELevelDefinition> levels = VVELevelCompletion.GetAvailableLevels(allLevels);
 
         var groupedByStage = levels.GroupBy(level => level.Stage).OrderBy(group => group.Key);
 

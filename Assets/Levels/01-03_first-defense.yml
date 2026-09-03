@@ -23,7 +23,7 @@ waves:
         count: 1
         duration: 5
 
-  - time_offset: 12
+  - time_offset: 10
     spawns:
       - unit: viking
         count: 2
@@ -32,8 +32,8 @@ waves:
   - time_offset: 16
     spawns:
       - unit: viking
-        count: 3
-        duration: 5
+        count: 5
+        duration: 8
 
   - time_offset: 12
     spawns:
@@ -55,13 +55,13 @@ waves:
   - time_offset: 10
     spawns:
       - unit: viking
-        count: 4
+        count: 6
         duration: 5
 
   - time_offset: 12
     spawns:
       - unit: viking
-        count: 4
+        count: 8
         duration: 5
         
   - time_offset: 10
@@ -71,7 +71,7 @@ waves:
         count: 8
         duration: 8
       - unit: naked_viking
-        count: 2
+        count: 4
         time_offset: 5
         duration: 5
 

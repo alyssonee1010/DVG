@@ -44,6 +44,30 @@ public static class VVELevelCompletion
         return completedLevelIds;
     }
 
+    // Levels are supplied in progression order. The first level is always available, then each
+    // following level is revealed only after the immediately previous one has been completed.
+    public static List<VVELevelDefinition> GetAvailableLevels(IReadOnlyList<VVELevelDefinition> levels)
+    {
+        List<VVELevelDefinition> availableLevels = new List<VVELevelDefinition>();
+        if (levels == null || levels.Count == 0)
+        {
+            return availableLevels;
+        }
+
+        availableLevels.Add(levels[0]);
+        for (int i = 1; i < levels.Count; i++)
+        {
+            if (!IsCompleted(levels[i - 1].Id))
+            {
+                break;
+            }
+
+            availableLevels.Add(levels[i]);
+        }
+
+        return availableLevels;
+    }
+
     public static bool MarkCompleted(string levelId)
     {
         if (string.IsNullOrEmpty(levelId))

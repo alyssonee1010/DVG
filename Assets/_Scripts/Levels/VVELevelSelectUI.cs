@@ -235,11 +235,13 @@ public class VVELevelSelectUI : MonoBehaviour
         else
         {
             root = new GameObject("Level Select Menu");
-            levels = VVELevelLoader.DiscoverLevels();
-            if (levels.Count == 0)
+            List<VVELevelDefinition> allLevels = VVELevelLoader.DiscoverLevels();
+            if (allLevels.Count == 0)
             {
                 Debug.LogWarning("No level files found in Assets/Levels.");
             }
+
+            levels = VVELevelCompletion.GetAvailableLevels(allLevels);
         }
 
         for (int i = 0; i < levels.Count; i++)

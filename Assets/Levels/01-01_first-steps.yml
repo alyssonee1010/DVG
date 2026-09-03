@@ -8,7 +8,7 @@ level: 1
 settings:
   rows: 1
   columns: 10
-  starting_currency: 20
+  starting_currency: 24
 
 available_units:
   - viking
