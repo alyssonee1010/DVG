@@ -65,13 +65,9 @@ public class VVEManager : MonoBehaviour
         SelectedDefenders.AddRange(defenders);
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            ToggleMenu();
-        }
-    } 
+    // Escape belongs to VVEPauseMenuController now. The defender selection menu is driven by the
+    // level flow instead: it opens on scene start and after a level is completed, and closes when
+    // the next level actually starts.
 
     public static event Action<bool> OnToggleMenu;
 
