@@ -57,7 +57,44 @@ public class VVEBoardGrid : MonoBehaviour
 
     void OnEnable()
     {
+        if (TryAdoptExistingCells())
+        {
+            return;
+        }
+
         Rebuild();
+    }
+
+    // The built* bookkeeping below is plain runtime state, so a scene load or a domain reload
+    // (any script recompile) clears it even though the tile children are still sitting in the
+    // scene, exactly as this board wants them. Rebuilding then destroys and recreates 60
+    // identical tiles with brand-new object ids, which rewrites the entire scene file the next
+    // time it is saved. Re-adopt the existing tiles instead when they already match.
+    bool TryAdoptExistingCells()
+    {
+        if (rows <= 0 || columns <= 0 || transform.childCount != rows * columns)
+        {
+            return false;
+        }
+
+        cells.Clear();
+        foreach (Transform child in transform)
+        {
+            VVETile tile = child.GetComponent<VVETile>();
+            if (tile == null)
+            {
+                cells.Clear();
+                return false;
+            }
+
+            cells.Add(tile);
+        }
+
+        builtRows = rows;
+        builtColumns = columns;
+        builtCellSize = cellSize;
+        builtContentSignature = ComputeContentSignature();
+        return true;
     }
 
     void Update()
