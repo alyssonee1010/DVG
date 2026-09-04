@@ -31,6 +31,9 @@
 # Jetbrains Rider personal-layer settings
 *.DotSettings.user
 
+# Build output
+/Builds/
+
 # Recovered files
 /Assets/_Recovery/
 

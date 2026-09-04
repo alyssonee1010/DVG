@@ -1,6 +1,4 @@
 using TMPro;
-using Unity.AppUI.UI;
-using Unity.VisualScripting;
 using UnityEngine;
 using PrimeTween;
 using UnityEngine.EventSystems;
